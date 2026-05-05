@@ -363,52 +363,8 @@
     </div>
     <!-- End Toast -->
 
-    <script>
-      function getCart() {
-        return JSON.parse(localStorage.getItem('ecostore_cart') || '[]');
-      }
-
-      function saveCart(cart) {
-        localStorage.setItem('ecostore_cart', JSON.stringify(cart));
-      }
-
-      function updateCartCount() {
-        const cart = getCart();
-        const total = cart.reduce((sum, item) => sum + item.qty, 0);
-        const badge = document.getElementById('cart-count');
-        if (total > 0) {
-          badge.textContent = total;
-          badge.classList.remove('hidden');
-        } else {
-          badge.classList.add('hidden');
-        }
-      }
-
-      function addToCart(id, name, price, image) {
-        const cart = getCart();
-        const existing = cart.find(item => item.id === id);
-        if (existing) {
-          existing.qty += 1;
-        } else {
-          cart.push({ id, name, price, image, qty: 1 });
-        }
-        saveCart(cart);
-        updateCartCount();
-
-        // Toast notifikasi
-        const toast = document.getElementById('toast');
-        toast.textContent = `"${name}" ditambahkan ke keranjang!`;
-        toast.classList.remove('opacity-0', 'translate-y-4');
-        toast.classList.add('opacity-100', 'translate-y-0');
-        setTimeout(() => {
-          toast.classList.remove('opacity-100', 'translate-y-0');
-          toast.classList.add('opacity-0', 'translate-y-4');
-        }, 2500);
-      }
-
-      // Inisialisasi badge saat halaman load
-      document.addEventListener('DOMContentLoaded', updateCartCount);
-    </script>
+    <!-- Panggil file toko.js di sini -->
+    <script src="JS/toko.js"></script>
 
   </body>
 </html>
