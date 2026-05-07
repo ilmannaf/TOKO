@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — EcoStore</title>
+  <title>Daftar Akun — EcoStore</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style> body { font-family: "Poppins", sans-serif; } </style>
@@ -17,71 +17,88 @@
       ECO<span class="text-gray-900">STORE</span>
     </a>
 
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login ke Akun</h2>
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Buat Akun Baru</h2>
 
-    <!-- Pesan error -->
+    <!-- Pesan error / sukses -->
     <div id="error-msg" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg"></div>
+    <div id="success-msg" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 text-sm px-4 py-3 rounded-lg"></div>
+
+    <!-- Nama -->
+    <input type="text" id="nama" placeholder="Nama Lengkap"
+      class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
 
     <!-- Email -->
     <input type="email" id="email" placeholder="Email"
       class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
 
     <!-- Password -->
-    <input type="password" id="password" placeholder="Password"
+    <input type="password" id="password" placeholder="Password (min. 6 karakter)"
       class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
 
-    <!-- Button Login -->
-    <button id="btn-login" onclick="handleLogin()"
+    <!-- Button Register -->
+    <button id="btn-register" onclick="handleRegister()"
       class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 font-medium transition-colors">
-      Masuk
+      Daftar Sekarang
     </button>
 
-    <!-- Link ke Register -->
+    <!-- Link ke Login -->
     <p class="text-sm text-center text-gray-500 mt-4">
-      Belum punya akun?
-      <a href="register.html" class="text-indigo-600 hover:underline">Daftar</a>
+      Sudah punya akun?
+      <a href="login.html" class="text-indigo-600 hover:underline">Masuk</a>
     </p>
 
   </div>
 
   <script>
-    async function handleLogin() {
+    async function handleRegister() {
+      const nama     = document.getElementById('nama').value.trim();
       const email    = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-      const errorMsg = document.getElementById('error-msg');
-      const btn      = document.getElementById('btn-login');
+      const errorMsg   = document.getElementById('error-msg');
+      const successMsg = document.getElementById('success-msg');
+      const btn        = document.getElementById('btn-register');
 
-      // Reset error
+      // Reset pesan
       errorMsg.classList.add('hidden');
+      successMsg.classList.add('hidden');
 
-      // Validasi sederhana
-      if (!email || !password) {
-        errorMsg.textContent = 'Email dan password wajib diisi.';
+      // Validasi
+      if (!nama || !email || !password) {
+        errorMsg.textContent = 'Semua kolom wajib diisi.';
+        errorMsg.classList.remove('hidden');
+        return;
+      }
+
+      if (password.length < 6) {
+        errorMsg.textContent = 'Password minimal 6 karakter.';
         errorMsg.classList.remove('hidden');
         return;
       }
 
       // Loading state
-      btn.textContent = 'Memproses...';
+      btn.textContent = 'Mendaftar...';
       btn.disabled = true;
 
       try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch('http://localhost:3000/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ nama, email, password }),
         });
 
         const data = await response.json();
 
         if (data.success) {
-          // Simpan token & data user ke localStorage
+          // Simpan token & data user
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
-          // Redirect ke halaman utama
-          window.location.href = 'index.html';
+          successMsg.textContent = 'Registrasi berhasil! Mengalihkan...';
+          successMsg.classList.remove('hidden');
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1500);
         } else {
-          errorMsg.textContent = data.message || 'Login gagal.';
+          errorMsg.textContent = data.message || 'Registrasi gagal.';
           errorMsg.classList.remove('hidden');
         }
 
@@ -89,14 +106,13 @@
         errorMsg.textContent = 'Tidak dapat terhubung ke server. Pastikan backend berjalan.';
         errorMsg.classList.remove('hidden');
       } finally {
-        btn.textContent = 'Masuk';
+        btn.textContent = 'Daftar Sekarang';
         btn.disabled = false;
       }
     }
 
-    // Izinkan tekan Enter untuk login
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') handleLogin();
+      if (e.key === 'Enter') handleRegister();
     });
   </script>
 

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toko Estetis & Profesional</title>
+    <title>Produk — EcoStore</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -17,61 +17,77 @@
   <body class="bg-gray-100">
 
     <!-- Promotion -->
-    <div class="border-b border-gray-200 bg-gray-100 px-4 py-2 text-gray-900">
-      <p class="text-center font-medium">
+    <div class="border-b border-indigo-500 bg-indigo-600 px-4 py-2 text-white">
+      <p class="text-center text-sm font-medium">
         🎉 Nikmati diskon 20% untuk semua produk selama bulan ini!
-        <a href="#koleksi" class="inline-block underline"> Lihat Produk </a>
+        <a href="#koleksi" class="inline-block underline font-semibold ml-1">Lihat Produk →</a>
       </p>
     </div>
     <!-- End Promotion -->
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Navbar (sama dengan index.html) -->
+    <nav class="bg-white shadow sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
-          <div class="flex-shrink-0 flex items-center">
-            <a href="index.html" class="text-2xl font-bold text-indigo-600 tracking-wider">
-              ECO<span class="text-gray-900">STORE</span>
+
+          <!-- Logo -->
+          <div class="text-xl font-bold text-indigo-600">
+            <a href="index.html">ECOSTORE</a>
+          </div>
+
+          <!-- Menu Desktop -->
+          <ul class="hidden md:flex space-x-8 items-center">
+            <li><a href="index.html" class="text-gray-700 hover:text-indigo-600">Home</a></li>
+            <li><a href="toko.html" class="text-indigo-600 font-semibold border-b-2 border-indigo-600 pb-0.5">Produk</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-indigo-600">Kategori</a></li>
+            <li><a href="contact.html" class="text-gray-700 hover:text-indigo-600">Kontak</a></li>
+            <!-- Ikon Keranjang -->
+            <li>
+              <a href="keranjang.html" class="relative flex items-center text-gray-700 hover:text-indigo-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13M10 19a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2z" />
+                </svg>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+              </a>
+            </li>
+          </ul>
+
+          <!-- Button Login -->
+          <div class="hidden md:block">
+            <a href="login.html" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+              Login
             </a>
           </div>
-          <a href="keranjang.html" class="relative flex items-center text-gray-700 hover:text-indigo-600 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13M10 19a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2z" />
-            </svg>
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
-          </a>
+
+          <!-- Mobile -->
+          <div class="md:hidden flex items-center gap-4">
+            <a href="keranjang.html" class="relative flex items-center text-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13M10 19a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2z" />
+              </svg>
+              <span id="cart-count-mobile" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+            </a>
+            <button>☰</button>
+          </div>
+
         </div>
       </div>
     </nav>
     <!-- End Navbar -->
 
-    <!-- Welcome Banner -->
-    <div class="min-h-40 bg-white p-6">
-      <div class="bg-white rounded-xl shadow p-6 flex items-center justify-between max-w-7xl mx-auto">
-        <div>
-          <h1 class="text-2xl font-bold text-gray-800">Selamat datang di toko kami!</h1>
-          <p class="text-gray-500 mt-1">Temukan produk terbaik untuk kebutuhan Anda</p>
-        </div>
-      </div>
-    </div>
-    <!-- End Welcome Banner -->
-
     <!-- Call to Action -->
     <section class="bg-gray-50">
-      <div class="p-8 md:p-12 lg:px-16 lg:py-24">
+      <div class="p-8 md:p-12 lg:px-16 lg:py-16">
         <div class="mx-auto max-w-lg text-center">
           <h2 class="text-2xl font-bold text-gray-900 md:text-3xl">
-            Temukan produk terbaik untuk kebutuhan Anda
+            Koleksi Produk EcoStore
           </h2>
           <p class="text-gray-500 sm:mt-4">
             Temukan berbagai produk terbaru kami yang siap memenuhi kebutuhan gaya hidup Anda. Dari fashion hingga aksesori, semuanya ada di sini!
           </p>
-          <a
-            href="#koleksi"
-            class="group mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-rose-600 px-5 py-3 text-white transition hover:bg-rose-700 focus:ring-2 focus:ring-yellow-400 focus:outline-none"
-          >
-            <span class="text-sm font-medium">cari barang</span>
-            <svg class="size-5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <a href="#koleksi" class="mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-rose-600 px-5 py-3 text-white transition hover:bg-rose-700 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
+            <span class="text-sm font-medium">Lihat Produk</span>
+            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
@@ -86,7 +102,7 @@
         <header class="text-center mb-12">
           <h2 class="text-3xl font-bold text-gray-900">Koleksi Terbaru</h2>
           <p class="mx-auto mt-4 max-w-md text-gray-500">
-              Temukan berbagai produk terbaru kami yang siap memenuhi kebutuhan gaya hidup Anda. Dari fashion hingga aksesori, semuanya ada di sini!
+            Temukan berbagai produk terbaru kami yang siap memenuhi kebutuhan gaya hidup Anda. Dari fashion hingga aksesori, semuanya ada di sini!
           </p>
         </header>
 
@@ -95,253 +111,145 @@
           <!-- Kaos Basic -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600"
-                alt="Kaos"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600" alt="Kaos" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Kaos Basic</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 120.000</p>
             </div>
-            <button
-              onclick="addToCart(1, 'Kaos Basic', 120000, 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(1, 'Kaos Basic', 120000, 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Kemeja Casual -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1489987707023-af11241ce70f?auto=format&fit=crop&q=80&w=600"
-                alt="Kemeja"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1489987707023-af11241ce70f?auto=format&fit=crop&q=80&w=600" alt="Kemeja" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Kemeja Casual</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 250.000</p>
             </div>
-            <button
-              onclick="addToCart(2, 'Kemeja Casual', 250000, 'https://images.unsplash.com/photo-1489987707023-af11241ce70f?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(2, 'Kemeja Casual', 250000, 'https://images.unsplash.com/photo-1489987707023-af11241ce70f?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Celana Denim -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=600"
-                alt="Denim"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=600" alt="Denim" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Celana Denim</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 300.000</p>
             </div>
-            <button
-              onclick="addToCart(3, 'Celana Denim', 300000, 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(3, 'Celana Denim', 300000, 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Sepatu Sneakers -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=600"
-                alt="Sneakers"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=600" alt="Sneakers" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Sepatu Sneakers</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 450.000</p>
             </div>
-            <button
-              onclick="addToCart(4, 'Sepatu Sneakers', 450000, 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(4, 'Sepatu Sneakers', 450000, 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Jaket Hoodie -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?auto=format&fit=crop&q=80&w=600"
-                alt="Hoodie"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?auto=format&fit=crop&q=80&w=600" alt="Hoodie" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Jaket Hoodie</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 320.000</p>
             </div>
-            <button
-              onclick="addToCart(5, 'Jaket Hoodie', 320000, 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(5, 'Jaket Hoodie', 320000, 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Topi Baseball -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=600"
-                alt="Topi"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=600" alt="Topi" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Topi Baseball</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 85.000</p>
             </div>
-            <button
-              onclick="addToCart(6, 'Topi Baseball', 85000, 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(6, 'Topi Baseball', 85000, 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Tas Ransel -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=600"
-                alt="Tas Ransel"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=600" alt="Tas Ransel" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Tas Ransel</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 275.000</p>
             </div>
-            <button
-              onclick="addToCart(7, 'Tas Ransel', 275000, 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(7, 'Tas Ransel', 275000, 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Kacamata Sunglasses -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=600"
-                alt="Kacamata"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=600" alt="Kacamata" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Kacamata Sunglasses</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 150.000</p>
             </div>
-            <button
-              onclick="addToCart(8, 'Kacamata Sunglasses', 150000, 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(8, 'Kacamata Sunglasses', 150000, 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Jam Tangan -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600"
-                alt="Jam Tangan"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600" alt="Jam Tangan" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Jam Tangan</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 580.000</p>
             </div>
-            <button
-              onclick="addToCart(9, 'Jam Tangan', 580000, 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(9, 'Jam Tangan', 580000, 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Kaos Kaki -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&q=80&w=600"
-                alt="Kaos Kaki"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&q=80&w=600" alt="Kaos Kaki" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Kaos Kaki</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 35.000</p>
             </div>
-            <button
-              onclick="addToCart(10, 'Kaos Kaki', 35000, 'https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(10, 'Kaos Kaki', 35000, 'https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Celana Jogger -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&q=80&w=600"
-                alt="Celana Jogger"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&q=80&w=600" alt="Celana Jogger" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Celana Jogger</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 195.000</p>
             </div>
-            <button
-              onclick="addToCart(11, 'Celana Jogger', 195000, 'https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(11, 'Celana Jogger', 195000, 'https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
           <!-- Sandal Casual -->
           <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
             <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img
-                src="https://images.unsplash.com/photo-1603487742131-4160ec999306?auto=format&fit=crop&q=80&w=600"
-                alt="Sandal"
-                class="h-64 w-full object-cover transition duration-500 group-hover:scale-110"
-              />
+              <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?auto=format&fit=crop&q=80&w=600" alt="Sandal" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
             </div>
             <div class="mt-4 flex justify-between items-start">
               <h3 class="text-lg font-semibold text-gray-800">Sandal Casual</h3>
               <p class="text-sm font-medium text-indigo-600">Rp 110.000</p>
             </div>
-            <button
-              onclick="addToCart(12, 'Sandal Casual', 110000, 'https://images.unsplash.com/photo-1603487742131-4160ec999306?auto=format&fit=crop&q=80&w=100')"
-              class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              Tambah ke Keranjang
-            </button>
+            <button onclick="addToCart(12, 'Sandal Casual', 110000, 'https://images.unsplash.com/photo-1603487742131-4160ec999306?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
           </div>
 
         </div>
@@ -349,63 +257,66 @@
     </section>
     <!-- End Product List -->
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-gray-500 text-sm">
-      &copy; 2025 EcoStore. All rights reserved.
+    <!-- Footer (sama dengan index.html) -->
+    <footer class="bg-indigo-600 text-white">
+      <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid md:grid-cols-4 gap-8">
+
+          <!-- Logo -->
+          <div>
+            <h2 class="text-xl font-bold">ECOSTORE</h2>
+            <p class="mt-3 text-indigo-100">
+              Temukan berbagai produk terbaik dengan harga terjangkau dan kualitas terpercaya.
+            </p>
+          </div>
+
+          <!-- Menu -->
+          <div>
+            <h3 class="font-semibold mb-3">Menu</h3>
+            <ul class="space-y-2 text-indigo-100">
+              <li><a href="index.html" class="hover:text-white">Home</a></li>
+              <li><a href="toko.html" class="hover:text-white">Produk</a></li>
+              <li><a href="#" class="hover:text-white">Kategori</a></li>
+              <li><a href="contact.html" class="hover:text-white">Kontak</a></li>
+            </ul>
+          </div>
+
+          <!-- Bantuan -->
+          <div>
+            <h3 class="font-semibold mb-3">Bantuan</h3>
+            <ul class="space-y-2 text-indigo-100">
+              <li><a href="#" class="hover:text-white">FAQ</a></li>
+              <li><a href="#" class="hover:text-white">Syarat & Ketentuan</a></li>
+              <li><a href="#" class="hover:text-white">Privasi</a></li>
+            </ul>
+          </div>
+
+          <!-- Sosial -->
+          <div>
+            <h3 class="font-semibold mb-3">Follow Us</h3>
+            <div class="flex gap-4 text-indigo-100">
+              <a href="#" class="hover:text-white">Instagram</a>
+              <a href="#" class="hover:text-white">TikTok</a>
+              <a href="#" class="hover:text-white">YouTube</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom -->
+        <div class="mt-10 border-t border-indigo-400 pt-6 text-center text-indigo-200 text-sm">
+          © 2025 ECOSTORE. All rights reserved.
+        </div>
+
+      </div>
     </footer>
     <!-- End Footer -->
 
     <!-- Toast Notifikasi -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-5 py-3 rounded-xl shadow-lg z-50 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none">
-    </div>
-    <!-- End Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-5 py-3 rounded-xl shadow-lg z-50 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none"></div>
 
-    <script>
-      function getCart() {
-        return JSON.parse(localStorage.getItem('ecostore_cart') || '[]');
-      }
-
-      function saveCart(cart) {
-        localStorage.setItem('ecostore_cart', JSON.stringify(cart));
-      }
-
-      function updateCartCount() {
-        const cart = getCart();
-        const total = cart.reduce((sum, item) => sum + item.qty, 0);
-        const badge = document.getElementById('cart-count');
-        if (total > 0) {
-          badge.textContent = total;
-          badge.classList.remove('hidden');
-        } else {
-          badge.classList.add('hidden');
-        }
-      }
-
-      function addToCart(id, name, price, image) {
-        const cart = getCart();
-        const existing = cart.find(item => item.id === id);
-        if (existing) {
-          existing.qty += 1;
-        } else {
-          cart.push({ id, name, price, image, qty: 1 });
-        }
-        saveCart(cart);
-        updateCartCount();
-
-        // Toast notifikasi
-        const toast = document.getElementById('toast');
-        toast.textContent = `"${name}" ditambahkan ke keranjang!`;
-        toast.classList.remove('opacity-0', 'translate-y-4');
-        toast.classList.add('opacity-100', 'translate-y-0');
-        setTimeout(() => {
-          toast.classList.remove('opacity-100', 'translate-y-0');
-          toast.classList.add('opacity-0', 'translate-y-4');
-        }, 2500);
-      }
-
-      // Inisialisasi badge saat halaman load
-      document.addEventListener('DOMContentLoaded', updateCartCount);
-    </script>
+    <!-- Script -->
+    <script src="backend/toko.js"></script>
 
   </body>
 </html>
