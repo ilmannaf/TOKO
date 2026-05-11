@@ -9,61 +9,158 @@
   <style> body { font-family: "Poppins", sans-serif; } </style>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 min-h-screen">
 
-  <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+  <!-- Navbar -->
+  <nav class="bg-white shadow sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="text-xl font-bold text-indigo-600">
+          <a href="index.html">ECOSTORE</a>
+        </div>
+        <ul class="hidden md:flex space-x-8 items-center">
+          <li><a href="index.html" class="text-gray-700 hover:text-indigo-600">Home</a></li>
+          <li><a href="toko.html" class="text-gray-700 hover:text-indigo-600">Produk</a></li>
+          <li><a href="contact.html" class="text-gray-700 hover:text-indigo-600">Kontak</a></li>
+        </ul>
+        <!-- Slot nama user / tombol login -->
+        <div id="nav-auth"></div>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
 
-    <a href="index.html" class="text-2xl font-bold text-indigo-600 tracking-wider block text-center mb-6">
-      ECO<span class="text-gray-900">STORE</span>
-    </a>
+  <!-- Form Register -->
+  <div class="flex items-center justify-center py-16 px-4">
+    <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
 
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Buat Akun Baru</h2>
+      <a href="index.html" class="text-2xl font-bold text-indigo-600 tracking-wider block text-center mb-6">
+        ECO<span class="text-gray-900">STORE</span>
+      </a>
 
-    <!-- Pesan error / sukses -->
-    <div id="error-msg" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg"></div>
-    <div id="success-msg" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 text-sm px-4 py-3 rounded-lg"></div>
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Buat Akun Baru</h2>
 
-    <!-- Nama -->
-    <input type="text" id="nama" placeholder="Nama Lengkap"
-      class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+      <!-- Pesan error / sukses -->
+      <div id="error-msg" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg"></div>
+      <div id="success-msg" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 text-sm px-4 py-3 rounded-lg"></div>
 
-    <!-- Email -->
-    <input type="email" id="email" placeholder="Email"
-      class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+      <!-- Nama -->
+      <label class="text-sm font-medium text-gray-700 mb-1 block">Nama Lengkap</label>
+      <input type="text" id="nama" placeholder="Masukkan nama lengkap"
+        class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
 
-    <!-- Password -->
-    <input type="password" id="password" placeholder="Password (min. 6 karakter)"
-      class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+      <!-- Email -->
+      <label class="text-sm font-medium text-gray-700 mb-1 block">Email</label>
+      <input type="email" id="email" placeholder="contoh@email.com"
+        class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
 
-    <!-- Button Register -->
-    <button id="btn-register" onclick="handleRegister()"
-      class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 font-medium transition-colors">
-      Daftar Sekarang
-    </button>
+      <!-- Password -->
+      <label class="text-sm font-medium text-gray-700 mb-1 block">Password</label>
+      <div class="relative mb-2">
+        <input type="password" id="password" placeholder="Minimal 6 karakter"
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none pr-10"
+          oninput="checkPasswordStrength(this.value)">
+        <button type="button" onclick="togglePassword('password', this)"
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">
+          👁
+        </button>
+      </div>
 
-    <!-- Link ke Login -->
-    <p class="text-sm text-center text-gray-500 mt-4">
-      Sudah punya akun?
-      <a href="login.html" class="text-indigo-600 hover:underline">Masuk</a>
-    </p>
+      <!-- Indikator kekuatan password -->
+      <div id="strength-bar" class="h-1.5 rounded-full mb-1 w-0 transition-all duration-300"></div>
+      <p id="strength-text" class="text-xs text-gray-400 mb-4"></p>
 
+      <!-- Konfirmasi Password -->
+      <label class="text-sm font-medium text-gray-700 mb-1 block">Konfirmasi Password</label>
+      <div class="relative mb-6">
+        <input type="password" id="confirm-password" placeholder="Ulangi password"
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none pr-10">
+        <button type="button" onclick="togglePassword('confirm-password', this)"
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">
+          👁
+        </button>
+      </div>
+
+      <!-- Button Register -->
+      <button id="btn-register" onclick="handleRegister()"
+        class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 font-medium transition-colors">
+        Daftar Sekarang
+      </button>
+
+      <!-- Link ke Login -->
+      <p class="text-sm text-center text-gray-500 mt-4">
+        Sudah punya akun?
+        <a href="login.html" class="text-indigo-600 hover:underline font-medium">Masuk</a>
+      </p>
+
+    </div>
   </div>
 
+  <script src="../backend/auth.js"></script>
   <script>
+    // Jika sudah login, langsung redirect
+    redirectIfLoggedIn();
+
+    // Toggle show/hide password
+    function togglePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁';
+      }
+    }
+
+    // Indikator kekuatan password
+    function checkPasswordStrength(password) {
+      const bar  = document.getElementById('strength-bar');
+      const text = document.getElementById('strength-text');
+
+      if (password.length === 0) {
+        bar.style.width = '0';
+        text.textContent = '';
+        return;
+      }
+
+      let strength = 0;
+      if (password.length >= 6)  strength++;
+      if (password.length >= 10) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+      const levels = [
+        { width: '20%',  color: 'bg-red-500',    label: 'Sangat Lemah' },
+        { width: '40%',  color: 'bg-orange-400',  label: 'Lemah' },
+        { width: '60%',  color: 'bg-yellow-400',  label: 'Cukup' },
+        { width: '80%',  color: 'bg-blue-400',    label: 'Kuat' },
+        { width: '100%', color: 'bg-green-500',   label: 'Sangat Kuat' },
+      ];
+
+      const level = levels[Math.min(strength - 1, 4)];
+      bar.className  = `h-1.5 rounded-full mb-1 transition-all duration-300 ${level.color}`;
+      bar.style.width = level.width;
+      text.textContent = level.label;
+      text.className = `text-xs mb-4 ${level.color.replace('bg-', 'text-')}`;
+    }
+
     async function handleRegister() {
-      const nama     = document.getElementById('nama').value.trim();
-      const email    = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const errorMsg   = document.getElementById('error-msg');
-      const successMsg = document.getElementById('success-msg');
-      const btn        = document.getElementById('btn-register');
+      const nama            = document.getElementById('nama').value.trim();
+      const email           = document.getElementById('email').value.trim();
+      const password        = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      const errorMsg        = document.getElementById('error-msg');
+      const successMsg      = document.getElementById('success-msg');
+      const btn             = document.getElementById('btn-register');
 
       // Reset pesan
       errorMsg.classList.add('hidden');
       successMsg.classList.add('hidden');
 
       // Validasi
-      if (!nama || !email || !password) {
+      if (!nama || !email || !password || !confirmPassword) {
         errorMsg.textContent = 'Semua kolom wajib diisi.';
         errorMsg.classList.remove('hidden');
         return;
@@ -71,6 +168,12 @@
 
       if (password.length < 6) {
         errorMsg.textContent = 'Password minimal 6 karakter.';
+        errorMsg.classList.remove('hidden');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        errorMsg.textContent = 'Password dan konfirmasi password tidak sama.';
         errorMsg.classList.remove('hidden');
         return;
       }
@@ -89,10 +192,9 @@
         const data = await response.json();
 
         if (data.success) {
-          // Simpan token & data user
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
-          successMsg.textContent = 'Registrasi berhasil! Mengalihkan...';
+          successMsg.textContent = `Selamat datang, ${data.user.nama}! Mengalihkan...`;
           successMsg.classList.remove('hidden');
           setTimeout(() => {
             window.location.href = 'index.html';
@@ -117,4 +219,5 @@
   </script>
 
 </body>
+
 </html>
