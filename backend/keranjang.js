@@ -2,46 +2,49 @@
 
 // Fungsi untuk format angka menjadi format Rupiah
 function formatRupiah(num) {
-  return 'Rp ' + num.toLocaleString('id-ID');
+  return "Rp " + num.toLocaleString("id-ID");
 }
 
 // Fungsi untuk mengambil data keranjang dari Local Storage browser
 function getCart() {
-  return JSON.parse(localStorage.getItem('ecostore_cart') || '[]');
+  return JSON.parse(localStorage.getItem("ecostore_cart") || "[]");
 }
 
 // Fungsi untuk menyimpan perubahan data keranjang ke Local Storage
 function saveCart(cart) {
-  localStorage.setItem('ecostore_cart', JSON.stringify(cart));
+  localStorage.setItem("ecostore_cart", JSON.stringify(cart));
 }
 
 // Fungsi utama untuk me-render (menampilkan) isi keranjang ke layar
 function renderCart() {
   const cart = getCart();
-  const emptyState = document.getElementById('empty-state');
-  const cartContainer = document.getElementById('cart-container');
-  const cartItemsEl = document.getElementById('cart-items');
+  const emptyState = document.getElementById("empty-state");
+  const cartContainer = document.getElementById("cart-container");
+  const cartItemsEl = document.getElementById("cart-items");
 
   // Jika keranjang kosong
   if (cart.length === 0) {
-    emptyState.classList.remove('hidden');
-    emptyState.classList.add('flex');
-    cartContainer.classList.add('hidden');
+    emptyState.classList.remove("hidden");
+    emptyState.classList.add("flex");
+    cartContainer.classList.add("hidden");
+    cartContainer.classList.remove("lg:grid");
     return;
   }
 
   // Jika keranjang ada isinya
-  emptyState.classList.add('hidden');
-  emptyState.classList.remove('flex');
-  cartContainer.classList.remove('hidden');
+  emptyState.classList.add("hidden");
+  emptyState.classList.remove("flex");
+  cartContainer.classList.remove("hidden");
+  cartContainer.classList.add("lg:grid");
 
   // Kosongkan kontainer sebelum diisi ulang
-  cartItemsEl.innerHTML = '';
-  
+  cartItemsEl.innerHTML = "";
+
   // Looping (perulangan) untuk menampilkan setiap barang di keranjang
-  cart.forEach(item => {
-    const el = document.createElement('div');
-    el.className = 'item-enter bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4';
+  cart.forEach((item) => {
+    const el = document.createElement("div");
+    el.className =
+      "item-enter bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4";
     el.innerHTML = `
       <img src="${item.image}" alt="${item.name}"
         class="h-20 w-20 rounded-xl object-cover flex-shrink-0 bg-gray-100" />
@@ -72,18 +75,18 @@ function renderCart() {
   // Update ringkasan harga
   const totalQty = cart.reduce((s, i) => s + i.qty, 0);
   const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  document.getElementById('summary-count').textContent = totalQty;
-  document.getElementById('summary-subtotal').textContent = formatRupiah(totalPrice);
-  document.getElementById('summary-total').textContent = formatRupiah(totalPrice);
+  document.getElementById("summary-count").textContent = totalQty;
+  document.getElementById("summary-subtotal").textContent = formatRupiah(totalPrice);
+  document.getElementById("summary-total").textContent = formatRupiah(totalPrice);
 }
 
 // Fungsi untuk menambah atau mengurangi jumlah barang
 function changeQty(id, delta) {
   const cart = getCart();
-  const item = cart.find(i => i.id === id);
+  const item = cart.find((i) => i.id === id);
   if (!item) return;
   item.qty += delta;
-  
+
   // Jika jumlah barang jadi 0, hapus dari keranjang
   if (item.qty <= 0) {
     cart.splice(cart.indexOf(item), 1);
@@ -94,14 +97,14 @@ function changeQty(id, delta) {
 
 // Fungsi untuk menghapus barang dari keranjang
 function removeItem(id) {
-  const cart = getCart().filter(i => i.id !== id);
+  const cart = getCart().filter((i) => i.id !== id);
   saveCart(cart);
   renderCart();
 }
 
 // Fungsi untuk mengosongkan semua isi keranjang
 function clearCart() {
-  if (confirm('Yakin ingin mengosongkan keranjang?')) {
+  if (confirm("Yakin ingin mengosongkan keranjang?")) {
     saveCart([]);
     renderCart();
   }
@@ -109,17 +112,17 @@ function clearCart() {
 
 // Fungsi untuk memunculkan pop-up sukses checkout
 function checkout() {
-  const modal = document.getElementById('checkout-modal');
-  modal.classList.remove('hidden');
-  modal.classList.add('flex');
+  const modal = document.getElementById("checkout-modal");
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
 }
 
 // Fungsi untuk menutup pop-up dan kembali ke toko
 function closeModal() {
   saveCart([]); // Kosongkan keranjang setelah checkout sukses
-  document.getElementById('checkout-modal').classList.add('hidden');
-  document.getElementById('checkout-modal').classList.remove('flex');
-  window.location.href = 'toko.html';
+  document.getElementById("checkout-modal").classList.add("hidden");
+  document.getElementById("checkout-modal").classList.remove("flex");
+  window.location.href = "toko.html";
 }
 
 // Inisialisasi: Jalankan renderCart saat pertama kali file dimuat
