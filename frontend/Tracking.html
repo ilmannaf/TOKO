@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lacak Pesanan — EcoStore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: "Poppins", sans-serif; }
+    html { scroll-behavior: smooth; }
+    .step-line { transition: height 0.5s ease; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="text-xl font-bold text-indigo-600">
+          <a href="index.html">ECOSTORE</a>
+        </div>
+        <ul class="hidden md:flex space-x-8 items-center">
+          <li><a href="index.html" class="text-gray-700 hover:text-indigo-600">Home</a></li>
+          <li><a href="toko.html" class="text-gray-700 hover:text-indigo-600">Produk</a></li>
+          <li><a href="keranjang.html" class="text-gray-700 hover:text-indigo-600">Keranjang</a></li>
+        </ul>
+        <div id="nav-auth"></div>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+
+  <main class="max-w-3xl mx-auto px-4 py-10">
+
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Lacak Pesanan</h1>
+    <p class="text-gray-500 mb-8">Masukkan nomor pesanan untuk melihat status pengiriman</p>
+
+    <!-- Form Cari -->
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+      <div class="flex gap-3">
+        <input type="text" id="input-nomor" placeholder="Contoh: ECO-123456"
+          class="flex-1 px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm uppercase"
+          oninput="this.value = this.value.toUpperCase()">
+        <button onclick="lacakPesanan()"
+          class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl hover:bg-indigo-700 font-medium text-sm transition-colors">
+          Lacak
+        </button>
+      </div>
+      <div id="error-cari" class="hidden mt-3 text-red-500 text-sm"></div>
+    </div>
+
+    <!-- Hasil Tracking -->
+    <div id="hasil-tracking" class="hidden space-y-5">
+
+      <!-- Info Pesanan -->
+      <div class="bg-white rounded-2xl shadow-sm p-6">
+        <div class="flex items-start justify-between flex-wrap gap-3">
+          <div>
+            <p class="text-xs text-gray-400 mb-1">Nomor Pesanan</p>
+            <p id="track-nomor" class="text-xl font-bold text-indigo-600">#ECO-000000</p>
+          </div>
+          <div id="track-status-badge" class="px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700">
+            Dikonfirmasi
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-5 pt-5 border-t border-gray-100">
+          <div>
+            <p class="text-xs text-gray-400 mb-1">Tanggal Pesan</p>
+            <p id="track-tanggal" class="text-sm font-medium text-gray-800">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 mb-1">Kurir</p>
+            <p id="track-kurir" class="text-sm font-medium text-gray-800 uppercase">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 mb-1">Pembayaran</p>
+            <p id="track-bayar" class="text-sm font-medium text-gray-800">-</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 mb-1">Total</p>
+            <p id="track-total" class="text-sm font-bold text-indigo-600">-</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline Status -->
+      <div class="bg-white rounded-2xl shadow-sm p-6">
+        <h2 class="text-lg font-bold text-gray-900 mb-6">Status Pengiriman</h2>
+
+        <div id="timeline" class="relative"></div>
+      </div>
+
+      <!-- Info Penerima -->
+      <div class="bg-white rounded-2xl shadow-sm p-6">
+        <h2 class="text-base font-bold text-gray-900 mb-4">📍 Alamat Penerima</h2>
+        <div class="text-sm text-gray-700 space-y-1">
+          <p id="track-nama" class="font-semibold"></p>
+          <p id="track-telepon" class="text-gray-500"></p>
+          <p id="track-alamat"></p>
+          <p id="track-kota"></p>
+        </div>
+      </div>
+
+      <!-- Produk yang dipesan -->
+      <div class="bg-white rounded-2xl shadow-sm p-6">
+        <h2 class="text-base font-bold text-gray-900 mb-4">📦 Produk Dipesan</h2>
+        <div id="track-items" class="space-y-3"></div>
+      </div>
+
+    </div>
+
+    <!-- Riwayat Pesanan -->
+    <div id="riwayat-section" class="mt-8">
+      <h2 class="text-lg font-bold text-gray-900 mb-4">Riwayat Pesanan</h2>
+      <div id="riwayat-list" class="space-y-3"></div>
+      <div id="riwayat-kosong" class="hidden bg-white rounded-2xl shadow-sm p-8 text-center text-gray-400">
+        <p class="text-4xl mb-3">📭</p>
+        <p>Belum ada riwayat pesanan</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-indigo-600 text-white mt-16">
+    <div class="max-w-7xl mx-auto px-4 py-8 text-center text-indigo-200 text-sm">
+      © 2026 ECOSTORE. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="../backend/auth.js"></script>
+  <script>
+    function formatRupiah(num) {
+      return 'Rp ' + num.toLocaleString('id-ID');
+    }
+
+    function formatTanggal(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Status timeline berdasarkan waktu (simulasi)
+    function getStatusSteps(pesanan) {
+      const tgl   = new Date(pesanan.tanggal);
+      const steps = [
+        {
+          label: 'Pesanan Dikonfirmasi',
+          desc:  'Pesananmu sudah kami terima dan sedang diverifikasi.',
+          icon:  '✅',
+          time:  new Date(tgl),
+          done:  true,
+        },
+        {
+          label: 'Sedang Diproses',
+          desc:  'Produk sedang dikemas oleh tim gudang kami.',
+          icon:  '📦',
+          time:  new Date(tgl.getTime() + 1 * 60 * 60 * 1000), // +1 jam
+          done:  true,
+        },
+        {
+          label: 'Diserahkan ke Kurir',
+          desc:  `Paket sudah diserahkan ke ${pesanan.kurir.toUpperCase()}.`,
+          icon:  '🚚',
+          time:  new Date(tgl.getTime() + 5 * 60 * 60 * 1000), // +5 jam
+          done:  new Date() > new Date(tgl.getTime() + 5 * 60 * 60 * 1000),
+        },
+        {
+          label: 'Dalam Perjalanan',
+          desc:  'Paket sedang dalam perjalanan menuju kota tujuan.',
+          icon:  '🛣️',
+          time:  new Date(tgl.getTime() + 24 * 60 * 60 * 1000), // +1 hari
+          done:  new Date() > new Date(tgl.getTime() + 24 * 60 * 60 * 1000),
+        },
+        {
+          label: 'Tiba di Kota Tujuan',
+          desc:  `Paket sudah tiba di ${pesanan.penerima.kota}.`,
+          icon:  '🏙️',
+          time:  new Date(tgl.getTime() + 2 * 24 * 60 * 60 * 1000), // +2 hari
+          done:  new Date() > new Date(tgl.getTime() + 2 * 24 * 60 * 60 * 1000),
+        },
+        {
+          label: 'Pesanan Selesai',
+          desc:  'Paket berhasil diterima. Terima kasih telah berbelanja!',
+          icon:  '🎉',
+          time:  new Date(tgl.getTime() + 3 * 24 * 60 * 60 * 1000), // +3 hari
+          done:  new Date() > new Date(tgl.getTime() + 3 * 24 * 60 * 60 * 1000),
+        },
+      ];
+      return steps;
+    }
+
+    function renderTimeline(steps) {
+      const el = document.getElementById('timeline');
+      el.innerHTML = steps.map((step, i) => `
+        <div class="flex gap-4 ${i < steps.length - 1 ? 'mb-0' : ''}">
+          <div class="flex flex-col items-center">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg flex-shrink-0
+              ${step.done ? 'bg-indigo-600 shadow-md shadow-indigo-200' : 'bg-gray-100'}">
+              ${step.done ? step.icon : '<span class="w-3 h-3 rounded-full bg-gray-300 block"></span>'}
+            </div>
+            ${i < steps.length - 1 ? `
+              <div class="w-0.5 flex-1 my-1 ${step.done && steps[i+1].done ? 'bg-indigo-400' : 'bg-gray-200'}"></div>
+            ` : ''}
+          </div>
+          <div class="pb-6 pt-1.5">
+            <p class="font-semibold text-sm ${step.done ? 'text-gray-900' : 'text-gray-400'}">${step.label}</p>
+            <p class="text-xs ${step.done ? 'text-gray-500' : 'text-gray-300'} mt-0.5">${step.desc}</p>
+            ${step.done ? `<p class="text-xs text-indigo-400 mt-1">${formatTanggal(step.time)}</p>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getStatusBadge(steps) {
+      const lastDone = [...steps].reverse().find(s => s.done);
+      const badges = {
+        'Pesanan Selesai':         { bg: 'bg-green-100',  text: 'text-green-700' },
+        'Tiba di Kota Tujuan':    { bg: 'bg-blue-100',   text: 'text-blue-700'  },
+        'Dalam Perjalanan':       { bg: 'bg-sky-100',    text: 'text-sky-700'   },
+        'Diserahkan ke Kurir':    { bg: 'bg-orange-100', text: 'text-orange-700'},
+        'Sedang Diproses':        { bg: 'bg-yellow-100', text: 'text-yellow-700'},
+        'Pesanan Dikonfirmasi':   { bg: 'bg-purple-100', text: 'text-purple-700'},
+      };
+      const b = badges[lastDone?.label] || badges['Pesanan Dikonfirmasi'];
+      return { label: lastDone?.label || 'Dikonfirmasi', ...b };
+    }
+
+    function tampilkanPesanan(pesanan) {
+      const steps = getStatusSteps(pesanan);
+      const badge = getStatusBadge(steps);
+
+      document.getElementById('hasil-tracking').classList.remove('hidden');
+      document.getElementById('track-nomor').textContent  = '#' + pesanan.nomor;
+      document.getElementById('track-tanggal').textContent = formatTanggal(pesanan.tanggal);
+      document.getElementById('track-kurir').textContent  = pesanan.kurir;
+      document.getElementById('track-total').textContent  = formatRupiah(pesanan.total);
+
+      const bayarMap = { transfer: 'Transfer Bank', cod: 'COD', ewallet: 'E-Wallet' };
+      document.getElementById('track-bayar').textContent = bayarMap[pesanan.pembayaran] || pesanan.pembayaran;
+
+      const badgeEl = document.getElementById('track-status-badge');
+      badgeEl.textContent = badge.label;
+      badgeEl.className   = `px-3 py-1 rounded-full text-sm font-semibold ${badge.bg} ${badge.text}`;
+
+      document.getElementById('track-nama').textContent    = pesanan.penerima.nama;
+      document.getElementById('track-telepon').textContent = pesanan.penerima.telepon;
+      document.getElementById('track-alamat').textContent  = pesanan.penerima.alamat;
+      document.getElementById('track-kota').textContent    = `${pesanan.penerima.kota}, ${pesanan.penerima.provinsi}`;
+
+      document.getElementById('track-items').innerHTML = pesanan.items.map(item => `
+        <div class="flex items-center gap-3">
+          <img src="${item.image}" class="h-12 w-12 rounded-lg object-cover bg-gray-100" />
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-800">${item.name}</p>
+            <p class="text-xs text-gray-500">${item.qty}x ${formatRupiah(item.price)}</p>
+          </div>
+          <p class="text-sm font-semibold text-gray-700">${formatRupiah(item.price * item.qty)}</p>
+        </div>
+      `).join('');
+
+      renderTimeline(steps);
+
+      document.getElementById('hasil-tracking').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function lacakPesanan() {
+      const input   = document.getElementById('input-nomor').value.trim().replace('#', '');
+      const errorEl = document.getElementById('error-cari');
+      errorEl.classList.add('hidden');
+      document.getElementById('hasil-tracking').classList.add('hidden');
+
+      if (!input) {
+        errorEl.textContent = 'Masukkan nomor pesanan terlebih dahulu.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      const orders = JSON.parse(localStorage.getItem('ecostore_orders') || '[]');
+      const found  = orders.find(o => o.nomor.toUpperCase() === input.toUpperCase());
+
+      if (!found) {
+        errorEl.textContent = `Nomor pesanan "${input}" tidak ditemukan.`;
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      tampilkanPesanan(found);
+    }
+
+    // Render riwayat pesanan
+    function renderRiwayat() {
+      const orders    = JSON.parse(localStorage.getItem('ecostore_orders') || '[]');
+      const listEl    = document.getElementById('riwayat-list');
+      const kosongEl  = document.getElementById('riwayat-kosong');
+
+      if (orders.length === 0) {
+        listEl.classList.add('hidden');
+        kosongEl.classList.remove('hidden');
+        return;
+      }
+
+      kosongEl.classList.add('hidden');
+      listEl.innerHTML = orders.map(o => {
+        const steps = getStatusSteps(o);
+        const badge = getStatusBadge(steps);
+        return `
+          <div class="bg-white rounded-2xl shadow-sm p-4 flex items-center justify-between gap-4 cursor-pointer hover:shadow-md transition-shadow"
+            onclick="document.getElementById('input-nomor').value='${o.nomor}'; lacakPesanan();">
+            <div>
+              <p class="font-bold text-indigo-600 text-sm">#${o.nomor}</p>
+              <p class="text-xs text-gray-500 mt-0.5">${formatTanggal(o.tanggal)}</p>
+              <p class="text-xs text-gray-400">${o.items.length} produk · ${formatRupiah(o.total)}</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 ${badge.bg} ${badge.text}">
+              ${badge.label}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Auto-lacak dari URL param
+    const urlParams = new URLSearchParams(window.location.search);
+    const nomorDariUrl = urlParams.get('nomor');
+    if (nomorDariUrl) {
+      document.getElementById('input-nomor').value = nomorDariUrl;
+      lacakPesanan();
+    }
+
+    renderRiwayat();
+  </script>
+
+</body>
+</html>

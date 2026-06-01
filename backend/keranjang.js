@@ -112,9 +112,9 @@ function clearCart() {
 
 // Fungsi untuk memunculkan pop-up sukses checkout
 function checkout() {
-  const modal = document.getElementById("checkout-modal");
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
+  const cart = getCart();
+  if (cart.length === 0) return;
+  window.location.href = 'checkout.html';
 }
 
 // Fungsi untuk menutup pop-up dan kembali ke toko
