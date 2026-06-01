@@ -114,7 +114,16 @@
 
     <!-- Riwayat Pesanan -->
     <div id="riwayat-section" class="mt-8">
-      <h2 class="text-lg font-bold text-gray-900 mb-4">Riwayat Pesanan</h2>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-900">Riwayat Pesanan</h2>
+        <button onclick="hapusSemua()"
+          class="text-xs text-red-400 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors font-medium flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          Hapus Semua
+        </button>
+      </div>
       <div id="riwayat-list" class="space-y-3"></div>
       <div id="riwayat-kosong" class="hidden bg-white rounded-2xl shadow-sm p-8 text-center text-gray-400">
         <p class="text-4xl mb-3">📭</p>
@@ -290,6 +299,34 @@
       tampilkanPesanan(found);
     }
 
+    // Hapus satu pesanan dari riwayat
+    function hapusPesanan(nomor) {
+      if (!confirm(`Yakin hapus riwayat pesanan #${nomor}?`)) return;
+      let orders = JSON.parse(localStorage.getItem('ecostore_orders') || '[]');
+      orders = orders.filter(o => o.nomor !== nomor);
+      localStorage.setItem('ecostore_orders', JSON.stringify(orders));
+
+      // Kalau pesanan yang sedang ditampilkan dihapus, sembunyikan hasil
+      const trackNomor = document.getElementById('track-nomor').textContent.replace('#', '');
+      if (trackNomor === nomor) {
+        document.getElementById('hasil-tracking').classList.add('hidden');
+        document.getElementById('input-nomor').value = '';
+      }
+
+      renderRiwayat();
+    }
+
+    // Hapus semua riwayat pesanan
+    function hapusSemua() {
+      const orders = JSON.parse(localStorage.getItem('ecostore_orders') || '[]');
+      if (orders.length === 0) return;
+      if (!confirm('Yakin hapus SEMUA riwayat pesanan?')) return;
+      localStorage.removeItem('ecostore_orders');
+      document.getElementById('hasil-tracking').classList.add('hidden');
+      document.getElementById('input-nomor').value = '';
+      renderRiwayat();
+    }
+
     // Render riwayat pesanan
     function renderRiwayat() {
       const orders    = JSON.parse(localStorage.getItem('ecostore_orders') || '[]');
@@ -307,16 +344,25 @@
         const steps = getStatusSteps(o);
         const badge = getStatusBadge(steps);
         return `
-          <div class="bg-white rounded-2xl shadow-sm p-4 flex items-center justify-between gap-4 cursor-pointer hover:shadow-md transition-shadow"
-            onclick="document.getElementById('input-nomor').value='${o.nomor}'; lacakPesanan();">
-            <div>
+          <div class="bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4 hover:shadow-md transition-shadow">
+            <!-- Info pesanan — klik untuk lacak -->
+            <div class="flex-1 cursor-pointer" onclick="document.getElementById('input-nomor').value='${o.nomor}'; lacakPesanan();">
               <p class="font-bold text-indigo-600 text-sm">#${o.nomor}</p>
               <p class="text-xs text-gray-500 mt-0.5">${formatTanggal(o.tanggal)}</p>
               <p class="text-xs text-gray-400">${o.items.length} produk · ${formatRupiah(o.total)}</p>
             </div>
+            <!-- Badge status -->
             <span class="px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 ${badge.bg} ${badge.text}">
               ${badge.label}
             </span>
+            <!-- Tombol hapus -->
+            <button onclick="hapusPesanan('${o.nomor}')"
+              class="flex-shrink-0 p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              title="Hapus pesanan ini">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
           </div>
         `;
       }).join('');
