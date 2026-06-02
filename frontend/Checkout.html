@@ -428,67 +428,111 @@
 
     // Kurir listener sudah ditangani oleh pilihanKurirBerubah()
 
-    // Proses checkout
-    function prosesCheckout() {
+    // Proses checkout — kirim ke backend API
+    async function prosesCheckout() {
       const nama      = document.getElementById('nama-penerima').value.trim();
       const telepon   = document.getElementById('telepon').value.trim();
       const alamat    = document.getElementById('alamat').value.trim();
       const kota      = document.getElementById('kota').value.trim();
+      const kodePos   = document.getElementById('kode-pos').value.trim();
       const provinsi  = document.getElementById('provinsi').value;
+      const catatan   = document.getElementById('catatan').value.trim();
       const errorEl   = document.getElementById('checkout-error');
+      const btnOrder  = document.querySelector('button[onclick="prosesCheckout()"]');
       const cart      = getCart();
 
       errorEl.classList.add('hidden');
 
+      // Validasi
       if (cart.length === 0) {
         errorEl.textContent = 'Keranjang kamu kosong!';
         errorEl.classList.remove('hidden');
         return;
       }
-
       if (!nama || !telepon || !alamat || !kota || !provinsi) {
         errorEl.textContent = 'Lengkapi semua data alamat pengiriman.';
         errorEl.classList.remove('hidden');
         return;
       }
+      if (ongkirTerpilih === 0) {
+        errorEl.textContent = 'Pilih jasa pengiriman terlebih dahulu.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
 
-      const kurir      = document.querySelector('input[name="kurir"]:checked').value;
-      const pembayaran = document.querySelector('input[name="pembayaran"]:checked').value;
+      const kurirEl    = document.querySelector('input[name="kurir"]:checked');
+      const bayarEl    = document.querySelector('input[name="pembayaran"]:checked');
+      if (!kurirEl || !bayarEl) {
+        errorEl.textContent = 'Pilih kurir dan metode pembayaran.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      const kurir      = kurirEl.value;
+      const pembayaran = bayarEl.value;
       const subtotal   = cart.reduce((s, i) => s + i.price * i.qty, 0);
       const total      = subtotal + ongkirTerpilih;
 
-      // Generate nomor pesanan
-      const nomorPesanan = 'ECO-' + Date.now().toString().slice(-6);
-      nomorPesananBaru   = nomorPesanan;
+      // Ambil user_id dari localStorage jika sudah login
+      const user       = JSON.parse(localStorage.getItem('user') || 'null');
 
-      // Simpan pesanan ke localStorage (simulasi — ganti dengan API call kalau ada backend)
-      const pesanan = {
-        nomor:      nomorPesanan,
-        tanggal:    new Date().toISOString(),
-        penerima:   { nama, telepon, alamat, kota, provinsi },
-        kurir,
-        pembayaran,
-        items:      cart,
-        subtotal,
-        ongkir:     ongkirTerpilih,
-        total,
-        status:     'dikonfirmasi',
-      };
+      // Loading state
+      btnOrder.textContent = 'Memproses...';
+      btnOrder.disabled    = true;
 
-      // Simpan ke riwayat pesanan
-      const riwayat = JSON.parse(localStorage.getItem('ecostore_orders') || '[]');
-      riwayat.unshift(pesanan);
-      localStorage.setItem('ecostore_orders', JSON.stringify(riwayat));
-      localStorage.setItem('ecostore_last_order', nomorPesanan);
+      try {
+        const response = await fetch('http://localhost:3000/api/orders', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({
+            user_id:       user?.id || null,
+            nama_penerima: nama,
+            telepon,
+            alamat,
+            kota,
+            provinsi,
+            kode_pos:      kodePos,
+            catatan,
+            kurir,
+            metode_bayar:  pembayaran,
+            subtotal,
+            ongkir:        ongkirTerpilih,
+            total,
+            items: cart.map(i => ({
+              id:    i.id,
+              name:  i.name,
+              price: i.price,
+              qty:   i.qty,
+              image: i.image,
+            })),
+          }),
+        });
 
-      // Kosongkan keranjang
-      localStorage.removeItem('ecostore_cart');
+        const data = await response.json();
 
-      // Tampilkan modal sukses
-      document.getElementById('nomor-pesanan').textContent = '#' + nomorPesanan;
-      const modal = document.getElementById('sukses-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+        if (data.success) {
+          nomorPesananBaru = data.nomor_pesanan;
+
+          // Kosongkan keranjang
+          localStorage.removeItem('ecostore_cart');
+
+          // Tampilkan modal sukses
+          document.getElementById('nomor-pesanan').textContent = '#' + data.nomor_pesanan;
+          const modal = document.getElementById('sukses-modal');
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        } else {
+          errorEl.textContent = data.message || 'Gagal membuat pesanan.';
+          errorEl.classList.remove('hidden');
+        }
+
+      } catch (err) {
+        errorEl.textContent = 'Tidak dapat terhubung ke server. Pastikan backend berjalan.';
+        errorEl.classList.remove('hidden');
+      } finally {
+        btnOrder.textContent = 'Buat Pesanan';
+        btnOrder.disabled    = false;
+      }
     }
 
     function keTracking() {

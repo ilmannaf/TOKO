@@ -275,9 +275,11 @@
       document.getElementById('hasil-tracking').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function lacakPesanan() {
-      const input   = document.getElementById('input-nomor').value.trim().replace('#', '');
+    async function lacakPesanan() {
+      const input   = document.getElementById('input-nomor').value.trim().replace('#', '').toUpperCase();
       const errorEl = document.getElementById('error-cari');
+      const btnLacak = document.querySelector('button[onclick="lacakPesanan()"]');
+
       errorEl.classList.add('hidden');
       document.getElementById('hasil-tracking').classList.add('hidden');
 
@@ -287,16 +289,58 @@
         return;
       }
 
-      const orders = JSON.parse(localStorage.getItem('ecostore_orders') || '[]');
-      const found  = orders.find(o => o.nomor.toUpperCase() === input.toUpperCase());
+      // Loading
+      btnLacak.textContent = 'Mencari...';
+      btnLacak.disabled    = true;
 
-      if (!found) {
-        errorEl.textContent = `Nomor pesanan "${input}" tidak ditemukan.`;
-        errorEl.classList.remove('hidden');
-        return;
+      try {
+        const response = await fetch(`http://localhost:3000/api/orders/${input}`);
+        const data     = await response.json();
+
+        if (data.success) {
+          // Format data dari API agar cocok dengan fungsi tampilkanPesanan
+          const p = data.pesanan;
+          const pesananFormatted = {
+            nomor:      p.nomor_pesanan,
+            tanggal:    p.created_at,
+            kurir:      p.kurir,
+            pembayaran: p.metode_bayar,
+            total:      p.total,
+            status:     p.status,
+            penerima: {
+              nama:     p.nama_penerima,
+              telepon:  p.telepon,
+              alamat:   p.alamat,
+              kota:     p.kota,
+              provinsi: p.provinsi,
+            },
+            items: p.items.map(i => ({
+              name:  i.nama_produk,
+              price: i.harga,
+              qty:   i.qty,
+              image: i.image,
+            })),
+          };
+          tampilkanPesanan(pesananFormatted);
+        } else {
+          errorEl.textContent = `Nomor pesanan "${input}" tidak ditemukan.`;
+          errorEl.classList.remove('hidden');
+        }
+
+      } catch (err) {
+        // Fallback ke localStorage jika backend tidak jalan
+        const orders = JSON.parse(localStorage.getItem('ecostore_orders') || '[]');
+        const found  = orders.find(o => o.nomor.toUpperCase() === input);
+        if (found) {
+          tampilkanPesanan(found);
+        } else {
+          errorEl.textContent = 'Tidak dapat terhubung ke server. Pastikan backend berjalan.';
+          errorEl.classList.remove('hidden');
+        }
+      } finally {
+        btnLacak.textContent = 'Lacak';
+        btnLacak.disabled    = false;
       }
-
-      tampilkanPesanan(found);
     }
 
     // Hapus satu pesanan dari riwayat
