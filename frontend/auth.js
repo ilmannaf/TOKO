@@ -1,74 +1,66 @@
-// JS/auth.js
-// File ini dipanggil di semua halaman untuk:
-// 1. Cek apakah user sudah login
-// 2. Tampilkan nama user di navbar
-// 3. Fungsi logout
+// routes/auth.js
+const express  = require('express');
+const bcrypt   = require('bcryptjs');
+const jwt      = require('jsonwebtoken');
+const db       = require('../database/database');
+const router   = express.Router();
 
-// ─────────────────────────────────────────────
-// CEK STATUS LOGIN
-// ─────────────────────────────────────────────
-function getUser() {
-  const user = localStorage.getItem('user');
-  return user ? JSON.parse(user) : null;
-}
-
-function getToken() {
-  return localStorage.getItem('token') || null;
-}
-
-function isLoggedIn() {
-  return !!getToken() && !!getUser();
-}
-
-// ─────────────────────────────────────────────
-// UPDATE NAVBAR — tampilkan nama user / tombol login
-// Panggil fungsi ini di setiap halaman
-// ─────────────────────────────────────────────
-function updateNavbar() {
-  const navAuth = document.getElementById('nav-auth');
-  if (!navAuth) return;
-
-  if (isLoggedIn()) {
-    const user = getUser();
-    navAuth.innerHTML = `
-      <div class="flex items-center gap-3">
-        <span class="text-sm font-medium text-gray-700">
-          👋 Halo, <span class="text-indigo-600 font-semibold">${user.nama}</span>
-        </span>
-        <button onclick="logout()"
-          class="text-sm bg-red-50 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-100 transition-colors font-medium">
-          Keluar
-        </button>
-      </div>
-    `;
-  } else {
-    navAuth.innerHTML = `
-      <a href="login.html"
-        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm font-medium">
-        Login
-      </a>
-    `;
+// ── REGISTER ──────────────────────────────
+router.post('/register', async (req, res) => {
+  const { nama, email, password } = req.body;
+  if (!nama || !email || !password)
+    return res.status(400).json({ success: false, message: 'Semua kolom wajib diisi.' });
+  if (password.length < 6)
+    return res.status(400).json({ success: false, message: 'Password minimal 6 karakter.' });
+  try {
+    const [existing] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
+    if (existing.length > 0)
+      return res.status(409).json({ success: false, message: 'Email sudah terdaftar.' });
+    const hashed = await bcrypt.hash(password, 10);
+    const [result] = await db.query(
+      'INSERT INTO users (nama, email, password) VALUES (?, ?, ?)', [nama, email, hashed]
+    );
+    const token = jwt.sign({ id: result.insertId, email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+    res.status(201).json({ success: true, message: 'Registrasi berhasil!', token, user: { id: result.insertId, nama, email } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
   }
-}
+});
 
-// ─────────────────────────────────────────────
-// LOGOUT
-// ─────────────────────────────────────────────
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  window.location.href = 'index.html';
-}
-
-// ─────────────────────────────────────────────
-// REDIRECT JIKA SUDAH LOGIN
-// Panggil di halaman login & register
-// ─────────────────────────────────────────────
-function redirectIfLoggedIn() {
-  if (isLoggedIn()) {
-    window.location.href = 'index.html';
+// ── LOGIN ─────────────────────────────────
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return res.status(400).json({ success: false, message: 'Email dan password wajib diisi.' });
+  try {
+    const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (users.length === 0)
+      return res.status(401).json({ success: false, message: 'Email atau password salah.' });
+    const user = users[0];
+    const match = await bcrypt.compare(password, user.password);
+    if (!match)
+      return res.status(401).json({ success: false, message: 'Email atau password salah.' });
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+    res.json({ success: true, message: 'Login berhasil!', token, user: { id: user.id, nama: user.nama, email: user.email } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
   }
-}
+});
 
-// Jalankan updateNavbar otomatis saat halaman dimuat
-document.addEventListener('DOMContentLoaded', updateNavbar);
+// ── CEK TOKEN ─────────────────────────────
+router.get('/me', async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.status(401).json({ success: false, message: 'Token tidak ditemukan.' });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const [users] = await db.query('SELECT id, nama, email, created_at FROM users WHERE id = ?', [decoded.id]);
+    if (users.length === 0) return res.status(404).json({ success: false, message: 'User tidak ditemukan.' });
+    res.json({ success: true, user: users[0] });
+  } catch (err) {
+    res.status(401).json({ success: false, message: 'Token tidak valid.' });
+  }
+});
+
+module.exports = router;
