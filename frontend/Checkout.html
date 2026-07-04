@@ -186,40 +186,43 @@
           <div class="space-y-3 hidden" id="shipping-options"></div>
         </div>
 
-        <!-- Metode Pembayaran -->
-        <div class="bg-white rounded-2xl shadow-sm p-6">
-          <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
-            <span class="text-indigo-600">💳</span> Metode Pembayaran
-          </h2>
-          <div class="space-y-3">
-            <label
-              class="flex items-center gap-3 p-4 border-2 border-indigo-500 bg-indigo-50 rounded-xl cursor-pointer">
-              <input type="radio" name="pembayaran" value="transfer" checked class="accent-indigo-600">
-              <div>
-                <p class="font-semibold text-gray-800">Transfer Bank</p>
-                <p class="text-xs text-gray-500">BCA, Mandiri, BNI, BRI</p>
-              </div>
-            </label>
-            <label
-              class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-indigo-300 transition-colors">
-              <input type="radio" name="pembayaran" value="cod" class="accent-indigo-600">
-              <div>
-                <p class="font-semibold text-gray-800">COD (Bayar di Tempat)</p>
-                <p class="text-xs text-gray-500">Bayar saat paket tiba</p>
-              </div>
-            </label>
-            <label
-              class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-indigo-300 transition-colors">
-              <input type="radio" name="pembayaran" value="ewallet" class="accent-indigo-600">
-              <div>
-                <p class="font-semibold text-gray-800">E-Wallet</p>
-                <p class="text-xs text-gray-500">GoPay, OVO, Dana, ShopeePay</p>
-              </div>
-            </label>
-          </div>
-        </div>
-
+<!-- Metode Pembayaran -->
+<div class="bg-white rounded-2xl shadow-sm p-6">
+  <h2 class="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
+    <span class="text-indigo-600">💳</span> Metode Pembayaran
+  </h2>
+  <div class="space-y-3">
+    <label class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer
+                   has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50
+                   hover:border-indigo-300 transition-colors">
+      <input type="radio" name="pembayaran" value="transfer" checked class="accent-indigo-600">
+      <div>
+        <p class="font-semibold text-gray-800">Transfer Bank</p>
+        <p class="text-xs text-gray-500">BCA, Mandiri, BNI, BRI</p>
       </div>
+    </label>
+
+    <label class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer
+                   has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50
+                   hover:border-indigo-300 transition-colors">
+      <input type="radio" name="pembayaran" value="cod" class="accent-indigo-600">
+      <div>
+        <p class="font-semibold text-gray-800">COD (Bayar di Tempat)</p>
+        <p class="text-xs text-gray-500">Bayar saat paket tiba</p>
+      </div>
+    </label>
+
+    <label class="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer
+                   has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50
+                   hover:border-indigo-300 transition-colors">
+      <input type="radio" name="pembayaran" value="ewallet" class="accent-indigo-600">
+      <div>
+        <p class="font-semibold text-gray-800">E-Wallet</p>
+        <p class="text-xs text-gray-500">GoPay, OVO, Dana, ShopeePay</p>
+      </div>
+    </label>
+  </div>
+</div>
 
       <!-- Kanan: Ringkasan -->
       <div>
