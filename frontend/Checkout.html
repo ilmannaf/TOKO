@@ -513,6 +513,34 @@
         if (data.success) {
           nomorPesananBaru = data.nomor_pesanan;
 
+          // ==========================================
+          // LOGIKA ECO-POINTS (TAMBAHAN BARU)
+          // ==========================================
+          let totalEcoPointsGained = 0;
+          let totalCarbonSaved = 0;
+          
+          cart.forEach(item => {
+             totalEcoPointsGained += (item.ecoPoints || 0) * item.qty;
+             totalCarbonSaved += (item.carbonSaved || 0) * item.qty;
+          });
+
+          // Ambil data pohon digital saat ini
+          let ecoData = JSON.parse(localStorage.getItem("ecoData"));
+          if (ecoData) {
+             ecoData.points += totalEcoPointsGained;
+             ecoData.carbon += totalCarbonSaved;
+             ecoData.xp += totalEcoPointsGained;
+
+             // Logika Level Up
+             while (ecoData.xp >= ecoData.nextLevelXp) {
+                 ecoData.level += 1;
+                 ecoData.xp -= ecoData.nextLevelXp;
+                 ecoData.nextLevelXp = ecoData.level * 500;
+             }
+             localStorage.setItem("ecoData", JSON.stringify(ecoData));
+          }
+          // ==========================================
+
           // Kosongkan keranjang
           localStorage.removeItem('ecostore_cart');
 
