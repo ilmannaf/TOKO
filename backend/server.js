@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const orderRoutes = require('./routes/orders');
 const authRoutes = require('./routes/auth');
+const contactRoutes = require('./routes/contact');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 // ─── Routes ──────────────────────────────
 app.use('/api/orders', orderRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Route test
 app.get('/', (req, res) => {

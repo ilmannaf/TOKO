@@ -22,7 +22,7 @@
           <li><a href="index.html" class="text-gray-700 hover:text-indigo-600">Home</a></li>
           <li><a href="toko.html" class="text-gray-700 hover:text-indigo-600">Produk</a></li>
           <li><a href="contact.html" class="text-gray-700 hover:text-indigo-600">Kontak</a></li>
-          <li><a href="tracking.html" class="text-gray-700 hover:text-indigo-600">Lacak Pesanan</a></li>
+          <li><a href="Tracking.html" class="text-gray-700 hover:text-indigo-600">Lacak Pesanan</a></li>
         </ul>
         <!-- Slot nama user / tombol login -->
         <div id="nav-auth"></div>
@@ -76,76 +76,8 @@
     </div>
   </div>
 
+  <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
-  <script>
-    // Jika sudah login, langsung redirect
-    redirectIfLoggedIn();
-
-    // Toggle show/hide password
-    function togglePassword(inputId, btn) {
-      const input = document.getElementById(inputId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        btn.textContent = '🙈';
-      } else {
-        input.type = 'password';
-        btn.textContent = '👁';
-      }
-    }
-
-    async function handleLogin() {
-      const email    = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const errorMsg = document.getElementById('error-msg');
-      const btn      = document.getElementById('btn-login');
-
-      // Reset error
-      errorMsg.classList.add('hidden');
-
-      // Validasi
-      if (!email || !password) {
-        errorMsg.textContent = 'Email dan password wajib diisi.';
-        errorMsg.classList.remove('hidden');
-        return;
-      }
-
-      // Loading state
-      btn.textContent = 'Memproses...';
-      btn.disabled = true;
-
-      try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          // Simpan token & data user ke localStorage
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
-          // Redirect ke index
-          window.location.href = 'index.html';
-        } else {
-          errorMsg.textContent = data.message || 'Login gagal.';
-          errorMsg.classList.remove('hidden');
-        }
-
-      } catch (err) {
-        errorMsg.textContent = 'Tidak dapat terhubung ke server. Pastikan backend berjalan.';
-        errorMsg.classList.remove('hidden');
-      } finally {
-        btn.textContent = 'Masuk';
-        btn.disabled = false;
-      }
-    }
-
-    // Tekan Enter untuk login
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') handleLogin();
-    });
-  </script>
+  <script src="js/login.js"></script>
 </body>
 </html>

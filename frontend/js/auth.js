@@ -1,8 +1,5 @@
 // frontend/js/auth.js
 
-// API Base URL
-const API_URL = 'http://localhost:3000/api/auth';
-
 // Mengambil token dari localStorage
 function getToken() {
   return localStorage.getItem('token');
