@@ -201,6 +201,8 @@ JWT_EXPIRES_IN=7d
 
 ## Recent Changes (2026-07-11)
 - ✅ Added wishlist feature (table, API, UI)
+- ✅ Wishlist tab in user profile page
+- ✅ Wishlist button with emoji toggle (🤍/❤️)
 - ✅ Added image upload for products (multer)
 - ✅ Added user profile page with order history
 - ✅ Added admin dashboard with product/order/contact management
@@ -227,4 +229,4 @@ JWT_EXPIRES_IN=7d
 - Order tracking uses simulated timeline based on order creation time
 
 ---
-Last updated: 2026-07-11
+Last updated: 2026-07-11 12:36
