@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.disabled = true;
 
         try {
-            const res = await fetch(`${BASE_URL}/api/contact`, {
+            const res = await fetch(`${API_BASE_URL}/api/contact`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, message }),

@@ -105,152 +105,39 @@
           </p>
         </header>
 
-        <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
-
-          <!-- Kaos Basic -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600" alt="Kaos" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Kaos Basic</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 120.000</p>
-            </div>
-            <button onclick="addToCart(1, 'Kaos Basic', 120000, 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
+        <div class="mb-8 flex flex-wrap gap-3 items-center justify-between">
+          <div class="flex flex-wrap gap-2">
+            <button class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                    data-category="all" onclick="filterByCategory('all')">
+              Semua
+            </button>
+            <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 border border-gray-300 hover:border-indigo-600 transition-colors"
+                    data-category="Baju" onclick="filterByCategory('Baju')">
+              Baju
+            </button>
+            <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 border border-gray-300 hover:border-indigo-600 transition-colors"
+                    data-category="Sepatu" onclick="filterByCategory('Sepatu')">
+              Sepatu
+            </button>
+            <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 border border-gray-300 hover:border-indigo-600 transition-colors"
+                    data-category="Aksesoris" onclick="filterByCategory('Aksesoris')">
+              Aksesoris
+            </button>
           </div>
-
-          <!-- Kemeja Casual -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1489987707023-af11241ce70f?auto=format&fit=crop&q=80&w=600" alt="Kemeja" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Kemeja Casual</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 250.000</p>
-            </div>
-            <button onclick="addToCart(2, 'Kemeja Casual', 250000, 'https://images.unsplash.com/photo-1489987707023-af11241ce70f?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
+          <div class="relative">
+            <input type="text" id="search-input" placeholder="Cari produk..."
+                   class="pl-4 pr-10 py-2 rounded-full border border-gray-300 text-sm focus:outline-none focus:border-indigo-600 w-48 md:w-64"
+                   onkeyup="if(event.key === 'Enter') searchProducts()">
+            <button onclick="searchProducts()"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
           </div>
+        </div>
 
-          <!-- Celana Denim -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=600" alt="Denim" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Celana Denim</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 300.000</p>
-            </div>
-            <button onclick="addToCart(3, 'Celana Denim', 300000, 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Sepatu Sneakers -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=600" alt="Sneakers" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Sepatu Sneakers</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 450.000</p>
-            </div>
-            <button onclick="addToCart(4, 'Sepatu Sneakers', 450000, 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Jaket Hoodie -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?auto=format&fit=crop&q=80&w=600" alt="Hoodie" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Jaket Hoodie</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 320.000</p>
-            </div>
-            <button onclick="addToCart(5, 'Jaket Hoodie', 320000, 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Topi Baseball -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=600" alt="Topi" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Topi Baseball</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 85.000</p>
-            </div>
-            <button onclick="addToCart(6, 'Topi Baseball', 85000, 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Tas Ransel -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=600" alt="Tas Ransel" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Tas Ransel</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 275.000</p>
-            </div>
-            <button onclick="addToCart(7, 'Tas Ransel', 275000, 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Kacamata Sunglasses -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=600" alt="Kacamata" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Kacamata Sunglasses</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 150.000</p>
-            </div>
-            <button onclick="addToCart(8, 'Kacamata Sunglasses', 150000, 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Jam Tangan -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600" alt="Jam Tangan" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Jam Tangan</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 580.000</p>
-            </div>
-            <button onclick="addToCart(9, 'Jam Tangan', 580000, 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Kaos Kaki -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&q=80&w=600" alt="Kaos Kaki" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Kaos Kaki</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 35.000</p>
-            </div>
-            <button onclick="addToCart(10, 'Kaos Kaki', 35000, 'https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Celana Jogger -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&q=80&w=600" alt="Celana Jogger" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Celana Jogger</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 195.000</p>
-            </div>
-            <button onclick="addToCart(11, 'Celana Jogger', 195000, 'https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
-          <!-- Sandal Casual -->
-          <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-            <div class="w-full overflow-hidden rounded-xl bg-gray-200">
-              <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?auto=format&fit=crop&q=80&w=600" alt="Sandal" class="h-64 w-full object-cover transition duration-500 group-hover:scale-110" />
-            </div>
-            <div class="mt-4 flex justify-between items-start">
-              <h3 class="text-lg font-semibold text-gray-800">Sandal Casual</h3>
-              <p class="text-sm font-medium text-indigo-600">Rp 110.000</p>
-            </div>
-            <button onclick="addToCart(12, 'Sandal Casual', 110000, 'https://images.unsplash.com/photo-1603487742131-4160ec999306?auto=format&fit=crop&q=80&w=100')" class="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition-colors">Tambah ke Keranjang</button>
-          </div>
-
+        <div id="product-list" class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
         </div>
       </div>
     </section>
@@ -273,12 +160,12 @@
               <li><a href="contact.html" class="hover:text-white">Kontak</a></li>
             </ul>
           </div>
-          <div>
+           <div>
             <h3 class="font-semibold mb-3">Bantuan</h3>
             <ul class="space-y-2 text-indigo-100">
-              <li><a href="#" class="hover:text-white">FAQ</a></li>
-              <li><a href="#" class="hover:text-white">Syarat & Ketentuan</a></li>
-              <li><a href="#" class="hover:text-white">Privasi</a></li>
+              <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
+              <li><a href="syarat.html" class="hover:text-white">Syarat & Ketentuan</a></li>
+              <li><a href="privasi.html" class="hover:text-white">Privasi</a></li>
             </ul>
           </div>
           <div>
@@ -301,7 +188,10 @@
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-5 py-3 rounded-xl shadow-lg z-50 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none"></div>
 
     <!-- Script -->
+    <script src="js/config.js"></script>
     <script src="js/toko.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/wishlist.js"></script>
     <script src="js/auth.js"></script>
   </body>
 </html>

@@ -91,7 +91,7 @@ router.get('/me', async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey123');
-    const [users] = await db.query('SELECT id, nama, email, pohon_level, pohon_xp, created_at FROM users WHERE id = ?', [decoded.id]);
+    const [users] = await db.query('SELECT id, nama, email, telepon, alamat, kota, provinsi, pohon_level, pohon_xp, created_at FROM users WHERE id = ?', [decoded.id]);
 
     if (users.length === 0)
       return res.status(404).json({ success: false, message: 'User tidak ditemukan.' });
@@ -106,6 +106,29 @@ router.get('/me', async (req, res) => {
     }
     console.error(err);
     res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
+  }
+});
+
+// ─── UPDATE PROFILE ───────────────────
+router.put('/update', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) return res.status(401).json({ success: false, message: 'Token tidak ditemukan.' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey123');
+    const { nama, telepon, alamat, kota, provinsi } = req.body;
+
+    await db.query(
+      'UPDATE users SET nama = ?, telepon = ?, alamat = ?, kota = ?, provinsi = ? WHERE id = ?',
+      [nama, telepon || null, alamat || null, kota || null, provinsi || null, decoded.id]
+    );
+
+    res.json({ success: true, message: 'Profil berhasil diupdate.' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
   }
 });
 

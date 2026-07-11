@@ -55,7 +55,9 @@ function updateNavbar() {
     if (desktopAuthContainer) {
       desktopAuthContainer.innerHTML = `
         <div class="flex items-center gap-4">
-          <span class="text-sm font-medium text-gray-700">Halo, <strong class="text-indigo-600">${user.nama}</strong></span>
+          <a href="profile.html" class="text-sm font-medium text-gray-700 hover:text-indigo-600">
+            Halo, <strong class="text-indigo-600">${user.nama}</strong>
+          </a>
           <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm font-semibold transition">
             Logout
           </button>

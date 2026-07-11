@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syarat & Ketentuan - EcoStore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+</head>
+<body class="bg-gray-50">
+  
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold text-indigo-600">ECOSTORE</a>
+      <div class="flex gap-4 items-center">
+        <button onclick="toggleMenu()" class="md:hidden p-2 text-gray-600">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        <a href="login.html" class="hidden md:block text-gray-700 hover:text-indigo-600 px-4 py-2">Login</a>
+        <a href="keranjang.html" class="relative p-2 text-gray-700 hover:text-indigo-600">
+          <i class="fas fa-shopping-cart text-xl"></i>
+          <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </a>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+      <a href="index.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Home</a>
+      <a href="toko.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Produk</a>
+      <a href="contact.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Kontak</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-16">
+    <h1 class="text-4xl font-bold text-gray-900 text-center mb-8">Syarat & Ketentuan</h1>
+    <p class="text-center text-gray-600 mb-12">Terakhir diperbarui: 11 Juli 2026</p>
+
+    <div class="bg-white rounded-xl shadow-sm p-8 space-y-8">
+      
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">1. Pendahuluan</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Selamat datang di EcoStore. Dengan mengakses dan menggunakan layanan kami, Anda setuju untuk terikat dengan syarat dan ketentuan berikut. Jika Anda tidak setuju dengan bagian mana pun dari syarat ini, mohon untuk tidak menggunakan layanan kami.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">2. Akun Pengguna</h2>
+        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4">
+          <li>Anda bertanggung jawab untuk menjaga kerahasiaan informasi akun Anda</li>
+          <li>Anda harus berusia minimal 17 tahun untuk membuat akun</li>
+          <li>Informasi yang Anda berikan harus akurat dan terkini</li>
+          <li>Satu akun hanya boleh digunakan oleh satu orang</li>
+          <li>Kami berhak menangguhkan atau menutup akun yang melanggar ketentuan</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">3. Pemesanan & Pembayaran</h2>
+        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4">
+          <li>Semua harga yang tercantum sudah termasuk pajak</li>
+          <li>Kami berhak menolak atau membatalkan pesanan dalam kondisi tertentu</li>
+          <li>Pembayaran harus diselesaikan sesuai metode yang dipilih</li>
+          <li>Untuk COD, pembayaran dilakukan saat barang diterima</li>
+          <li>Pesanan yang tidak dibayar dalam 24 jam akan otomatis dibatalkan</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">4. Pengiriman</h2>
+        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4">
+          <li>Estimasi waktu pengiriman adalah perkiraan dan tidak mengikat</li>
+          <li>Kami tidak bertanggung jawab atas keterlambatan yang disebabkan kurir</li>
+          <li>Biaya pengiriman akan ditanggung oleh pembeli</li>
+          <li>Pastikan alamat pengiriman yang Anda berikan benar dan lengkap</li>
+          <li>Pengiriman hanya tersedia untuk wilayah Indonesia</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">5. Pengembalian & Penukaran</h2>
+        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4">
+          <li>Pengembalian dapat dilakukan dalam 7 hari sejak barang diterima</li>
+          <li>Produk harus dalam kondisi asli dengan kemasan utuh</li>
+          <li>Produk yang sudah dipakai tidak dapat dikembalikan</li>
+          <li>Biaya pengembalian ditanggung oleh pembeli kecuali produk cacat</li>
+          <li>Proses refund akan diproses dalam 7-14 hari kerja</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">6. Hak Kekayaan Intelektual</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Seluruh konten di situs ini, termasuk teks, gambar, logo, dan desain adalah milik EcoStore dan dilindungi oleh hukum hak cipta. Dilarang menggunakan konten kami tanpa izin tertulis.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">7. Batasan Tanggung Jawab</h2>
+        <p class="text-gray-600 leading-relaxed">
+          EcoStore tidak bertanggung jawab atas kerugian tidak langsung, insidental, atau konsekuensial yang timbul dari penggunaan layanan kami. Tanggung jawab kami terbatas pada nilai produk yang dibeli.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">8. Perubahan Ketentuan</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Kami berhak mengubah syarat dan ketentuan ini sewaktu-waktu. Perubahan akan berlaku segera setelah dipublikasikan di situs. Dengan terus menggunakan layanan kami setelah perubahan, Anda dianggap menyetujui ketentuan yang baru.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">9. Hukum yang Berlaku</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Syarat dan ketentuan ini diatur oleh hukum Republik Indonesia. Setiap perselisihan akan diselesaikan di Pengadilan Negeri Semarang.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">10. Kontak</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Jika Anda memiliki pertanyaan tentang syarat dan ketentuan ini, silakan hubungi kami di:
+          <br><br>
+          Email: support@ecostore.com<br>
+          WhatsApp: 0812-3456-7890<br>
+          Alamat: Jl. Pemuda No. 123, Semarang, Jawa Tengah 50132
+        </p>
+      </section>
+
+    </div>
+
+    <div class="mt-12 text-center">
+      <p class="text-gray-600 mb-4">Punya pertanyaan?</p>
+      <a href="contact.html" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
+        Hubungi Kami
+      </a>
+    </div>
+  </main>
+
+  <footer class="bg-indigo-600 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-12">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h2 class="text-xl font-bold">ECOSTORE</h2>
+          <p class="mt-3 text-indigo-100">
+            Toko fashion online terpercaya dengan fokus pada produk ramah lingkungan dan berkelanjutan.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-semibold mb-3">Menu</h3>
+          <ul class="space-y-2 text-indigo-100">
+            <li><a href="index.html" class="hover:text-white">Home</a></li>
+            <li><a href="toko.html" class="hover:text-white">Produk</a></li>
+            <li><a href="keranjang.html" class="hover:text-white">Keranjang</a></li>
+            <li><a href="contact.html" class="hover:text-white">Kontak</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-semibold mb-3">Bantuan</h3>
+          <ul class="space-y-2 text-indigo-100">
+            <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
+            <li><a href="syarat.html" class="hover:text-white">Syarat & Ketentuan</a></li>
+            <li><a href="privasi.html" class="hover:text-white">Privasi</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-semibold mb-3">Follow Us</h3>
+          <div class="flex gap-4 text-indigo-100">
+            <a href="#" class="hover:text-white">Instagram</a>
+            <a href="#" class="hover:text-white">TikTok</a>
+            <a href="#" class="hover:text-white">YouTube</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-10 border-t border-indigo-400 pt-6 text-center text-indigo-200 text-sm">
+        © 2026 ECOSTORE. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
