@@ -62,19 +62,31 @@ async function removeFromWishlist(productId) {
   }
 }
 
-// Update button UI
+// Update button UI - pakai emoji
 function updateWishlistButton(productId, inWishlist) {
-  const btn = document.getElementById(`wishlist-btn-${productId}`);
+  const btn = document.getElementById(`wishlist-icon-${productId}`);
   if (btn) {
     if (inWishlist) {
-      btn.innerHTML = '<i class="fas fa-heart"></i>';
-      btn.classList.add('text-red-600');
-      btn.classList.remove('text-gray-300', 'hover:text-red-600');
+      btn.textContent = '❤️';
     } else {
-      btn.innerHTML = '<i class="far fa-heart"></i>';
-      btn.classList.remove('text-red-600');
-      btn.classList.add('text-gray-300', 'hover:text-red-600');
+      btn.textContent = '🤍';
     }
+  }
+}
+
+// Toggle wishlist (untuk onclick button)
+async function toggleWishlist(productId) {
+  if (!isLoggedIn()) {
+    alert('Login dulu ya untuk simpan ke wishlist!');
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  const inWishlist = await isProductInWishlist(productId);
+  if (inWishlist) {
+    await removeFromWishlist(productId);
+  } else {
+    await addToWishlist(productId);
   }
 }
 
@@ -83,8 +95,9 @@ function renderWishlistButton(productId, inWishlist) {
   return `
     <button id="wishlist-btn-${productId}" 
             onclick="${inWishlist ? `removeFromWishlist(${productId})` : `addToWishlist(${productId})`}"
-            class="absolute top-3 right-3 p-2 rounded-full bg-white/90 shadow-sm hover:scale-110 transition-transform z-10 ${inWishlist ? 'text-red-600' : 'text-gray-300 hover:text-red-600'}">
-      <i class="fas ${inWishlist ? 'fa-heart' : 'far fa-heart'}"></i>
+            class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/80 shadow-sm hover:scale-110 transition-transform z-10 text-2xl flex items-center justify-center hover:shadow-md"
+            title="${inWishlist ? 'Hapus dari Wishlist' : 'Simpan ke Wishlist'}">
+      <span>${inWishlist ? '❤️' : '🤍'}</span>
     </button>
   `;
 }

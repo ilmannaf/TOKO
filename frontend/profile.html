@@ -43,6 +43,9 @@
             <button onclick="showTab('orders')" id="tab-orders" class="w-full text-left px-4 py-3 rounded-lg font-medium bg-indigo-50 text-indigo-600 mb-2">
               <i class="fas fa-shopping-bag mr-2"></i> Pesanan Saya
             </button>
+            <button onclick="showTab('wishlist')" id="tab-wishlist" class="w-full text-left px-4 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-50 mb-2">
+              <i class="fas fa-heart mr-2"></i> Wishlist
+            </button>
             <button onclick="showTab('profile')" id="tab-profile" class="w-full text-left px-4 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-50 mb-2">
               <i class="fas fa-user-edit mr-2"></i> Edit Profil
             </button>
@@ -122,6 +125,14 @@
                 <p class="text-2xl font-bold text-blue-600" id="eco-carbon-saved">0 kg</p>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Tab Wishlist -->
+        <div id="content-wishlist" class="bg-white rounded-xl shadow-sm p-6 hidden">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6">Wishlist Saya</h3>
+          <div id="profile-wishlist-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p class="text-center text-gray-500 py-8">Memuat wishlist...</p>
           </div>
         </div>
 

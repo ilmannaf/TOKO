@@ -24,8 +24,8 @@ async function renderProducts() {
 
   container.innerHTML = products.map(product => `
     <div class="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300">
-      <button onclick="toggleWishlist(${product.id})" class="absolute top-3 right-3 p-2 rounded-full bg-white/90 shadow-sm hover:scale-110 transition-transform z-10 text-gray-300 hover:text-red-600">
-        <i class="far fa-heart" id="wishlist-icon-${product.id}"></i>
+      <button onclick="toggleWishlist(${product.id})" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/80 shadow-sm hover:scale-110 transition-transform z-10 text-2xl flex items-center justify-center hover:shadow-md" title="Simpan ke Wishlist">
+        <span id="wishlist-icon-${product.id}">🤍</span>
       </button>
       <div class="w-full overflow-hidden rounded-xl bg-gray-200">
         <img src="${product.image || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600'}" 

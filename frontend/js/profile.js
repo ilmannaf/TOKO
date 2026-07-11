@@ -145,6 +145,63 @@ function showTab(tab) {
   const tabEl = document.getElementById(`tab-${tab}`);
   tabEl.classList.add('bg-indigo-50', 'text-indigo-600');
   tabEl.classList.remove('text-gray-600', 'hover:bg-gray-50');
+  
+  // Load wishlist when tab clicked
+  if (tab === 'wishlist') {
+    renderProfileWishlist();
+  }
+}
+
+// Render wishlist in profile page
+async function renderProfileWishlist() {
+  const container = document.getElementById('profile-wishlist-container');
+  try {
+    const response = await fetch(`${API_WISHLIST}`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    const data = await response.json();
+
+    if (!data.success || data.wishlist.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-2 text-center py-12">
+          <i class="far fa-heart text-5xl text-gray-300 mb-3"></i>
+          <p class="text-gray-500">Wishlist kosong</p>
+          <a href="toko.html" class="inline-block mt-4 text-indigo-600 hover:underline">Jelajahi Produk</a>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = data.wishlist.map(product => `
+      <div class="border rounded-lg p-3 flex gap-3 hover:shadow-sm transition-shadow">
+        <img src="${product.image}" class="w-20 h-20 object-cover rounded-lg" alt="${product.nama}">
+        <div class="flex-1">
+          <h4 class="font-semibold text-gray-900 text-sm">${product.nama}</h4>
+          <p class="text-indigo-600 font-bold text-sm">${formatRupiah(product.harga)}</p>
+          <div class="mt-2 flex gap-2">
+            <a href="toko.html" class="text-xs text-indigo-600 hover:underline">Lihat Produk</a>
+            <button onclick="removeFromWishlistProfile(${product.id})" class="text-xs text-red-600 hover:underline">Hapus</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch (error) {
+    container.innerHTML = '<p class="text-red-500 text-center">Gagal memuat wishlist</p>';
+  }
+}
+
+async function removeFromWishlistProfile(productId) {
+  try {
+    const response = await fetch(`${API_WISHLIST}/remove/${productId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    if (response.ok) {
+      renderProfileWishlist();
+    }
+  } catch (error) {
+    alert('Gagal menghapus dari wishlist');
+  }
 }
 
 // Handle form submit
