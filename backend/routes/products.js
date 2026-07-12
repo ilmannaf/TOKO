@@ -2,11 +2,14 @@ const express = require('express');
 const db = require('../database/database');
 const router = express.Router();
 
-// ─── GET semua produk ────────────────────
+// ─── GET semua produk (with pagination) ───
 router.get('/', async (req, res) => {
-  const { kategori, search } = req.query;
+  const { kategori, search, page = 1, limit = 8 } = req.query;
+  const pageNum = Math.max(1, parseInt(page) || 1);
+  const limitNum = Math.min(50, Math.max(1, parseInt(limit) || 8));
+  const offset = (pageNum - 1) * limitNum;
   try {
-    let query = 'SELECT * FROM products';
+    let whereClause = '';
     let params = [];
     const conditions = [];
 
@@ -20,13 +23,12 @@ router.get('/', async (req, res) => {
     }
 
     if (conditions.length > 0) {
-      query += ' WHERE ' + conditions.join(' AND ');
+      whereClause = ' WHERE ' + conditions.join(' AND ');
     }
 
-    query += ' ORDER BY created_at DESC';
-
-    const [products] = await db.query(query, params);
-    res.json({ success: true, products });
+    const [[{ total }]] = await db.query('SELECT COUNT(*) AS total FROM products' + whereClause, params);
+    const [products] = await db.query('SELECT * FROM products' + whereClause + ' ORDER BY created_at DESC LIMIT ? OFFSET ?', [...params, limitNum, offset]);
+    res.json({ success: true, products, total, page: pageNum, limit: limitNum, totalPages: Math.ceil(total / limitNum) });
   } catch (error) {
     console.error('Error ambil produk:', error);
     res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });

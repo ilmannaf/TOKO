@@ -1,28 +1,35 @@
-async function fetchProducts() {
+var pageState = { page: 1, limit: 8, kategori: '', search: '', totalPages: 1 };
+
+async function fetchProducts(page, kategori, search) {
   try {
-    const response = await fetch(`${API_PRODUCTS}`);
-    const data = await response.json();
-    return data.success ? data.products : [];
+    var url = API_PRODUCTS + '?page=' + (page || 1) + '&limit=' + pageState.limit;
+    if (kategori) url += '&kategori=' + encodeURIComponent(kategori);
+    if (search) url += '&search=' + encodeURIComponent(search);
+    var res = await fetch(url);
+    return await res.json();
   } catch (error) {
     console.error('Error fetching products:', error);
-    return [];
+    return { success: false, products: [], total: 0, totalPages: 1 };
   }
 }
 
 async function renderProducts() {
-  const products = await fetchProducts();
-  renderProductsFromData(products);
+  var data = await fetchProducts(pageState.page, pageState.kategori, pageState.search);
+  if (!data.success) return;
+  pageState.totalPages = data.totalPages || 1;
+  renderProductsFromData(data.products);
+  renderPagination();
 }
 
 function renderProductsFromData(products) {
-  const container = document.getElementById('product-list');
+  var container = document.getElementById('product-list');
   if (!products || products.length === 0) {
     container.innerHTML = '<p style="text-align:center;padding:2rem;font-weight:700;text-transform:uppercase;color:#666;">Belum ada produk tersedia.</p>';
     return;
   }
-  container.innerHTML = products.map(product => {
-    const imgSrc = product.image || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600';
-    const safeName = product.nama.replace(/'/g, "\\'");
+  container.innerHTML = products.map(function(product) {
+    var imgSrc = product.image || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600';
+    var safeName = product.nama.replace(/'/g, "\\'");
     return '<div class="nb-product-card" style="position:relative;">'
       + '<button onclick="toggleWishlist(' + product.id + ')" style="position:absolute;top:8px;right:8px;z-index:10;border:4px solid #000;background:#fff;padding:4px 8px;font-size:16px;line-height:1;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-weight:900;" title="Simpan ke Wishlist">'
         + '<span id="wishlist-icon-' + product.id + '">🤍</span>'
@@ -47,12 +54,43 @@ function renderProductsFromData(products) {
   }).join('');
 }
 
+function renderPagination() {
+  var container = document.getElementById('pagination');
+  if (!container) return;
+  if (pageState.totalPages <= 1) { container.innerHTML = ''; return; }
+  var html = '<div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:2rem;">';
+  if (pageState.page > 1) {
+    html += '<button onclick="goToPage(' + (pageState.page - 1) + ')" class="nb-btn nb-btn-white" style="padding:8px 16px;font-weight:900;cursor:pointer;">◀ SEBELUMNYA</button>';
+  }
+  for (var i = 1; i <= pageState.totalPages; i++) {
+    if (i === pageState.page) {
+      html += '<span class="nb-btn nb-btn-black" style="padding:8px 16px;font-weight:900;min-width:44px;text-align:center;">' + i + '</span>';
+    } else {
+      html += '<button onclick="goToPage(' + i + ')" class="nb-btn nb-btn-white" style="padding:8px 16px;font-weight:900;cursor:pointer;min-width:44px;text-align:center;">' + i + '</button>';
+    }
+  }
+  if (pageState.page < pageState.totalPages) {
+    html += '<button onclick="goToPage(' + (pageState.page + 1) + ')" class="nb-btn nb-btn-white" style="padding:8px 16px;font-weight:900;cursor:pointer;">BERIKUTNYA ▶</button>';
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function goToPage(page) {
+  if (page < 1 || page > pageState.totalPages) return;
+  pageState.page = page;
+  renderProducts();
+  window.scrollTo({ top: document.getElementById('koleksi').offsetTop - 100, behavior: 'smooth' });
+}
+
 async function renderProductsByCategory(kategori) {
-  const products = await fetchProducts();
-  const filtered = kategori
-    ? products.filter(p => p.kategori === kategori)
-    : products;
-  renderProductsFromData(filtered);
+  var data = await fetchProducts(1, kategori, '');
+  pageState.page = 1;
+  pageState.kategori = kategori;
+  pageState.search = '';
+  pageState.totalPages = data.totalPages || 1;
+  renderProductsFromData(data.products);
+  renderPagination();
 }
 
 function formatRupiah(num) {
@@ -60,7 +98,7 @@ function formatRupiah(num) {
 }
 
 function filterByCategory(kategori) {
-  document.querySelectorAll('.category-btn').forEach(btn => {
+  document.querySelectorAll('.category-btn').forEach(function(btn) {
     btn.classList.remove('nb-btn-black');
     btn.classList.add('nb-btn-white');
     if (btn.dataset.category === kategori) {
@@ -69,6 +107,8 @@ function filterByCategory(kategori) {
     }
   });
   if (kategori === 'all') {
+    pageState.kategori = '';
+    pageState.page = 1;
     renderProducts();
   } else {
     renderProductsByCategory(kategori);
@@ -76,26 +116,24 @@ function filterByCategory(kategori) {
 }
 
 async function searchProducts() {
-  const query = document.getElementById('search-input').value.trim();
+  var query = document.getElementById('search-input').value.trim();
+  pageState.search = query;
+  pageState.kategori = '';
+  pageState.page = 1;
   if (!query) {
     renderProducts();
     return;
   }
-  try {
-    const response = await fetch(API_PRODUCTS + '?search=' + encodeURIComponent(query));
-    const data = await response.json();
-    if (data.success) {
-      renderProductsFromData(data.products);
-    }
-  } catch (error) {
-    console.error('Error searching products:', error);
-  }
+  var data = await fetchProducts(1, '', query);
+  pageState.totalPages = data.totalPages || 1;
+  renderProductsFromData(data.products);
+  renderPagination();
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async function() {
   if (document.getElementById('product-list')) {
     await renderProducts();
-    const allBtn = document.querySelector('[data-category="all"]');
+    var allBtn = document.querySelector('[data-category="all"]');
     if (allBtn) {
       allBtn.classList.remove('nb-btn-white');
       allBtn.classList.add('nb-btn-black');
