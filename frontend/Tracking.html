@@ -5,50 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lacak Pesanan — EcoStore</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    body { font-family: "Poppins", sans-serif; }
-    html { scroll-behavior: smooth; }
-    .step-line { transition: height 0.5s ease; }
-  </style>
+  <link rel="stylesheet" href="css/neobrutalism.css">
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-100 min-h-screen">
 
   <!-- Navbar -->
-  <nav class="bg-white shadow sticky top-0 z-40">
+  <nav class="nb-navbar sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <div class="text-xl font-bold text-indigo-600">
-          <a href="index.html">ECOSTORE</a>
+      <div class="flex justify-between items-center h-20">
+        <div class="text-2xl font-black tracking-tight">
+          <a href="index.html">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
         </div>
-        <ul class="hidden md:flex space-x-8 items-center">
-          <li><a href="index.html" class="text-gray-700 hover:text-indigo-600">Home</a></li>
-          <li><a href="toko.html" class="text-gray-700 hover:text-indigo-600">Produk</a></li>
-          <li><a href="keranjang.html" class="text-gray-700 hover:text-indigo-600">Keranjang</a></li>
+        <ul class="hidden md:flex space-x-6 items-center">
+          <li><a href="index.html" class="nb-link text-lg">HOME</a></li>
+          <li><a href="toko.html" class="nb-link text-lg">PRODUK</a></li>
+          <li><a href="keranjang.html" class="nb-link text-lg">KERANJANG</a></li>
         </ul>
         <div id="nav-auth"></div>
       </div>
     </div>
   </nav>
-  <!-- End Navbar -->
 
   <main class="max-w-3xl mx-auto px-4 py-10">
 
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">Lacak Pesanan</h1>
-    <p class="text-gray-500 mb-8">Masukkan nomor pesanan untuk melihat status pengiriman</p>
+    <h1 class="text-4xl font-black uppercase mb-2">📦 Lacak Pesanan</h1>
+    <p class="font-bold uppercase text-sm mb-8">Masukkan nomor pesanan untuk melihat status</p>
 
     <!-- Form Cari -->
-    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="nb-card p-6 mb-6 bg-white">
       <div class="flex gap-3">
-        <input type="text" id="input-nomor" placeholder="Contoh: ECO-123456"
-          class="flex-1 px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm uppercase"
+        <input type="text" id="input-nomor" placeholder="CONTOH: ECO-123456"
+          class="nb-input flex-1 uppercase"
           oninput="this.value = this.value.toUpperCase()">
         <button onclick="lacakPesanan()"
-          class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl hover:bg-indigo-700 font-medium text-sm transition-colors">
-          Lacak
+          class="nb-btn nb-btn-yellow">
+          LACAK
         </button>
       </div>
-      <div id="error-cari" class="hidden mt-3 text-red-500 text-sm"></div>
+      <div id="error-cari" class="hidden mt-3 nb-alert nb-alert-error"></div>
     </div>
 
     <!-- Hasil Tracking -->
@@ -134,9 +128,9 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-indigo-600 text-white mt-16">
-    <div class="max-w-7xl mx-auto px-4 py-8 text-center text-indigo-200 text-sm">
-      © 2026 ECOSTORE. All rights reserved.
+  <footer class="nb-footer mt-16">
+    <div class="max-w-7xl mx-auto px-4 py-8 text-center font-bold uppercase">
+      © 2026 ECOSTORE — ALL RIGHTS RESERVED
     </div>
   </footer>
 

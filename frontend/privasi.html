@@ -5,181 +5,101 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kebijakan Privasi - EcoStore</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/neobrutalism.css">
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100">
   
-  <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold text-indigo-600">ECOSTORE</a>
-      <div class="flex gap-4 items-center">
-        <button onclick="toggleMenu()" class="md:hidden p-2 text-gray-600">
-          <i class="fas fa-bars text-xl"></i>
-        </button>
-        <a href="login.html" class="hidden md:block text-gray-700 hover:text-indigo-600 px-4 py-2">Login</a>
-        <a href="keranjang.html" class="relative p-2 text-gray-700 hover:text-indigo-600">
-          <i class="fas fa-shopping-cart text-xl"></i>
-          <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+  <header class="nb-navbar sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center h-20">
+      <a href="index.html" class="text-2xl font-black tracking-tight">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
+      <div class="flex gap-6 items-center">
+        <a href="login.html" class="nb-btn nb-btn-yellow uppercase font-black">LOGIN</a>
+        <a href="keranjang.html" class="relative text-2xl">
+          🛒
+          <span id="cart-count" class="absolute -top-2 -right-2 nb-badge nb-badge-pink text-xs h-6 w-6 flex items-center justify-center">0</span>
         </a>
       </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-      <a href="index.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Home</a>
-      <a href="toko.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Produk</a>
-      <a href="contact.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Kontak</a>
     </div>
   </header>
 
   <main class="max-w-4xl mx-auto px-4 py-16">
-    <h1 class="text-4xl font-bold text-gray-900 text-center mb-8">Kebijakan Privasi</h1>
-    <p class="text-center text-gray-600 mb-12">Terakhir diperbarui: 11 Juli 2026</p>
+    <h1 class="text-5xl font-black uppercase text-center mb-4">🔒 Kebijakan Privasi</h1>
+    <p class="text-center font-bold uppercase mb-12 tracking-wide">Terakhir diperbarui: 11 Juli 2026</p>
 
-    <div class="bg-white rounded-xl shadow-sm p-8 space-y-8">
+    <div class="nb-card p-8 bg-white space-y-8">
 
       <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">1. Informasi yang Kami Kumpulkan</h2>
-        <p class="text-gray-600 leading-relaxed mb-4">
-          Kami mengumpulkan informasi berikut saat Anda menggunakan layanan EcoStore:
-        </p>
-        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4">
+        <h2 class="text-2xl font-black uppercase mb-4">1. Informasi yang Kami Kumpulkan</h2>
+        <ul class="list-disc list-inside font-bold space-y-2 text-sm ml-4">
           <li>Nama lengkap</li>
           <li>Alamat email</li>
           <li>Nomor telepon</li>
           <li>Alamat pengiriman</li>
           <li>Informasi pembayaran</li>
           <li>Riwayat transaksi</li>
-          <li>Data interaksi dengan situs kami</li>
         </ul>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">2. Penggunaan Informasi</h2>
-        <p class="text-gray-600 leading-relaxed mb-4">
-          Informasi Anda digunakan untuk:
-        </p>
-        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4">
-          <li>Memproses dan mengirimkan pesanan</li>
-          <li>Mengirimkan notifikasi status pesanan</li>
-          <li>Memberikan dukungan pelanggan</li>
-          <li>Meningkatkan layanan dan pengalaman berbelanja</li>
-          <li>Mengirimkan informasi promosi (dengan persetujuan Anda)</li>
-          <li>Mencegah kecurangan dan transaksi ilegal</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">3. Perlindungan Data</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Kami menerapkan langkah-langkah keamanan teknis dan organisasi untuk melindungi data pribadi Anda, termasuk enkripsi data, firewall, dan akses terbatas ke data pribadi. Namun, tidak ada metode transmisi atau penyimpanan elektronik yang 100% aman.
+        <h2 class="text-2xl font-black uppercase mb-4">2. Penggunaan Informasi</h2>
+        <p class="font-bold text-sm leading-relaxed mb-4">
+          Informasi Anda digunakan untuk memproses pesanan, mengirim notifikasi, memberikan dukungan, meningkatkan layanan, dan mencegah kecurangan.
         </p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">4. Penyimpanan Data</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Data pribadi Anda disimpan selama akun Anda aktif atau selama diperlukan untuk menyediakan layanan. Setelah itu, data akan dihapus atau dianonimkan kecuali diperlukan untuk memenuhi kewajiban hukum.
+        <h2 class="text-2xl font-black uppercase mb-4">3. Perlindungan Data</h2>
+        <p class="font-bold text-sm leading-relaxed">
+          Kami menerapkan enkripsi, firewall, dan akses terbatas untuk melindungi data pribadi Anda.
         </p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">5. Cookie</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Kami menggunakan cookie untuk meningkatkan pengalaman berbelanja Anda. Cookie membantu kami mengingat preferensi Anda, menyimpan keranjang belanja, dan menganalisis lalu lintas situs. Anda dapat mengontrol cookie melalui pengaturan browser Anda.
+        <h2 class="text-2xl font-black uppercase mb-4">4. Cookie</h2>
+        <p class="font-bold text-sm leading-relaxed">
+          Cookie digunakan untuk menyimpan keranjang, preferensi, dan analisis. Anda bisa mengontrolnya di pengaturan browser.
         </p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">6. Berbagi Data dengan Pihak Ketiga</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Kami tidak menjual atau menyewakan data pribadi Anda. Kami hanya membagikan data dengan:
+        <h2 class="text-2xl font-black uppercase mb-4">5. Berbagi Data</h2>
+        <p class="font-bold text-sm leading-relaxed">
+          Kami tidak menjual data Anda. Data dibagikan dengan jasa kirim, penyedia pembayaran, dan pihak berwenang (jika diwajibkan).
         </p>
-        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4 mt-4">
-          <li>Jasa pengiriman (untuk mengirimkan pesanan)</li>
-          <li>Penyedia pembayaran (untuk memproses transaksi)</li>
-          <li>Pihak berwenang (jika diwajibkan oleh hukum)</li>
-        </ul>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">7. Hak Anda</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Anda memiliki hak untuk:
-        </p>
-        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4 mt-4">
+        <h2 class="text-2xl font-black uppercase mb-4">6. Hak Anda</h2>
+        <ul class="list-disc list-inside font-bold space-y-2 text-sm ml-4">
           <li>Mengakses data pribadi Anda</li>
-          <li>Memperbaiki data yang tidak akurat</li>
-          <li>Menghapus data pribadi Anda</li>
-          <li>Menarik persetujuan pemrosesan data</li>
-          <li>Membatasi pemrosesan data</li>
-          <li>Membawa data ke penyedia layanan lain</li>
+          <li>Memperbaiki data tidak akurat</li>
+          <li>Menghapus data pribadi</li>
+          <li>Menarik persetujuan</li>
         </ul>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">8. Perubahan Kebijakan Privasi</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Kami dapat memperbarui kebijakan privasi ini sewaktu-waktu. Perubahan signifikan akan diberitahukan melalui email atau notifikasi di situs. Kami mendorong Anda untuk meninjau kebijakan ini secara berkala.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">9. Kontak</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Jika Anda memiliki pertanyaan atau kekhawatiran tentang kebijakan privasi ini, silakan hubungi:
-          <br><br>
+        <h2 class="text-2xl font-black uppercase mb-4">7. Kontak</h2>
+        <p class="font-bold text-sm leading-relaxed">
           Email: privacy@ecostore.com<br>
           WhatsApp: 0812-3456-7890<br>
-          Alamat: Jl. Pemuda No. 123, Semarang, Jawa Tengah 50132
+          Alamat: Jl. Pemuda No. 123, Semarang
         </p>
       </section>
-
     </div>
   </main>
 
-  <footer class="bg-indigo-600 text-white">
+  <footer class="nb-footer">
     <div class="max-w-7xl mx-auto px-4 py-12">
       <div class="grid md:grid-cols-4 gap-8">
-        <div>
-          <h2 class="text-xl font-bold">ECOSTORE</h2>
-          <p class="mt-3 text-indigo-100">
-            Toko fashion online terpercaya dengan fokus pada produk ramah lingkungan dan berkelanjutan.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="font-semibold mb-3">Menu</h3>
-          <ul class="space-y-2 text-indigo-100">
-            <li><a href="index.html" class="hover:text-white">Home</a></li>
-            <li><a href="toko.html" class="hover:text-white">Produk</a></li>
-            <li><a href="keranjang.html" class="hover:text-white">Keranjang</a></li>
-            <li><a href="contact.html" class="hover:text-white">Kontak</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="font-semibold mb-3">Bantuan</h3>
-          <ul class="space-y-2 text-indigo-100">
-            <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
-            <li><a href="syarat.html" class="hover:text-white">Syarat & Ketentuan</a></li>
-            <li><a href="privasi.html" class="hover:text-white">Privasi</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="font-semibold mb-3">Follow Us</h3>
-          <div class="flex gap-4 text-indigo-100">
-            <a href="#" class="hover:text-white">Instagram</a>
-            <a href="#" class="hover:text-white">TikTok</a>
-            <a href="#" class="hover:text-white">YouTube</a>
-          </div>
-        </div>
+        <div><h2 class="text-2xl font-black uppercase">ECO<span class="bg-yellow-300 text-black px-2 border-3 border-white">STORE</span></h2><p class="mt-3 font-bold">Fashion ramah lingkungan & berkualitas.</p></div>
+        <div><h3 class="font-black uppercase text-lg">Menu</h3><ul class="space-y-2 font-bold"><li><a href="index.html" class="hover:text-yellow-300">HOME</a></li><li><a href="toko.html" class="hover:text-yellow-300">PRODUK</a></li><li><a href="keranjang.html" class="hover:text-yellow-300">KERANJANG</a></li><li><a href="contact.html" class="hover:text-yellow-300">KONTAK</a></li></ul></div>
+        <div><h3 class="font-black uppercase text-lg">Bantuan</h3><ul class="space-y-2 font-bold"><li><a href="faq.html" class="hover:text-yellow-300">FAQ</a></li><li><a href="syarat.html" class="hover:text-yellow-300">SYARAT</a></li><li><a href="privasi.html" class="hover:text-yellow-300">PRIVASI</a></li></ul></div>
+        <div><h3 class="font-black uppercase text-lg">Follow Us</h3><div class="flex gap-4 font-bold"><a href="#" class="hover:text-yellow-300">IG</a><a href="#" class="hover:text-yellow-300">TIKTOK</a><a href="#" class="hover:text-yellow-300">YT</a></div></div>
       </div>
-
-      <div class="mt-10 border-t border-indigo-400 pt-6 text-center text-indigo-200 text-sm">
-        © 2026 ECOSTORE. All rights reserved.
-      </div>
+      <div class="mt-10 nb-divider pt-6 text-center font-bold uppercase">© 2026 ECOSTORE — ALL RIGHTS RESERVED</div>
     </div>
   </footer>
 

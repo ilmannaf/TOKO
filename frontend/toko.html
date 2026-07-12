@@ -5,187 +5,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Produk — EcoStore</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body { font-family: "Poppins", sans-serif; }
-      html { scroll-behavior: smooth; }
-    </style>
+    <link rel="stylesheet" href="css/neobrutalism.css">
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gray-100 min-h-screen">
 
     <!-- Promotion -->
-    <div class="border-b border-indigo-500 bg-indigo-600 px-4 py-2 text-white">
-      <p class="text-center text-sm font-medium">
-        🎉 Nikmati diskon 20% untuk semua produk selama bulan ini!
-        <a href="#koleksi" class="inline-block underline font-semibold ml-1">Lihat Produk →</a>
+    <div class="nb-promo px-4 py-3">
+      <p class="text-center text-sm font-bold tracking-widest uppercase">
+        🎉 DISKON 20% SEMUA PRODUK BULAN INI!
+        <a href="#koleksi" class="inline-block underline ml-2 text-yellow-300">LIHAT PRODUK →</a>
       </p>
     </div>
-    <!-- End Promotion -->
 
     <!-- Navbar -->
-    <nav class="bg-white shadow sticky top-0 z-40">
+    <nav class="nb-navbar sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
+        <div class="flex justify-between items-center h-20">
 
-          <!-- Logo -->
-          <div class="text-xl font-bold text-indigo-600">
-            <a href="index.html">ECOSTORE</a>
+          <div class="text-2xl font-black tracking-tight">
+            <a href="index.html">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
           </div>
 
-          <!-- Menu Desktop -->
-          <ul class="hidden md:flex space-x-8 items-center">
-            <li><a href="index.html" class="text-gray-700 hover:text-indigo-600">Home</a></li>
-            <li><a href="toko.html" class="text-indigo-600 font-semibold border-b-2 border-indigo-600 pb-0.5">Produk</a></li>
-            <li><a href="contact.html" class="text-gray-700 hover:text-indigo-600">Kontak</a></li>
-            <li><a href="Tracking.html" class="text-gray-700 hover:text-indigo-600">Lacak Pesanan</a></li>
+          <ul class="hidden md:flex space-x-6 items-center">
+            <li><a href="index.html" class="nb-link text-lg">HOME</a></li>
+            <li><a href="toko.html" class="nb-link text-lg border-b-4 border-yellow-300">PRODUK</a></li>
+            <li><a href="contact.html" class="nb-link text-lg">KONTAK</a></li>
+            <li><a href="Tracking.html" class="nb-link text-lg">LACAK</a></li>
             <li>
-              <a href="keranjang.html" class="relative flex items-center text-gray-700 hover:text-indigo-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13M10 19a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2z" />
-                </svg>
-                <span id="cart-count" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+              <a href="keranjang.html" class="relative flex items-center font-black text-xl">
+                🛒
+                <span id="cart-count" class="absolute -top-2 -right-2 nb-badge nb-badge-pink text-xs h-6 w-6 flex items-center justify-center hidden">0</span>
               </a>
             </li>
           </ul>
 
-          <!-- Button Login -->
           <div class="hidden md:block">
-            <a href="login.html" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
-              Login
-            </a>
+            <a href="login.html" class="nb-btn nb-btn-yellow">LOGIN</a>
           </div>
 
-          <!-- Mobile -->
           <div class="md:hidden flex items-center gap-4">
-            <a href="keranjang.html" class="relative flex items-center text-gray-700">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6h13M10 19a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2z" />
-              </svg>
-              <span id="cart-count-mobile" class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+            <a href="keranjang.html" class="relative text-xl font-black">
+              🛒
+              <span id="cart-count-mobile" class="absolute -top-2 -right-2 nb-badge nb-badge-pink text-xs h-6 w-6 flex items-center justify-center hidden">0</span>
             </a>
-            <button>☰</button>
+            <button class="text-3xl font-black">☰</button>
           </div>
 
         </div>
       </div>
     </nav>
-    <!-- End Navbar -->
 
-    <!-- Call to Action -->
-    <section class="bg-gray-50">
-      <div class="p-8 md:p-12 lg:px-16 lg:py-16">
-        <div class="mx-auto max-w-lg text-center">
-          <h2 class="text-2xl font-bold text-gray-900 md:text-3xl">
-            Koleksi Produk EcoStore
+    <!-- Hero Produk -->
+    <section class="bg-yellow-300 border-b-4 border-black">
+      <div class="p-12 md:p-16 text-center">
+        <div class="mx-auto max-w-2xl">
+          <h2 class="text-4xl md:text-5xl font-black uppercase leading-tight">
+            🔥 KOLEKSI<br/>PRODUK <span class="bg-black text-white px-4 rotate-1 inline-block">TERBARU</span>
           </h2>
-          <p class="text-gray-500 sm:mt-4">
-            Temukan berbagai produk terbaru kami yang siap memenuhi kebutuhan gaya hidup Anda. Dari fashion hingga aksesori, semuanya ada di sini!
+          <p class="mt-4 text-lg font-bold uppercase tracking-wide">
+            Fashion hingga aksesori — semua ramah lingkungan. 🌿
           </p>
-          <a href="#koleksi" class="mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-rose-600 px-5 py-3 text-white transition hover:bg-rose-700 focus:ring-2 focus:ring-yellow-400 focus:outline-none">
-            <span class="text-sm font-medium">Lihat Produk</span>
-            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
+          <a href="#koleksi" class="mt-8 nb-btn nb-btn-black inline-flex items-center gap-2 text-lg px-8">
+            LIHAT PRODUK ↓
           </a>
         </div>
       </div>
     </section>
-    <!-- End Call to Action -->
 
     <!-- Product List -->
-    <section id="koleksi" class="py-16">
+    <section id="koleksi" class="py-16 bg-gray-100">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <header class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900">Koleksi Terbaru</h2>
-          <p class="mx-auto mt-4 max-w-md text-gray-500">
-            Temukan berbagai produk terbaru kami yang siap memenuhi kebutuhan gaya hidup Anda. Dari fashion hingga aksesori, semuanya ada di sini!
+          <h2 class="text-4xl font-black uppercase tracking-tight">🔥 Koleksi Terbaru</h2>
+          <p class="mx-auto mt-4 max-w-xl font-bold uppercase text-sm tracking-wide">
+            Fashion hingga aksesori, semuanya ramah lingkungan. 🌿
           </p>
         </header>
 
-        <div class="mb-8 flex flex-wrap gap-3 items-center justify-between">
-          <div class="flex flex-wrap gap-2">
-            <button class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-colors"
+        <div class="mb-10 flex flex-wrap gap-4 items-center justify-between">
+          <div class="flex flex-wrap gap-3">
+            <button class="category-btn nb-btn nb-btn-black text-sm px-5"
                     data-category="all" onclick="filterByCategory('all')">
-              Semua
+              SEMUA
             </button>
-            <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 border border-gray-300 hover:border-indigo-600 transition-colors"
+            <button class="category-btn nb-btn nb-btn-white text-sm px-5"
                     data-category="Baju" onclick="filterByCategory('Baju')">
-              Baju
+              BAJU
             </button>
-            <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 border border-gray-300 hover:border-indigo-600 transition-colors"
+            <button class="category-btn nb-btn nb-btn-white text-sm px-5"
                     data-category="Sepatu" onclick="filterByCategory('Sepatu')">
-              Sepatu
+              SEPATU
             </button>
-            <button class="category-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 border border-gray-300 hover:border-indigo-600 transition-colors"
+            <button class="category-btn nb-btn nb-btn-white text-sm px-5"
                     data-category="Aksesoris" onclick="filterByCategory('Aksesoris')">
-              Aksesoris
+              AKSESORIS
             </button>
           </div>
-          <div class="relative">
-            <input type="text" id="search-input" placeholder="Cari produk..."
-                   class="pl-4 pr-10 py-2 rounded-full border border-gray-300 text-sm focus:outline-none focus:border-indigo-600 w-48 md:w-64"
+          <div class="relative w-64">
+            <input type="text" id="search-input" placeholder="CARI PRODUK..."
+                   class="nb-input w-full pr-10 uppercase text-sm font-bold"
                    onkeyup="if(event.key === 'Enter') searchProducts()">
             <button onclick="searchProducts()"
-                    class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-600">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
+                    class="absolute right-2 top-1/2 -translate-y-1/2 text-2xl">🔍</button>
           </div>
         </div>
 
-        <div id="product-list" class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div id="product-list" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         </div>
       </div>
     </section>
-    <!-- End Product List -->
 
     <!-- Footer -->
-    <footer class="bg-indigo-600 text-white">
+    <footer class="nb-footer">
       <div class="max-w-7xl mx-auto px-4 py-12">
         <div class="grid md:grid-cols-4 gap-8">
           <div>
-            <h2 class="text-xl font-bold">ECOSTORE</h2>
-            <p class="mt-3 text-indigo-100">Temukan berbagai produk terbaik dengan harga terjangkau dan kualitas terpercaya.</p>
+            <h2 class="text-2xl font-black uppercase">ECO<span class="bg-yellow-300 text-black px-2 border-3 border-white">STORE</span></h2>
+            <p class="mt-3 font-bold">Fashion ramah lingkungan & kualitas terpercaya.</p>
           </div>
           <div>
-            <h3 class="font-semibold mb-3">Menu</h3>
-            <ul class="space-y-2 text-indigo-100">
-              <li><a href="index.html" class="hover:text-white">Home</a></li>
-              <li><a href="toko.html" class="hover:text-white">Produk</a></li>
-              <li><a href="#" class="hover:text-white">Kategori</a></li>
-              <li><a href="contact.html" class="hover:text-white">Kontak</a></li>
+            <h3 class="font-black uppercase text-lg">Menu</h3>
+            <ul class="space-y-2 font-bold">
+              <li><a href="index.html" class="hover:text-yellow-300">HOME</a></li>
+              <li><a href="toko.html" class="hover:text-yellow-300">PRODUK</a></li>
+              <li><a href="#" class="hover:text-yellow-300">KATEGORI</a></li>
+              <li><a href="contact.html" class="hover:text-yellow-300">KONTAK</a></li>
             </ul>
           </div>
            <div>
-            <h3 class="font-semibold mb-3">Bantuan</h3>
-            <ul class="space-y-2 text-indigo-100">
-              <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
-              <li><a href="syarat.html" class="hover:text-white">Syarat & Ketentuan</a></li>
-              <li><a href="privasi.html" class="hover:text-white">Privasi</a></li>
+            <h3 class="font-black uppercase text-lg">Bantuan</h3>
+            <ul class="space-y-2 font-bold">
+              <li><a href="faq.html" class="hover:text-yellow-300">FAQ</a></li>
+              <li><a href="syarat.html" class="hover:text-yellow-300">SYARAT</a></li>
+              <li><a href="privasi.html" class="hover:text-yellow-300">PRIVASI</a></li>
             </ul>
           </div>
           <div>
-            <h3 class="font-semibold mb-3">Follow Us</h3>
-            <div class="flex gap-4 text-indigo-100">
-              <a href="#" class="hover:text-white">Instagram</a>
-              <a href="#" class="hover:text-white">TikTok</a>
-              <a href="#" class="hover:text-white">YouTube</a>
+            <h3 class="font-black uppercase text-lg">Follow Us</h3>
+            <div class="flex gap-4 font-bold">
+              <a href="#" class="hover:text-yellow-300">IG</a>
+              <a href="#" class="hover:text-yellow-300">TIKTOK</a>
+              <a href="#" class="hover:text-yellow-300">YT</a>
             </div>
           </div>
         </div>
-        <div class="mt-10 border-t border-indigo-400 pt-6 text-center text-indigo-200 text-sm">
-          © 2026 ECOSTORE. All rights reserved.
+        <div class="mt-10 nb-divider pt-6 text-center font-bold uppercase">
+          © 2026 ECOSTORE — ALL RIGHTS RESERVED
         </div>
       </div>
     </footer>
-    <!-- End Footer -->
 
-    <!-- Toast Notifikasi -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-5 py-3 rounded-xl shadow-lg z-50 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none"></div>
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 nb-toast px-6 py-4 z-50 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none"></div>
 
     <!-- Script -->
     <script src="js/config.js"></script>

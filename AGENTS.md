@@ -4,6 +4,32 @@
 This repository is an e-commerce platform (EcoStore) with split frontend and backend design.
 AI coding agents should prioritize backend endpoint behavior and frontend endpoint usage when making changes.
 
+## Design System
+**Theme**: Neobrutalism (updated 2026-07-12)
+- Bold black borders (4px)
+- Hard shadows with offset (6px 6px 0px 0px rgba(0,0,0,1))
+- High contrast colors: Yellow (#FFE500), Lime (#B4FF39), Pink (#FF6B9D), Cyan (#00E5FF)
+- Space Grotesk font family
+- Uppercase typography with heavy font weights (700-900)
+- No rounded corners or gradients
+- Geometric shapes and playful rotations
+
+**CSS Framework**: 
+- Tailwind CSS (via CDN)
+- Custom neobrutalism.css for brutal design system
+- Located at: `frontend/css/neobrutalism.css`
+
+**Key Classes**:
+- `.nb-card` - Card with border & shadow
+- `.nb-btn` - Button base style
+- `.nb-btn-yellow`, `.nb-btn-lime`, `.nb-btn-pink`, `.nb-btn-black`, `.nb-btn-white` - Button variants
+- `.nb-input` - Input fields with brutal styling
+- `.nb-badge` - Badge styles
+- `.nb-navbar` - Navbar with border & shadow
+- `.nb-footer` - Footer styling
+- `.nb-alert` - Alert boxes
+- `.nb-link` - Link styling with hover effects
+
 ## Project Structure
 ```
 TOKO/
@@ -199,7 +225,15 @@ JWT_EXPIRES_IN=7d
 - **Test API**: `curl http://localhost:3000/api/products`
 - **Check logs**: Backend console or `backend/server.log`
 
-## Recent Changes (2026-07-11)
+## Recent Changes (2026-07-12)
+- ✅ **Complete redesign to Neobrutalism theme**
+- ✅ Created `frontend/css/neobrutalism.css` style system
+- ✅ Updated all 15 HTML pages with brutal design
+- ✅ Replaced Poppins font with Space Grotesk
+- ✅ Changed color palette: indigo → yellow/lime/pink/cyan
+- ✅ Transformed all UI components (cards, buttons, inputs, badges)
+- ✅ Updated navbar, footer, forms, and product cards
+- ✅ Maintained all functionality while changing design
 - ✅ Added wishlist feature (table, API, UI)
 - ✅ Wishlist tab in user profile page
 - ✅ Wishlist button with emoji toggle (🤍/❤️)

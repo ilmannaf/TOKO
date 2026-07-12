@@ -5,58 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wishlist - EcoStore</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/neobrutalism.css">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100 min-h-screen">
   
-  <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold text-indigo-600">ECOSTORE</a>
-      <div class="flex gap-4 items-center">
-        <a href="toko.html" class="text-gray-700 hover:text-indigo-600">Produk</a>
-        <a href="wishlist.html" class="text-indigo-600 font-semibold">
-          <i class="fas fa-heart"></i> Wishlist
+  <header class="nb-navbar sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center h-20">
+      <a href="index.html" class="text-2xl font-black tracking-tight">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
+      <div class="flex gap-6 items-center">
+        <a href="toko.html" class="nb-link uppercase font-black">Produk</a>
+        <a href="wishlist.html" class="nb-link uppercase font-black border-b-4 border-yellow-300">
+          ❤️ Wishlist
         </a>
-        <a href="keranjang.html" class="relative text-gray-700 hover:text-indigo-600">
-          <i class="fas fa-shopping-cart text-xl"></i>
-          <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+        <a href="keranjang.html" class="relative text-2xl font-black">
+          🛒
+          <span id="cart-count" class="absolute -top-2 -right-2 nb-badge nb-badge-pink text-xs h-6 w-6 flex items-center justify-center hidden">0</span>
         </a>
-        <a href="profile.html" class="text-gray-700 hover:text-indigo-600">
-          <i class="fas fa-user"></i>
-        </a>
+        <a href="profile.html" class="text-2xl">👤</a>
       </div>
     </div>
   </header>
 
   <main class="max-w-7xl mx-auto px-4 py-16">
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Wishlist Saya</h1>
-      <p class="text-gray-500 mt-2">Produk favorit yang ingin kamu beli nanti</p>
+    <div class="mb-10">
+      <h1 class="text-4xl font-black uppercase">❤️ Wishlist Saya</h1>
+      <p class="font-bold uppercase text-sm mt-2">Produk favorit yang ingin kamu beli nanti</p>
     </div>
 
     <div id="wishlist-container">
       <div class="text-center py-20">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-        <p class="text-gray-500 mt-4">Memuat wishlist...</p>
+        <div class="nb-card p-8 inline-block bg-cyan-300 mb-4">
+          <div class="animate-spin text-4xl">⏳</div>
+        </div>
+        <p class="font-black uppercase mt-4">Memuat wishlist...</p>
       </div>
     </div>
   </main>
 
-  <footer class="bg-indigo-600 text-white mt-16">
-    <div class="max-w-7xl mx-auto px-4 py-8 text-center text-indigo-200 text-sm">
-      © 2026 ECOSTORE. All rights reserved.
+  <footer class="nb-footer">
+    <div class="max-w-7xl mx-auto px-4 py-8 text-center font-bold uppercase">
+      © 2026 ECOSTORE — ALL RIGHTS RESERVED
     </div>
   </footer>
 
   <!-- Toast -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-5 py-3 rounded-xl shadow-lg z-50 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none"></div>
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 nb-toast px-6 py-4 z-50 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none"></div>
 
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/toko.js"></script>
   <script src="js/wishlist.js"></script>
   <script>
-    // Init wishlist page
     document.addEventListener('DOMContentLoaded', () => {
       renderWishlistPage();
     });

@@ -5,168 +5,144 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FAQ - EcoStore</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="js/config.js"></script>
-  <script src="js/auth.js"></script>
+  <link rel="stylesheet" href="css/neobrutalism.css">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100">
   
-  <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold text-indigo-600">ECOSTORE</a>
-      <div class="flex gap-4 items-center">
-        <button onclick="toggleMenu()" class="md:hidden p-2 text-gray-600">
-          <i class="fas fa-bars text-xl"></i>
-        </button>
-        <a href="login.html" class="hidden md:block text-gray-700 hover:text-indigo-600 px-4 py-2">Login</a>
-        <a href="keranjang.html" class="relative p-2 text-gray-700 hover:text-indigo-600">
-          <i class="fas fa-shopping-cart text-xl"></i>
-          <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+  <header class="nb-navbar sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center h-20">
+      <a href="index.html" class="text-2xl font-black tracking-tight">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
+      <div class="flex gap-6 items-center">
+        <a href="login.html" class="nb-btn nb-btn-yellow uppercase font-black">LOGIN</a>
+        <a href="keranjang.html" class="relative text-2xl">
+          🛒
+          <span id="cart-count" class="absolute -top-2 -right-2 nb-badge nb-badge-pink text-xs h-6 w-6 flex items-center justify-center">0</span>
         </a>
       </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-      <a href="index.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Home</a>
-      <a href="toko.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Produk</a>
-      <a href="contact.html" class="block px-4 py-3 text-gray-700 hover:bg-gray-50">Kontak</a>
     </div>
   </header>
 
   <main class="max-w-4xl mx-auto px-4 py-16">
-    <h1 class="text-4xl font-bold text-gray-900 text-center mb-8">Pertanyaan Umum</h1>
-    <p class="text-center text-gray-600 mb-12">Temukan jawaban untuk pertanyaan yang sering diajukan</p>
+    <h1 class="text-5xl font-black uppercase text-center mb-4">❓ FAQ</h1>
+    <p class="text-center font-bold uppercase mb-12 tracking-wide">Pertanyaan yang sering diajukan</p>
 
     <div class="space-y-4">
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">
-          <i class="fas fa-chevron-down text-indigo-600 mr-2"></i>
-          Berapa lama waktu pengiriman pesanan?
+      <div class="nb-card p-6 bg-white">
+        <h3 class="text-lg font-black uppercase mb-3">
+          ⏱️ Berapa lama waktu pengiriman?
         </h3>
-        <p class="text-gray-600">
-          Waktu pengiriman tergantung zona alamat Anda. Untuk Zona 1 (Jawa Tengah & DIY) 1-2 hari kerja, Zona 2 (Pulau Jawa) 2-3 hari kerja, Zona 3 (Bali & Nusa Tenggara) 3-4 hari kerja, Zona 4 (Sumatera) 3-5 hari kerja, Zona 5 (Kalimantan & Sulawesi) 4-6 hari kerja, dan Zona 6 (Papua & Maluku) 5-8 hari kerja.
+        <p class="font-bold text-sm">
+          Tergantung zona: Zona 1 (Jateng) 1-2 hari, Zona 2 (Jawa) 2-3 hari, Zona 3 (Bali) 3-4 hari, Zona 4 (Sumatera) 3-5 hari, Zona 5 (Kalimantan/Sulawesi) 4-6 hari, Zona 6 (Papua/Maluku) 5-8 hari.
         </p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">
-          <i class="fas fa-chevron-down text-indigo-600 mr-2"></i>
-          Apa saja metode pembayaran yang tersedia?
+      <div class="nb-card p-6 bg-white">
+        <h3 class="text-lg font-black uppercase mb-3">
+          💳 Metode pembayaran apa saja?
         </h3>
-        <p class="text-gray-600">
-          Kami menerima berbagai metode pembayaran: Transfer Bank, COD (Bayar di Tempat), dan E-Wallet (Dana, OVO, GoPay, ShopeePay).
+        <p class="font-bold text-sm">
+          Transfer Bank, COD (Bayar di Tempat), dan E-Wallet (Dana, OVO, GoPay, ShopeePay).
         </p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">
-          <i class="fas fa-chevron-down text-indigo-600 mr-2"></i>
-          Bagaimana cara mengembalikan produk?
+      <div class="nb-card p-6 bg-white">
+        <h3 class="text-lg font-black uppercase mb-3">
+          ↩️ Bagaimana cara mengembalikan produk?
         </h3>
-        <p class="text-gray-600">
-          Anda dapat mengembalikan produk dalam waktu 7 hari sejak penerimaan dengan syarat produk belum digunakan, masih dalam kondisi original, dan lengkap dengan kemasan serta label.
+        <p class="font-bold text-sm">
+          Dalam 7 hari sejak penerimaan, produk belum dipakai, kondisi original, dan lengkap dengan kemasan serta label.
         </p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">
-          <i class="fas fa-chevron-down text-indigo-600 mr-2"></i>
-          Apakah ada biaya pengiriman?
+      <div class="nb-card p-6 bg-white">
+        <h3 class="text-lg font-black uppercase mb-3">
+          🚚 Apakah ada biaya pengiriman?
         </h3>
-        <p class="text-gray-600">
-          Biaya pengiriman disesuaikan dengan zona alamat dan berat barang. Anda bisa memilih jasa kurir yang sesuai saat proses checkout.
+        <p class="font-bold text-sm">
+          Biaya disesuaikan dengan zona alamat dan berat barang. Pilih jasa kurir saat checkout.
         </p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">
-          <i class="fas fa-chevron-down text-indigo-600 mr-2"></i>
-          Bagaimana cara melacak pesanan?
+      <div class="nb-card p-6 bg-white">
+        <h3 class="text-lg font-black uppercase mb-3">
+          🔍 Cara melacak pesanan?
         </h3>
-        <p class="text-gray-600">
-          Anda bisa melacak pesanan dengan masukkan nomor pesanan di halaman Tracking atau masuk ke akun Anda untuk melihat riwayat pesanan.
+        <p class="font-bold text-sm">
+          Masukkan nomor pesanan di halaman Tracking atau login ke akun untuk lihat riwayat.
         </p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">
-          <i class="fas fa-chevron-down text-indigo-600 mr-2"></i>
-          Apakah produk yang dijual original?
+      <div class="nb-card p-6 bg-white">
+        <h3 class="text-lg font-black uppercase mb-3">
+          ✅ Apakah produk original?
         </h3>
-        <p class="text-gray-600">
-          Ya, semua produk di EcoStore adalah original dan kami memberikan garansi untuk produk tertentu.
+        <p class="font-bold text-sm">
+          Semua produk di EcoStore 100% original dengan garansi untuk produk tertentu.
         </p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">
-          <i class="fas fa-chevron-down text-indigo-600 mr-2"></i>
-          Bagaimana cara menghubungi customer service?
+      <div class="nb-card p-6 bg-white">
+        <h3 class="text-lg font-black uppercase mb-3">
+          📞 Cara menghubungi CS?
         </h3>
-        <p class="text-gray-600">
-          Anda bisa menghubungi kami melalui halaman Kontak, email di support@ecostore.com, atau WhatsApp di 0812-3456-7890.
+        <p class="font-bold text-sm">
+          Via halaman Kontak, email support@ecostore.com, atau WhatsApp 0812-3456-7890.
         </p>
       </div>
 
-      <div class="bg-white rounded-xl shadow-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-3">
-          <i class="fas fa-chevron-down text-indigo-600 mr-2"></i>
-          Apakah ada program loyalitas?
+      <div class="nb-card p-6 bg-white">
+        <h3 class="text-lg font-black uppercase mb-3">
+          🌱 Program loyalitas?
         </h3>
-        <p class="text-gray-600">
-          Ya, kami memiliki program EcoPoints di mana Anda bisa mendapatkan poin setiap pembelian dan menukarkannya dengan diskon atau hadiah.
+        <p class="font-bold text-sm">
+          Ya! Dapatkan EcoPoints setiap pembelian dan tukarkan dengan diskon atau hadiah. 🌿
         </p>
       </div>
     </div>
 
     <div class="mt-12 text-center">
-      <p class="text-gray-600 mb-4">Pertanyaan lainnya?</p>
-      <a href="contact.html" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
-        Hubungi Kami
+      <p class="font-bold uppercase mb-4">Pertanyaan lainnya?</p>
+      <a href="contact.html" class="nb-btn nb-btn-pink text-lg px-8 uppercase">
+        HUBUNGI KAMI →
       </a>
     </div>
   </main>
 
-  <footer class="bg-indigo-600 text-white">
+  <footer class="nb-footer">
     <div class="max-w-7xl mx-auto px-4 py-12">
       <div class="grid md:grid-cols-4 gap-8">
         <div>
-          <h2 class="text-xl font-bold">ECOSTORE</h2>
-          <p class="mt-3 text-indigo-100">
-            Toko fashion online terpercaya dengan fokus pada produk ramah lingkungan dan berkelanjutan.
-          </p>
+          <h2 class="text-2xl font-black uppercase">ECO<span class="bg-yellow-300 text-black px-2 border-3 border-white">STORE</span></h2>
+          <p class="mt-3 font-bold">Fashion ramah lingkungan & berkualitas.</p>
         </div>
-
         <div>
-          <h3 class="font-semibold mb-3">Menu</h3>
-          <ul class="space-y-2 text-indigo-100">
-            <li><a href="index.html" class="hover:text-white">Home</a></li>
-            <li><a href="toko.html" class="hover:text-white">Produk</a></li>
-            <li><a href="keranjang.html" class="hover:text-white">Keranjang</a></li>
-            <li><a href="contact.html" class="hover:text-white">Kontak</a></li>
+          <h3 class="font-black uppercase text-lg">Menu</h3>
+          <ul class="space-y-2 font-bold">
+            <li><a href="index.html" class="hover:text-yellow-300">HOME</a></li>
+            <li><a href="toko.html" class="hover:text-yellow-300">PRODUK</a></li>
+            <li><a href="keranjang.html" class="hover:text-yellow-300">KERANJANG</a></li>
+            <li><a href="contact.html" class="hover:text-yellow-300">KONTAK</a></li>
           </ul>
         </div>
-
         <div>
-          <h3 class="font-semibold mb-3">Bantuan</h3>
-          <ul class="space-y-2 text-indigo-100">
-            <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
-            <li><a href="syarat.html" class="hover:text-white">Syarat & Ketentuan</a></li>
-            <li><a href="privasi.html" class="hover:text-white">Privasi</a></li>
+          <h3 class="font-black uppercase text-lg">Bantuan</h3>
+          <ul class="space-y-2 font-bold">
+            <li><a href="faq.html" class="hover:text-yellow-300">FAQ</a></li>
+            <li><a href="syarat.html" class="hover:text-yellow-300">SYARAT</a></li>
+            <li><a href="privasi.html" class="hover:text-yellow-300">PRIVASI</a></li>
           </ul>
         </div>
-
         <div>
-          <h3 class="font-semibold mb-3">Follow Us</h3>
-          <div class="flex gap-4 text-indigo-100">
-            <a href="#" class="hover:text-white">Instagram</a>
-            <a href="#" class="hover:text-white">TikTok</a>
-            <a href="#" class="hover:text-white">YouTube</a>
+          <h3 class="font-black uppercase text-lg">Follow Us</h3>
+          <div class="flex gap-4 font-bold">
+            <a href="#" class="hover:text-yellow-300">IG</a>
+            <a href="#" class="hover:text-yellow-300">TIKTOK</a>
+            <a href="#" class="hover:text-yellow-300">YT</a>
           </div>
         </div>
       </div>
-
-      <div class="mt-10 border-t border-indigo-400 pt-6 text-center text-indigo-200 text-sm">
-        © 2026 ECOSTORE. All rights reserved.
+      <div class="mt-10 nb-divider pt-6 text-center font-bold uppercase">
+        © 2026 ECOSTORE — ALL RIGHTS RESERVED
       </div>
     </div>
   </footer>

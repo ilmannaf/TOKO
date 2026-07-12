@@ -5,149 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EcoStore - Belanja Online Terpercaya</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/neobrutalism.css">
   </head>
-  <body>
+  <body class="bg-gray-100">
 
-  <nav class="bg-white shadow">
+  <nav class="nb-navbar sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4">
     
-    <div class="flex justify-between items-center h-16">
+    <div class="flex justify-between items-center h-20">
       
-      <div class="text-xl font-bold text-indigo-600">
-        ECOSTORE
+      <div class="text-2xl font-black tracking-tight">
+        ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span>
       </div>
 
-      <ul class="hidden md:flex space-x-8">
-        <li><a href="index.html" class="text-gray-700 hover:text-indigo-600">Home</a></li>
-        <li><a href="toko.html" class="text-gray-700 hover:text-indigo-600">Produk</a></li>
-        <li><a href="contact.html" class="text-gray-700 hover:text-indigo-600">Kontak</a></li>
-        <li><a href="Tracking.html" class="text-gray-700 hover:text-indigo-600">Lacak Pesanan</a></li>
+      <ul class="hidden md:flex space-x-6 items-center">
+        <li><a href="index.html" class="nb-link text-lg">HOME</a></li>
+        <li><a href="toko.html" class="nb-link text-lg">PRODUK</a></li>
+        <li><a href="contact.html" class="nb-link text-lg">KONTAK</a></li>
+        <li><a href="Tracking.html" class="nb-link text-lg">LACAK</a></li>
       </ul>
 
       <div class="hidden md:block">
-        <a href="login.html" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
-            Login
+        <a href="login.html" class="nb-btn nb-btn-yellow">
+            LOGIN
         </a>
       </div>
 
       <div class="md:hidden">
-        <button>☰</button>
+        <button class="text-3xl font-black">☰</button>
       </div>
 
     </div>
 
   </div>
 </nav>
-<section class="max-w-7xl mx-auto px-4 mt-8 mb-4">
-      <div class="bg-gradient-to-r from-emerald-50 to-green-50 rounded-2xl border border-emerald-200 p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+    <section class="max-w-7xl mx-auto px-4 mt-8 mb-4">
+      <div class="nb-eco-card p-8 flex flex-col md:flex-row items-center justify-between gap-6">
         
-        <div class="flex items-center gap-4 w-full md:w-auto">
-          <div class="text-5xl bg-white p-4 rounded-full shadow-sm animate-bounce" id="tree-emoji">
+        <div class="flex items-center gap-6 w-full md:w-auto">
+          <div class="text-6xl nb-animate-bounce" id="tree-emoji">
             🌱
           </div>
           <div class="flex-1">
-            <h3 class="text-lg font-bold text-gray-800">Pohon Digital Kamu</h3>
-            <p class="text-sm text-emerald-600 font-medium" id="tree-level-text">Level 2: Tunas Harapan</p>
-            <div class="w-full md:w-48 bg-gray-200 rounded-full h-2.5 mt-2 overflow-hidden">
-              <div class="bg-emerald-500 h-2.5 rounded-full" id="xp-bar" style="width: 60%"></div>
+            <h3 class="text-xl font-black uppercase tracking-tight">Pohon Digital</h3>
+            <p class="text-sm font-bold mt-1" id="tree-level-text">LEVEL 2: TUNAS HARAPAN</p>
+            <div class="w-full md:w-48 bg-black h-4 mt-3 border-4 border-black overflow-hidden">
+              <div class="bg-yellow-300 h-full" id="xp-bar" style="width: 60%"></div>
             </div>
-            <span class="text-xs text-gray-500 mt-1 block" id="xp-text">600 / 1000 XP menuju Level 3</span>
+            <span class="text-xs font-bold mt-2 block uppercase" id="xp-text">600 / 1000 XP → LVL 3</span>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 text-center sm:text-left w-full md:w-auto">
-          <div class="bg-white px-4 py-2 rounded-xl border border-emerald-100 shadow-sm">
-            <span class="text-xs text-gray-400 block">Total Eco-Points</span>
-            <span class="text-xl font-bold text-emerald-600 font-mono" id="total-points">1,250</span>
+        <div class="grid grid-cols-2 gap-4 w-full md:w-auto">
+          <div class="nb-card px-4 py-3 bg-yellow-300">
+            <span class="text-xs font-bold block uppercase">Eco-Points</span>
+            <span class="text-2xl font-black" id="total-points">1,250</span>
           </div>
-          <div class="bg-white px-4 py-2 rounded-xl border border-emerald-100 shadow-sm">
-            <span class="text-xs text-gray-400 block">Karbon Tereduksi</span>
-            <span class="text-xl font-bold text-indigo-600 font-mono"><span id="carbon-saved">4.8</span> Kg CO₂</span>
+          <div class="nb-card px-4 py-3 bg-cyan-300">
+            <span class="text-xs font-bold block uppercase">CO₂ Saved</span>
+            <span class="text-2xl font-black"><span id="carbon-saved">4.8</span> Kg</span>
           </div>
         </div>
 
         <div class="w-full md:w-auto">
-          <button onclick="alert('Kumpulkan 5000 XP (Level 5) untuk menanam pohon aslimu!')" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
-            <span>🌳</span> Tukar Pohon Asli
+          <button onclick="alert('Kumpulkan 5000 XP (Level 5) untuk menanam pohon aslimu!')" class="nb-btn nb-btn-pink w-full md:w-auto">
+            🌳 TUKAR POHON ASLI
           </button>
         </div>
 
       </div>
     </section>
-    <section class="bg-white lg:grid lg:place-content-center pt-8 pb-16">
+    <section class="bg-gray-100 py-20">
       <div class="mx-auto w-screen max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="mx-auto max-w-prose text-center">
-          <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl">
-            Gaya hidup berkelanjutan,
-            <strong class="text-indigo-600 block mt-2"> berawal dari sini. </strong>
+        <div class="nb-hero p-12 text-center">
+          <h1 class="text-5xl md:text-7xl font-black uppercase leading-tight mb-6">
+            GAYA HIDUP<br/>
+            <span class="bg-pink-400 px-4 border-4 border-black inline-block mt-2 rotate-[-1deg]">BERKELANJUTAN</span>
           </h1>
 
-          <p class="mt-4 text-base text-gray-700 sm:text-lg sm:leading-relaxed">
-            Temukan koleksi fashion ramah lingkungan terbaik. Kumpulkan Eco-Points di setiap pembelian dan bantu selamatkan bumi bersama EcoStore.
+          <p class="mt-6 text-lg md:text-xl font-bold max-w-2xl mx-auto uppercase tracking-wide">
+            Koleksi fashion ramah lingkungan. Kumpulkan Eco-Points & selamatkan bumi! 🌍
           </p>
 
-          <div class="mt-6 flex justify-center items-center gap-4">
-            <a
-              href="toko.html"
-              class="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700"
-            >
-              Mulai Belanja
+          <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="toko.html" class="nb-btn nb-btn-black text-lg px-8">
+              MULAI BELANJA →
             </a>
 
-            <a
-              href="contact.html"
-              class="inline-block rounded border border-gray-300 px-5 py-3 font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-100"
-            >
-              Pelajari Lebih Lanjut
+            <a href="contact.html" class="nb-btn nb-btn-white text-lg px-8">
+              INFO LEBIH LANJUT
             </a>
           </div>
         </div>
       </div>
     </section>
-    <footer class="bg-indigo-600 text-white">
+    <footer class="nb-footer">
   <div class="max-w-7xl mx-auto px-4 py-12">
     
     <div class="grid md:grid-cols-4 gap-8">
       
       <div>
-        <h2 class="text-xl font-bold">ECOSTORE</h2>
-        <p class="mt-3 text-indigo-100">
-          Temukan berbagai produk fashion terbaik dengan harga terjangkau, kualitas terpercaya, dan ramah lingkungan.
+        <h2 class="text-2xl font-black mb-4 uppercase">ECO<span class="bg-yellow-300 text-black px-2 border-3 border-white">STORE</span></h2>
+        <p class="mt-3 font-medium">
+          Fashion ramah lingkungan dengan harga terjangkau & kualitas terpercaya. 🌿
         </p>
       </div>
 
       <div>
-        <h3 class="font-semibold mb-3">Menu</h3>
-        <ul class="space-y-2 text-indigo-100">
-          <li><a href="index.html" class="hover:text-white">Home</a></li>
-          <li><a href="toko.html" class="hover:text-white">Produk</a></li>
-          <li><a href="keranjang.html" class="hover:text-white">Keranjang</a></li>
-          <li><a href="contact.html" class="hover:text-white">Kontak</a></li>
+        <h3 class="font-black mb-3 uppercase text-lg">Menu</h3>
+        <ul class="space-y-2 font-bold">
+          <li><a href="index.html" class="hover:text-yellow-300">HOME</a></li>
+          <li><a href="toko.html" class="hover:text-yellow-300">PRODUK</a></li>
+          <li><a href="keranjang.html" class="hover:text-yellow-300">KERANJANG</a></li>
+          <li><a href="contact.html" class="hover:text-yellow-300">KONTAK</a></li>
         </ul>
       </div>
 
        <div>
-        <h3 class="font-semibold mb-3">Bantuan</h3>
-        <ul class="space-y-2 text-indigo-100">
-          <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
-          <li><a href="syarat.html" class="hover:text-white">Syarat & Ketentuan</a></li>
-          <li><a href="privasi.html" class="hover:text-white">Privasi</a></li>
+        <h3 class="font-black mb-3 uppercase text-lg">Bantuan</h3>
+        <ul class="space-y-2 font-bold">
+          <li><a href="faq.html" class="hover:text-yellow-300">FAQ</a></li>
+          <li><a href="syarat.html" class="hover:text-yellow-300">SYARAT</a></li>
+          <li><a href="privasi.html" class="hover:text-yellow-300">PRIVASI</a></li>
         </ul>
       </div>
 
       <div>
-        <h3 class="font-semibold mb-3">Follow Us</h3>
-        <div class="flex gap-4 text-indigo-100">
-          <a href="#" class="hover:text-white">Instagram</a>
-          <a href="#" class="hover:text-white">TikTok</a>
-          <a href="#" class="hover:text-white">YouTube</a>
+        <h3 class="font-black mb-3 uppercase text-lg">Follow Us</h3>
+        <div class="flex gap-4 font-bold">
+          <a href="#" class="hover:text-yellow-300">INSTAGRAM</a>
+          <a href="#" class="hover:text-yellow-300">TIKTOK</a>
+          <a href="#" class="hover:text-yellow-300">YOUTUBE</a>
         </div>
       </div>
 
     </div>
 
-    <div class="mt-10 border-t border-indigo-400 pt-6 text-center text-indigo-200 text-sm">
-      © 2026 ECOSTORE. All rights reserved.
+    <div class="mt-10 nb-divider pt-6 text-center font-bold uppercase tracking-wide">
+      © 2026 ECOSTORE — ALL RIGHTS RESERVED
     </div>
 
   </div>

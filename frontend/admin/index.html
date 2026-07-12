@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - EcoStore</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="bg-gray-50">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - EcoStore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/neobrutalism.css">
+  </head>
+<body class="bg-gray-100 min-h-screen">
   <div class="flex min-h-screen">
     
     <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-sm hidden md:block">
-      <div class="p-6">
-        <h1 class="text-xl font-bold text-indigo-600">EcoStore Admin</h1>
+    <aside class="w-72 bg-white border-r-4 border-black shadow-[4px_0px_0px_0px_rgba(0,0,0,1)] hidden md:block">
+      <div class="p-6 border-b-4 border-black">
+        <h1 class="text-xl font-black uppercase">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></h1>
+        <p class="text-xs font-bold mt-1 uppercase tracking-wider">Admin Panel</p>
       </div>
-      <nav class="px-4 space-y-1">
-        <a href="#" onclick="showSection('dashboard')" class="flex items-center px-4 py-3 rounded-lg bg-indigo-50 text-indigo-600 font-medium" id="nav-dashboard">
-          <i class="fas fa-chart-pie mr-3"></i> Dashboard
+      <nav class="p-4 space-y-2">
+        <a href="#" onclick="showSection('dashboard')" class="flex items-center px-4 py-3 border-4 border-black bg-yellow-300 font-black uppercase" id="nav-dashboard">
+          📊 Dashboard
         </a>
-        <a href="#" onclick="showSection('products')" class="flex items-center px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50" id="nav-products">
-          <i class="fas fa-box mr-3"></i> Produk
+        <a href="#" onclick="showSection('products')" class="flex items-center px-4 py-3 border-4 border-black bg-white font-black uppercase hover:bg-lime-300" id="nav-products">
+          📦 Produk
         </a>
-        <a href="#" onclick="showSection('orders')" class="flex items-center px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50" id="nav-orders">
-          <i class="fas fa-shopping-bag mr-3"></i> Pesanan
+        <a href="#" onclick="showSection('orders')" class="flex items-center px-4 py-3 border-4 border-black bg-white font-black uppercase hover:bg-lime-300" id="nav-orders">
+          🛍️ Pesanan
         </a>
-        <a href="#" onclick="showSection('contacts')" class="flex items-center px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50" id="nav-contacts">
-          <i class="fas fa-envelope mr-3"></i> Pesan Masuk
+        <a href="#" onclick="showSection('contacts')" class="flex items-center px-4 py-3 border-4 border-black bg-white font-black uppercase hover:bg-lime-300" id="nav-contacts">
+          ✉️ Pesan
         </a>
-        <hr class="my-4">
-        <a href="../index.html" class="flex items-center px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50">
-          <i class="fas fa-store mr-3"></i> Lihat Toko
+        <hr class="border-2 border-black my-4">
+        <a href="../index.html" class="flex items-center px-4 py-3 border-4 border-black bg-white font-black uppercase hover:bg-cyan-300">
+          🏪 Lihat Toko
         </a>
       </nav>
     </aside>
@@ -40,100 +41,100 @@
       
       <!-- Section Dashboard -->
       <div id="section-dashboard">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
+        <h2 class="text-3xl font-black uppercase mb-6">📊 Dashboard</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <p class="text-sm text-gray-500">Total Produk</p>
-            <p class="text-3xl font-bold text-gray-900" id="stat-products">0</p>
+          <div class="nb-card p-6 bg-white">
+            <p class="text-xs font-bold uppercase tracking-wider">Total Produk</p>
+            <p class="text-4xl font-black mt-2" id="stat-products">0</p>
           </div>
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <p class="text-sm text-gray-500">Total Pesanan</p>
-            <p class="text-3xl font-bold text-gray-900" id="stat-orders">0</p>
+          <div class="nb-card p-6 bg-lime-300">
+            <p class="text-xs font-bold uppercase tracking-wider">Total Pesanan</p>
+            <p class="text-4xl font-black mt-2" id="stat-orders">0</p>
           </div>
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <p class="text-sm text-gray-500">Pesanan Masuk</p>
-            <p class="text-3xl font-bold text-yellow-600" id="stat-pending">0</p>
+          <div class="nb-card p-6 bg-yellow-300">
+            <p class="text-xs font-bold uppercase tracking-wider">Pesanan Masuk</p>
+            <p class="text-4xl font-black mt-2" id="stat-pending">0</p>
           </div>
-          <div class="bg-white rounded-xl shadow-sm p-6">
-            <p class="text-sm text-gray-500">Pesan Belum Dibaca</p>
-            <p class="text-3xl font-bold text-indigo-600" id="stat-contacts">0</p>
+          <div class="nb-card p-6 bg-pink-300">
+            <p class="text-xs font-bold uppercase tracking-wider">Pesan Baru</p>
+            <p class="text-4xl font-black mt-2" id="stat-contacts">0</p>
           </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Pesanan Terbaru</h3>
-          <div id="recent-orders" class="text-gray-500">Memuat...</div>
+        <div class="nb-card p-6 bg-white">
+          <h3 class="text-xl font-black uppercase mb-4">📋 Pesanan Terbaru</h3>
+          <div id="recent-orders" class="font-bold text-sm">Memuat...</div>
         </div>
       </div>
 
       <!-- Section Produk -->
       <div id="section-products" class="hidden">
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-900">Kelola Produk</h2>
-          <button onclick="showProductForm()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
-            <i class="fas fa-plus mr-2"></i>Tambah Produk
+          <h2 class="text-3xl font-black uppercase">📦 Kelola Produk</h2>
+          <button onclick="showProductForm()" class="nb-btn nb-btn-yellow uppercase font-black">
+            ➕ TAMBAH PRODUK
           </button>
         </div>
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="nb-card bg-white overflow-hidden">
           <table class="w-full text-sm">
-            <thead class="bg-gray-50">
+            <thead class="bg-black text-white">
               <tr>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Nama</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Kategori</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Harga</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Stok</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Aksi</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Nama</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Kategori</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Harga</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Stok</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Aksi</th>
               </tr>
             </thead>
-            <tbody id="product-table" class="divide-y divide-gray-100"></tbody>
+            <tbody id="product-table" class="divide-y-4 divide-black font-bold"></tbody>
           </table>
         </div>
 
         <!-- Modal Produk -->
-        <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div class="bg-white rounded-2xl p-6 max-w-lg w-full mx-4">
-            <h3 class="text-xl font-bold text-gray-900 mb-4" id="product-modal-title">Tambah Produk</h3>
+        <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60">
+          <div class="nb-modal p-6 max-w-lg w-full mx-4 bg-white">
+            <h3 class="text-2xl font-black uppercase mb-4" id="product-modal-title">Tambah Produk</h3>
             <form id="product-form" class="space-y-4">
               <input type="hidden" id="product-id">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
-                <input type="text" id="p-nama" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+                <label class="text-sm font-black uppercase mb-1 block tracking-wide">Nama Produk</label>
+                <input type="text" id="p-nama" class="nb-input w-full uppercase" required>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
-                  <select id="p-kategori" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                  <label class="text-sm font-black uppercase mb-1 block tracking-wide">Kategori</label>
+                  <select id="p-kategori" class="nb-input w-full uppercase font-black">
                     <option value="Baju">Baju</option>
                     <option value="Sepatu">Sepatu</option>
                     <option value="Aksesoris">Aksesoris</option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Stok</label>
-                  <input type="number" id="p-stok" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" value="10">
+                  <label class="text-sm font-black uppercase mb-1 block tracking-wide">Stok</label>
+                  <input type="number" id="p-stok" class="nb-input w-full" value="10">
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
-                  <input type="number" id="p-harga" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+                  <label class="text-sm font-black uppercase mb-1 block tracking-wide">Harga (Rp)</label>
+                  <input type="number" id="p-harga" class="nb-input w-full" required>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-                  <input type="text" id="p-deskripsi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                  <label class="text-sm font-black uppercase mb-1 block tracking-wide">Deskripsi</label>
+                  <input type="text" id="p-deskripsi" class="nb-input w-full uppercase">
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Gambar Produk</label>
-                <input type="file" id="p-image-file" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <label class="text-sm font-black uppercase mb-1 block tracking-wide">Gambar Produk</label>
+                <input type="file" id="p-image-file" accept="image/*" class="w-full mb-2">
                 <input type="hidden" id="p-image">
                 <div id="preview-image" class="mt-2 hidden">
-                  <img src="" alt="Preview" class="h-32 w-32 object-cover rounded-lg border">
+                  <img src="" alt="Preview" class="h-32 w-32 object-cover border-4 border-black">
                 </div>
               </div>
               <div class="flex gap-3">
-                <button type="submit" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-lg font-semibold hover:bg-indigo-700">Simpan</button>
-                <button type="button" onclick="closeProductForm()" class="flex-1 bg-gray-100 text-gray-600 py-2.5 rounded-lg font-semibold hover:bg-gray-200">Batal</button>
+                <button type="submit" class="nb-btn nb-btn-yellow flex-1 uppercase font-black">SIMPAN</button>
+                <button type="button" onclick="closeProductForm()" class="nb-btn nb-btn-black flex-1 uppercase font-black">BATAL</button>
               </div>
             </form>
           </div>
@@ -142,37 +143,37 @@
 
       <!-- Section Pesanan -->
       <div id="section-orders" class="hidden">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Daftar Pesanan</h2>
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <h2 class="text-3xl font-black uppercase mb-6">🛍️ Daftar Pesanan</h2>
+        <div class="nb-card bg-white overflow-hidden">
           <table class="w-full text-sm">
-            <thead class="bg-gray-50">
+            <thead class="bg-black text-white">
               <tr>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Nomor</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Pembeli</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Total</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Status</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Aksi</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Nomor</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Pembeli</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Total</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Status</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Aksi</th>
               </tr>
             </thead>
-            <tbody id="order-table" class="divide-y divide-gray-100"></tbody>
+            <tbody id="order-table" class="divide-y-4 divide-black font-bold"></tbody>
           </table>
         </div>
       </div>
 
       <!-- Section Pesan -->
       <div id="section-contacts" class="hidden">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Pesan Masuk</h2>
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <h2 class="text-3xl font-black uppercase mb-6">✉️ Pesan Masuk</h2>
+        <div class="nb-card bg-white overflow-hidden">
           <table class="w-full text-sm">
-            <thead class="bg-gray-50">
+            <thead class="bg-black text-white">
               <tr>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Dari</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Email</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Pesan</th>
-                <th class="text-left px-4 py-3 font-semibold text-gray-600">Status</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Dari</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Email</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Pesan</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Status</th>
               </tr>
             </thead>
-            <tbody id="contact-table" class="divide-y divide-gray-100"></tbody>
+            <tbody id="contact-table" class="divide-y-4 divide-black font-bold"></tbody>
           </table>
         </div>
       </div>
@@ -190,11 +191,12 @@
       document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden'));
       document.getElementById(`section-${section}`).classList.remove('hidden');
       document.querySelectorAll('[id^="nav-"]').forEach(el => {
-        el.classList.remove('bg-indigo-50', 'text-indigo-600');
-        el.classList.add('text-gray-600', 'hover:bg-gray-50');
+        el.classList.remove('bg-yellow-300');
+        el.classList.add('bg-white');
       });
       const nav = document.getElementById(`nav-${section}`);
-      if (nav) nav.classList.add('bg-indigo-50', 'text-indigo-600');
+      if (nav) nav.classList.remove('bg-white');
+      if (nav) nav.classList.add('bg-yellow-300');
       
       if (section === 'products') loadProducts();
       else if (section === 'orders') loadOrders();

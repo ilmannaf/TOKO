@@ -1,97 +1,94 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daftar Akun — EcoStore</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <style> body { font-family: "Poppins", sans-serif; } </style>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun — EcoStore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/neobrutalism.css">
+  </head>
 
-<body class="bg-gray-100 min-h-screen">
-
-  <!-- Navbar -->
-  <nav class="bg-white shadow sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <div class="text-xl font-bold text-indigo-600">
-          <a href="index.html">ECOSTORE</a>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    
+    <!-- Navbar -->
+    <nav class="nb-navbar sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-20">
+          <div class="text-2xl font-black tracking-tight">
+            <a href="index.html">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
+          </div>
+          <ul class="hidden md:flex space-x-6 items-center">
+            <li><a href="index.html" class="nb-link text-lg">HOME</a></li>
+            <li><a href="toko.html" class="nb-link text-lg">PRODUK</a></li>
+            <li><a href="contact.html" class="nb-link text-lg">KONTAK</a></li>
+            <li><a href="Tracking.html" class="nb-link text-lg">LACAK</a></li>
+          </ul>
+          <div id="nav-auth"></div>
         </div>
-        <ul class="hidden md:flex space-x-8 items-center">
-          <li><a href="index.html" class="text-gray-700 hover:text-indigo-600">Home</a></li>
-          <li><a href="toko.html" class="text-gray-700 hover:text-indigo-600">Produk</a></li>
-          <li><a href="contact.html" class="text-gray-700 hover:text-indigo-600">Kontak</a></li>
-          <li><a href="Tracking.html" class="text-gray-700 hover:text-indigo-600">Lacak Pesanan</a></li>
-        </ul>
-        <!-- Slot nama user / tombol login -->
-        <div id="nav-auth"></div>
       </div>
-    </div>
-  </nav>
-  <!-- End Navbar -->
+    </nav>
 
   <!-- Form Register -->
   <div class="flex items-center justify-center py-16 px-4">
-    <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+    <div class="nb-card p-8 w-full max-w-md bg-white">
 
-      <a href="index.html" class="text-2xl font-bold text-indigo-600 tracking-wider block text-center mb-6">
-        ECO<span class="text-gray-900">STORE</span>
+      <a href="index.html" class="text-3xl font-black tracking-tight block text-center mb-6">
+        ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span>
       </a>
 
-      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Buat Akun Baru</h2>
+      <h2 class="text-3xl font-black text-center uppercase mb-6">Buat Akun Baru</h2>
 
       <!-- Pesan error / sukses -->
-      <div id="error-msg" class="hidden mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg"></div>
-      <div id="success-msg" class="hidden mb-4 bg-green-50 border border-green-200 text-green-600 text-sm px-4 py-3 rounded-lg"></div>
+      <div id="error-msg" class="hidden mb-4 nb-alert nb-alert-error"></div>
+      <div id="success-msg" class="hidden mb-4 nb-alert nb-alert-success"></div>
 
       <!-- Nama -->
-      <label class="text-sm font-medium text-gray-700 mb-1 block">Nama Lengkap</label>
-      <input type="text" id="nama" placeholder="Masukkan nama lengkap"
-        class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+      <label class="text-sm font-bold uppercase mb-2 block tracking-wide">Nama Lengkap</label>
+      <input type="text" id="nama" placeholder="MASUKKAN NAMA LENGKAP"
+        class="nb-input w-full mb-4 uppercase">
 
       <!-- Email -->
-      <label class="text-sm font-medium text-gray-700 mb-1 block">Email</label>
-      <input type="email" id="email" placeholder="contoh@email.com"
-        class="w-full mb-4 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+      <label class="text-sm font-bold uppercase mb-2 block tracking-wide">Email</label>
+      <input type="email" id="email" placeholder="CONTOH@EMAIL.COM"
+        class="nb-input w-full mb-4">
 
       <!-- Password -->
-      <label class="text-sm font-medium text-gray-700 mb-1 block">Password</label>
+      <label class="text-sm font-bold uppercase mb-2 block tracking-wide">Password</label>
       <div class="relative mb-2">
-        <input type="password" id="password" placeholder="Minimal 6 karakter"
-          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none pr-10"
+        <input type="password" id="password" placeholder="MINIMAL 6 KARAKTER"
+          class="nb-input w-full pr-10 uppercase"
           oninput="checkPasswordStrength(this.value)">
         <button type="button" onclick="togglePassword('password', this)"
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl">
           👁
         </button>
       </div>
 
       <!-- Indikator kekuatan password -->
-      <div id="strength-bar" class="h-1.5 rounded-full mb-1 w-0 transition-all duration-300"></div>
-      <p id="strength-text" class="text-xs text-gray-400 mb-4"></p>
+      <div id="strength-bar" class="h-2 border-4 border-black mb-1 w-0 transition-all duration-300 bg-yellow-300"></div>
+      <p id="strength-text" class="text-xs font-bold mb-4 uppercase"></p>
 
       <!-- Konfirmasi Password -->
-      <label class="text-sm font-medium text-gray-700 mb-1 block">Konfirmasi Password</label>
+      <label class="text-sm font-bold uppercase mb-2 block tracking-wide">Konfirmasi Password</label>
       <div class="relative mb-6">
-        <input type="password" id="confirm-password" placeholder="Ulangi password"
-          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none pr-10">
+        <input type="password" id="confirm-password" placeholder="ULANGI PASSWORD"
+          class="nb-input w-full pr-10 uppercase">
         <button type="button" onclick="togglePassword('confirm-password', this)"
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl">
           👁
         </button>
       </div>
 
       <!-- Button Register -->
       <button id="btn-register" onclick="handleRegister()"
-        class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 font-medium transition-colors">
-        Daftar Sekarang
+        class="nb-btn nb-btn-yellow w-full mb-4">
+        DAFTAR SEKARANG
       </button>
 
       <!-- Link ke Login -->
-      <p class="text-sm text-center text-gray-500 mt-4">
+      <p class="text-sm text-center font-bold uppercase">
         Sudah punya akun?
-        <a href="login.html" class="text-indigo-600 hover:underline font-medium">Masuk</a>
+        <a href="login.html" class="nb-link">Masuk</a>
       </p>
 
     </div>
