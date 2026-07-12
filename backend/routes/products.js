@@ -14,11 +14,11 @@ router.get('/', async (req, res) => {
     const conditions = [];
 
     if (kategori) {
-      conditions.push('kategori = ?');
+      conditions.push('p.kategori = ?');
       params.push(kategori);
     }
     if (search) {
-      conditions.push('(nama LIKE ? OR deskripsi LIKE ?)');
+      conditions.push('(p.nama LIKE ? OR p.deskripsi LIKE ?)');
       params.push(`%${search}%`, `%${search}%`);
     }
 
@@ -26,8 +26,11 @@ router.get('/', async (req, res) => {
       whereClause = ' WHERE ' + conditions.join(' AND ');
     }
 
-    const [[{ total }]] = await db.query('SELECT COUNT(*) AS total FROM products' + whereClause, params);
-    const [products] = await db.query('SELECT * FROM products' + whereClause + ' ORDER BY created_at DESC LIMIT ? OFFSET ?', [...params, limitNum, offset]);
+    const [[{ total }]] = await db.query('SELECT COUNT(*) AS total FROM products p' + whereClause, params);
+    const [products] = await db.query(
+      'SELECT p.*, COALESCE(ROUND(AVG(r.rating), 1), 0) AS avg_rating, COUNT(r.id) AS review_count FROM products p LEFT JOIN reviews r ON p.id = r.product_id' + whereClause + ' GROUP BY p.id ORDER BY p.created_at DESC LIMIT ? OFFSET ?',
+      [...params, limitNum, offset]
+    );
     res.json({ success: true, products, total, page: pageNum, limit: limitNum, totalPages: Math.ceil(total / limitNum) });
   } catch (error) {
     console.error('Error ambil produk:', error);

@@ -1,5 +1,12 @@
 var pageState = { page: 1, limit: 8, kategori: '', search: '', totalPages: 1 };
 
+function starsHtml(rating) {
+  var r = Math.round(rating || 0);
+  var s = '';
+  for (var i = 1; i <= 5; i++) s += i <= r ? '⭐' : '☆';
+  return s;
+}
+
 async function fetchProducts(page, kategori, search) {
   try {
     var url = API_PRODUCTS + '?page=' + (page || 1) + '&limit=' + pageState.limit;
@@ -41,11 +48,16 @@ function renderProductsFromData(products) {
         + '<h3 style="font-size:1.125rem;font-weight:900;text-transform:uppercase;margin:0;">' + product.nama + '</h3>'
         + '<p style="font-weight:700;margin-top:4px;">Rp ' + Number(product.harga).toLocaleString('id-ID') + '</p>'
         + '<p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;margin-top:4px;opacity:0.6;">' + product.kategori + '</p>'
-        + '<div style="margin-top:8px;font-size:0.75rem;font-weight:700;color:#4d7c0f;">'
+        + '<div style="margin-top:6px;font-size:0.8rem;">'
+          + '<span>' + starsHtml(product.avg_rating) + '</span>'
+          + '<span style="font-weight:700;margin-left:4px;font-size:0.75rem;">(' + (product.review_count || 0) + ')</span>'
+        + '</div>'
+        + '<div style="margin-top:4px;font-size:0.75rem;font-weight:700;color:#4d7c0f;">'
           + '<span>🌱 +' + (product.eco_points || 0) + ' Eco-Points</span>'
           + '<span style="margin:0 4px;">•</span>'
           + '<span>' + Number(product.carbon_saved || 0).toFixed(1) + 'kg CO₂</span>'
         + '</div>'
+        + '<button onclick="openReviewModal(' + product.id + ", '" + safeName + '\')" style="width:100%;margin-top:8px;border:4px solid #000;background:#FFE500;color:#000;padding:6px 16px;font-weight:900;text-transform:uppercase;font-size:0.75rem;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-family:inherit;">⭐ REVIEW</button>'
         + '<button onclick="addToCart(' + product.id + ", '" + safeName + "', " + product.harga + ", '" + imgSrc + '\')" style="width:100%;margin-top:12px;border:4px solid #000;background:#000;color:#fff;padding:8px 16px;font-weight:900;text-transform:uppercase;font-size:0.875rem;cursor:pointer;box-shadow:6px 6px 0 0 rgba(0,0,0,1);font-family:inherit;">'
           + '🛒 TAMBAH'
         + '</button>'
@@ -128,6 +140,93 @@ async function searchProducts() {
   pageState.totalPages = data.totalPages || 1;
   renderProductsFromData(data.products);
   renderPagination();
+}
+
+// ─── Review Modal ───
+const API_REVIEWS = API_BASE_URL + '/api/reviews';
+
+async function openReviewModal(productId, productName) {
+  document.getElementById('review-modal-title').textContent = '⭐ Review: ' + productName;
+  document.getElementById('review-product-id').value = productId;
+  document.getElementById('review-rating').value = 0;
+  document.getElementById('review-komentar').value = '';
+  document.getElementById('review-list').innerHTML = '<p style="font-weight:700;text-align:center;color:#999;">Memuat review...</p>';
+
+  // Reset stars
+  for (var i = 1; i <= 5; i++) document.getElementById('star-' + i).textContent = '☆';
+
+  // Show/hide form based on login
+  var loggedIn = typeof isLoggedIn === 'function' && isLoggedIn();
+  document.getElementById('review-form').className = loggedIn ? '' : 'hidden';
+  document.getElementById('review-login-msg').className = loggedIn ? 'hidden' : '';
+
+  document.getElementById('review-modal').style.display = 'flex';
+  document.getElementById('review-modal').classList.remove('hidden');
+
+  // Fetch reviews
+  try {
+    var res = await fetch(API_REVIEWS + '/' + productId);
+    var data = await res.json();
+    if (data.success) {
+      var html = '';
+      if (data.reviews.length === 0) {
+        html = '<p style="text-align:center;font-weight:700;color:#999;">Belum ada review untuk produk ini.</p>';
+      } else {
+        for (var i = 0; i < data.reviews.length; i++) {
+          var r = data.reviews[i];
+          html += '<div style="border:4px solid #000;padding:12px;margin-bottom:8px;">'
+            + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+              + '<span style="font-weight:900;">' + r.user_name + '</span>'
+              + '<span>' + starsHtml(r.rating) + '</span>'
+            + '</div>'
+            + (r.komentar ? '<p style="margin-top:4px;font-weight:600;">' + r.komentar + '</p>' : '')
+            + '<p style="font-size:0.7rem;font-weight:700;opacity:0.5;margin-top:4px;">' + new Date(r.created_at).toLocaleDateString('id-ID') + '</p>'
+          + '</div>';
+        }
+      }
+      document.getElementById('review-list').innerHTML = html;
+    }
+  } catch (err) {
+    document.getElementById('review-list').innerHTML = '<p style="font-weight:700;text-align:center;color:red;">Gagal memuat review.</p>';
+  }
+}
+
+function closeReviewModal() {
+  document.getElementById('review-modal').style.display = 'none';
+  document.getElementById('review-modal').classList.add('hidden');
+}
+
+function setRating(val) {
+  document.getElementById('review-rating').value = val;
+  for (var i = 1; i <= 5; i++) {
+    document.getElementById('star-' + i).textContent = i <= val ? '⭐' : '☆';
+  }
+}
+
+async function submitReview() {
+  var productId = document.getElementById('review-product-id').value;
+  var rating = parseInt(document.getElementById('review-rating').value);
+  var komentar = document.getElementById('review-komentar').value.trim();
+
+  if (!rating) { alert('Pilih rating dulu!'); return; }
+
+  try {
+    var res = await fetch(API_REVIEWS, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ product_id: productId, rating: rating, komentar: komentar || null })
+    });
+    var data = await res.json();
+    if (data.success) {
+      showToast('Review berhasil dikirim! ⭐');
+      closeReviewModal();
+      renderProducts();
+    } else {
+      alert(data.message);
+    }
+  } catch (err) {
+    alert('Gagal mengirim review.');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
