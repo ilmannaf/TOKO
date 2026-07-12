@@ -243,6 +243,13 @@ JWT_EXPIRES_IN=7d
 - ✅ Dynamic product rendering from database
 - ✅ Search & filter products by category/name
 - ✅ FAQ, Terms, Privacy pages
+- ✅ Fixed `harga` database column overflow (`DECIMAL(10,2)` → `DECIMAL(15,2)`)
+- ✅ Added harga validation (positive number, max size check) on POST & PUT
+- ✅ Fixed missing delete button in admin panel (replaced Font Awesome icons with emoji + neobrutalism buttons)
+- ✅ Rewrote all dynamic JS rendering (`products.js`, `wishlist.js`, `keranjang.js`) to use inline styles instead of Tailwind classes (CDN doesn't scan JS template strings)
+- ✅ Added `onerror` image fallback for broken product images
+- ✅ Local product images stored in `frontend/assets/products/` (11 seed products + admin uploads)
+- ✅ Renamed image files with spaces to use hyphens for URL safety
 
 ## TODO / Future Improvements
 - [ ] Pagination for products (currently loads all)
@@ -253,6 +260,8 @@ JWT_EXPIRES_IN=7d
 - [ ] Admin authentication middleware
 - [ ] Rate limiting & input sanitization
 - [ ] Unit tests
+- [ ] Sepatu Sneakers product image (missing local file)
+- [ ] Admin delete confirmation with neobrutalism modal
 
 ## Notes
 - No top-level `package.json`; backend package management is under `backend/`
@@ -263,4 +272,4 @@ JWT_EXPIRES_IN=7d
 - Order tracking uses simulated timeline based on order creation time
 
 ---
-Last updated: 2026-07-11 12:36
+Last updated: 2026-07-12 22:30

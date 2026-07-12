@@ -52,10 +52,15 @@ router.post('/', async (req, res) => {
   const { nama, kategori, harga, stok, deskripsi, eco_points, carbon_saved, image } = req.body;
   if (!nama || !kategori || !harga)
     return res.status(400).json({ success: false, message: 'Nama, kategori, dan harga wajib diisi.' });
+  const parsedHarga = parseFloat(harga);
+  if (isNaN(parsedHarga) || parsedHarga <= 0)
+    return res.status(400).json({ success: false, message: 'Harga harus berupa angka positif.' });
+  if (parsedHarga > 9999999999999.99)
+    return res.status(400).json({ success: false, message: 'Harga terlalu besar.' });
   try {
     const [result] = await db.query(
       'INSERT INTO products (nama, kategori, harga, stok, deskripsi, eco_points, carbon_saved, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [nama, kategori, harga, stok || 0, deskripsi || null, eco_points || 0, carbon_saved || 0, image || null]
+      [nama, kategori, parsedHarga, stok || 0, deskripsi || null, eco_points || 0, carbon_saved || 0, image || null]
     );
     res.status(201).json({ success: true, message: 'Produk berhasil ditambahkan.', id: result.insertId });
   } catch (error) {
@@ -68,10 +73,15 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { nama, kategori, harga, stok, deskripsi, eco_points, carbon_saved, image } = req.body;
+  const parsedHarga = parseFloat(harga);
+  if (isNaN(parsedHarga) || parsedHarga <= 0)
+    return res.status(400).json({ success: false, message: 'Harga harus berupa angka positif.' });
+  if (parsedHarga > 9999999999999.99)
+    return res.status(400).json({ success: false, message: 'Harga terlalu besar.' });
   try {
     const [result] = await db.query(
       'UPDATE products SET nama = ?, kategori = ?, harga = ?, stok = ?, deskripsi = ?, eco_points = ?, carbon_saved = ?, image = ? WHERE id = ?',
-      [nama, kategori, harga, stok, deskripsi, eco_points, carbon_saved, image, id]
+      [nama, kategori, parsedHarga, stok, deskripsi, eco_points, carbon_saved, image, id]
     );
     if (result.affectedRows === 0)
       return res.status(404).json({ success: false, message: 'Produk tidak ditemukan.' });

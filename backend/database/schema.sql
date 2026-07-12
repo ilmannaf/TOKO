@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nama VARCHAR(100) NOT NULL,
   kategori VARCHAR(50) NOT NULL,
-  harga DECIMAL(10,2) NOT NULL,
+  harga DECIMAL(15,2) NOT NULL,
   stok INT DEFAULT 0,
   deskripsi TEXT,
   eco_points INT DEFAULT 0,

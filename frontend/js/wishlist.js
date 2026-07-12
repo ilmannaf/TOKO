@@ -1,23 +1,17 @@
-// JS/wishlist.js - Handle wishlist functionality
-
-// Cek apakah produk sudah ada di wishlist
 async function isProductInWishlist(productId) {
   if (!isLoggedIn()) return false;
   try {
-    const response = await fetch(`${API_WISHLIST}`, {
-      headers: { 'Authorization': `Bearer ${getToken()}` }
+    const response = await fetch(API_WISHLIST, {
+      headers: { 'Authorization': 'Bearer ' + getToken() }
     });
     const data = await response.json();
     if (data.success) {
-      return data.wishlist.some(item => item.id === productId || item.product_id === productId);
+      return data.wishlist.some(function(item) { return item.id === productId || item.product_id === productId; });
     }
-  } catch (error) {
-    return false;
-  }
+  } catch (error) { return false; }
   return false;
 }
 
-// Tambah ke wishlist
 async function addToWishlist(productId) {
   if (!isLoggedIn()) {
     alert('Login dulu ya untuk simpan ke wishlist!');
@@ -25,160 +19,113 @@ async function addToWishlist(productId) {
     return;
   }
   try {
-    const response = await fetch(`${API_WISHLIST}/add`, {
+    const response = await fetch(API_WISHLIST + '/add', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
       body: JSON.stringify({ product_id: productId })
     });
     const data = await response.json();
     if (data.success) {
       showToast('Produk ditambahkan ke Wishlist! ❤️');
       updateWishlistButton(productId, true);
-    } else {
-      showToast('Gagal menambah ke Wishlist');
-    }
-  } catch (error) {
-    showToast('Gagal menambah ke Wishlist');
-  }
+    } else { showToast('Gagal menambah ke Wishlist'); }
+  } catch (error) { showToast('Gagal menambah ke Wishlist'); }
 }
 
-// Hapus dari wishlist
 async function removeFromWishlist(productId) {
   try {
-    const response = await fetch(`${API_WISHLIST}/remove/${productId}`, {
+    const response = await fetch(API_WISHLIST + '/remove/' + productId, {
       method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${getToken()}` }
+      headers: { 'Authorization': 'Bearer ' + getToken() }
     });
     const data = await response.json();
     if (data.success) {
       showToast('Dihapus dari Wishlist.');
       updateWishlistButton(productId, false);
     }
-  } catch (error) {
-    showToast('Gagal menghapus dari Wishlist');
-  }
+  } catch (error) { showToast('Gagal menghapus dari Wishlist'); }
 }
 
-// Update button UI - pakai emoji
 function updateWishlistButton(productId, inWishlist) {
-  const btn = document.getElementById(`wishlist-icon-${productId}`);
-  if (btn) {
-    if (inWishlist) {
-      btn.textContent = '❤️';
-    } else {
-      btn.textContent = '🤍';
-    }
-  }
+  var btn = document.getElementById('wishlist-icon-' + productId);
+  if (btn) { btn.textContent = inWishlist ? '❤️' : '🤍'; }
 }
 
-// Toggle wishlist (untuk onclick button)
 async function toggleWishlist(productId) {
   if (!isLoggedIn()) {
     alert('Login dulu ya untuk simpan ke wishlist!');
     window.location.href = 'login.html';
     return;
   }
-  
-  const inWishlist = await isProductInWishlist(productId);
-  if (inWishlist) {
-    await removeFromWishlist(productId);
-  } else {
-    await addToWishlist(productId);
-  }
+  var inWishlist = await isProductInWishlist(productId);
+  if (inWishlist) { await removeFromWishlist(productId); }
+  else { await addToWishlist(productId); }
 }
 
-// Render button wishlist di produk card
-function renderWishlistButton(productId, inWishlist) {
-  return `
-    <button id="wishlist-btn-${productId}" 
-            onclick="${inWishlist ? `removeFromWishlist(${productId})` : `addToWishlist(${productId})`}"
-            class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/80 shadow-sm hover:scale-110 transition-transform z-10 text-2xl flex items-center justify-center hover:shadow-md"
-            title="${inWishlist ? 'Hapus dari Wishlist' : 'Simpan ke Wishlist'}">
-      <span>${inWishlist ? '❤️' : '🤍'}</span>
-    </button>
-  `;
-}
-
-// Render Wishlist page
 async function renderWishlistPage() {
-  if (!isLoggedIn()) {
-    window.location.href = 'login.html';
-    return;
-  }
-
+  if (!isLoggedIn()) { window.location.href = 'login.html'; return; }
   try {
-    const response = await fetch(`${API_WISHLIST}`, {
-      headers: { 'Authorization': `Bearer ${getToken()}` }
+    var response = await fetch(API_WISHLIST, {
+      headers: { 'Authorization': 'Bearer ' + getToken() }
     });
-    const data = await response.json();
-
-    const container = document.getElementById('wishlist-container');
+    var data = await response.json();
+    var container = document.getElementById('wishlist-container');
     if (!data.success || data.wishlist.length === 0) {
-      container.innerHTML = `
-        <div class="text-center py-20">
-          <i class="far fa-heart text-6xl text-gray-300 mb-4"></i>
-          <h3 class="text-2xl font-bold text-gray-600 mb-2">Wishlist kamu kosong</h3>
-          <p class="text-gray-500">Mulai simpan produk favoritmu!</p>
-          <a href="toko.html" class="inline-block mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700">Jelajahi Produk</a>
-        </div>
-      `;
+      container.innerHTML = '<div style="text-align:center;padding:5rem 0;">'
+        + '<div style="font-size:4rem;margin-bottom:1rem;">🤍</div>'
+        + '<h3 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:8px;">Wishlist Kosong</h3>'
+        + '<p style="font-weight:700;text-transform:uppercase;font-size:0.875rem;opacity:0.6;">Mulai simpan produk favoritmu!</p>'
+        + '<a href="toko.html" class="nb-btn nb-btn-yellow" style="display:inline-block;margin-top:1.5rem;text-transform:uppercase;font-weight:900;text-decoration:none;">Jelajahi Produk</a>'
+        + '</div>';
       return;
     }
-
-    container.innerHTML = `
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        ${data.wishlist.map(product => `
-          <div class="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-all">
-            <div class="relative">
-              ${renderWishlistButton(product.id, true)}
-              <img src="${product.image}" class="h-48 w-full object-cover" alt="${product.nama}">
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold text-gray-900">${product.nama}</h3>
-              <p class="text-indigo-600 font-bold mt-2">Rp ${Number(product.harga).toLocaleString('id-ID')}</p>
-              <div class="mt-3 flex gap-2">
-                <button onclick="addToCart(${product.id}, '${product.nama}', ${product.harga}, '${product.image}')" class="flex-1 bg-indigo-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
-                  <i class="fas fa-shopping-cart mr-1"></i> Beli
-                </button>
-                <button onclick="removeFromWishlist(${product.id})" class="px-3 py-2 bg-gray-100 text-red-600 rounded-lg hover:bg-red-50">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+    var html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;">';
+    for (var i = 0; i < data.wishlist.length; i++) {
+      var product = data.wishlist[i];
+      var imgSrc = product.image || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600';
+      var safeName = product.nama.replace(/'/g, "\\'");
+      html += '<div class="nb-product-card">'
+        + '<div style="height:180px;overflow:hidden;border-bottom:4px solid #000;position:relative;">'
+          + '<img src="' + imgSrc + '" alt="' + product.nama + '" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src=\'https://placehold.co/400x400?text=Error\'" />'
+          + '<button onclick="removeFromWishlist(' + product.id + ')" style="position:absolute;top:8px;right:8px;border:4px solid #000;background:#FF6B9D;color:#fff;padding:4px 8px;font-size:14px;line-height:1;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-weight:900;z-index:10;">❤️</button>'
+        + '</div>'
+        + '<div style="padding:1rem;">'
+          + '<h3 style="font-weight:900;text-transform:uppercase;margin:0;">' + product.nama + '</h3>'
+          + '<p style="font-weight:700;margin-top:4px;">Rp ' + Number(product.harga).toLocaleString('id-ID') + '</p>'
+          + '<div style="margin-top:12px;display:flex;gap:8px;">'
+            + '<button onclick="addToCart(' + product.id + ", '" + safeName + "', " + product.harga + ", '" + imgSrc + '\')" style="flex:1;border:4px solid #000;background:#000;color:#fff;padding:8px;font-weight:900;text-transform:uppercase;font-size:0.875rem;cursor:pointer;box-shadow:6px 6px 0 0 rgba(0,0,0,1);font-family:inherit;">🛒 BELI</button>'
+            + '<button onclick="removeFromWishlist(' + product.id + ')" style="border:4px solid #000;background:#fff;padding:8px 12px;font-weight:900;cursor:pointer;box-shadow:6px 6px 0 0 rgba(0,0,0,1);font-family:inherit;font-size:1rem;">🗑️</button>'
+          + '</div>'
+        + '</div>'
+      + '</div>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
   } catch (error) {
     console.error(error);
-    document.getElementById('wishlist-container').innerHTML = '<p class="text-center text-red-500">Gagal memuat wishlist</p>';
+    document.getElementById('wishlist-container').innerHTML = '<p style="text-align:center;color:red;font-weight:700;">Gagal memuat wishlist</p>';
   }
 }
 
-// Toast helper
 function showToast(message) {
-  const toast = document.getElementById('toast');
+  var toast = document.getElementById('toast');
   if (toast) {
     toast.innerHTML = message;
-    toast.classList.remove('opacity-0', 'translate-y-4');
-    toast.classList.add('opacity-100', 'translate-y-0');
-    setTimeout(() => {
-      toast.classList.remove('opacity-100', 'translate-y-0');
-      toast.classList.add('opacity-0', 'translate-y-4');
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+    setTimeout(function() {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(1rem)';
     }, 2000);
   }
 }
 
-// Init saat halaman dimuat
-document.addEventListener('DOMContentLoaded', async () => {
-  // Update button wishlist jika ada
-  const wishlistBtns = document.querySelectorAll('[id^="wishlist-btn-"]');
-  for (const btn of wishlistBtns) {
-    const productId = parseInt(btn.id.split('-')[2]);
-    const inWishlist = await isProductInWishlist(productId);
+document.addEventListener('DOMContentLoaded', async function() {
+  var wishlistBtns = document.querySelectorAll('[id^="wishlist-btn-"]');
+  for (var i = 0; i < wishlistBtns.length; i++) {
+    var btn = wishlistBtns[i];
+    var productId = parseInt(btn.id.split('-')[2]);
+    var inWishlist = await isProductInWishlist(productId);
     updateWishlistButton(productId, inWishlist);
   }
 });
