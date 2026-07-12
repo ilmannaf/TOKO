@@ -11,6 +11,7 @@ const productRoutes = require('./routes/products');
 const uploadRoutes = require('./routes/upload');
 const wishlistRoutes = require('./routes/wishlist');
 const reviewRoutes = require('./routes/reviews');
+const voucherRoutes = require('./routes/vouchers');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +32,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/vouchers', voucherRoutes);
 
 // Route test
 app.get('/', (req, res) => {

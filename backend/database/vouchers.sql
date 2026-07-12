@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS vouchers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  kode VARCHAR(50) NOT NULL UNIQUE,
+  diskon_persen INT DEFAULT 0,
+  diskon_nominal DECIMAL(15,2) DEFAULT 0,
+  min_belanja DECIMAL(15,2) DEFAULT 0,
+  maks_diskon DECIMAL(15,2) DEFAULT NULL,
+  kuota INT DEFAULT NULL,
+  terpakai INT DEFAULT 0,
+  aktif BOOLEAN DEFAULT TRUE,
+  berlaku_mulai DATE DEFAULT NULL,
+  berlaku_sampai DATE DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

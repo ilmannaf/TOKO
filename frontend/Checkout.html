@@ -221,20 +221,28 @@
           <!-- Daftar produk di keranjang -->
           <div id="checkout-items" class="space-y-3 mb-4 max-h-60 overflow-y-auto"></div>
 
-          <div class="border-t border-gray-100 pt-4 space-y-2 text-sm text-gray-600">
-            <div class="flex justify-between">
-              <span>Subtotal</span>
-              <span id="subtotal-display" class="font-medium text-gray-800">Rp 0</span>
+            <div class="border-t border-gray-100 pt-4 space-y-2 text-sm text-gray-600">
+              <div class="flex justify-between">
+                <span>Subtotal</span>
+                <span id="subtotal-display" class="font-medium text-gray-800">Rp 0</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Ongkos Kirim</span>
+                <span id="ongkir-display" class="font-medium text-gray-800">Rp 0</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span>Voucher</span>
+                <span id="voucher-display" class="font-medium text-green-600 text-xs">-</span>
+              </div>
+              <div class="flex gap-2">
+                <input type="text" id="voucher-input" placeholder="KODE VOUCHER" class="flex-1 border-4 border-black px-3 py-2 text-xs font-bold uppercase" style="border:4px solid #000;padding:8px;font-family:inherit;font-weight:700;font-size:0.75rem;">
+                <button onclick="applyVoucher()" class="nb-btn nb-btn-yellow text-xs px-3 py-2 uppercase font-black">PAKAI</button>
+              </div>
+              <div class="border-t border-gray-100 pt-2 flex justify-between text-base font-bold text-gray-900">
+                <span>Total</span>
+                <span id="total-display" class="text-indigo-600 text-lg">Rp 0</span>
+              </div>
             </div>
-            <div class="flex justify-between">
-              <span>Ongkos Kirim</span>
-              <span id="ongkir-display" class="font-medium text-gray-800">Rp 0</span>
-            </div>
-            <div class="border-t border-gray-100 pt-2 flex justify-between text-base font-bold text-gray-900">
-              <span>Total</span>
-              <span id="total-display" class="text-indigo-600 text-lg">Rp 0</span>
-            </div>
-          </div>
 
           <!-- Pesan error -->
           <div id="checkout-error"
@@ -285,6 +293,8 @@
   <script src="js/config.js"></script>
   <script>
     let ongkirTerpilih = 0;
+    let voucherDiskon = 0;
+    let voucherKode = '';
 
     // ─── TABEL ONGKIR BERDASARKAN ZONA (dari Semarang) ───
     const ZONA_ONGKIR = {
@@ -447,11 +457,40 @@
     function updateTotal() {
       const cart = getCart();
       const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      const total = subtotal + ongkirTerpilih;
+      const total = subtotal + ongkirTerpilih - voucherDiskon;
 
       document.getElementById('subtotal-display').textContent = formatRupiah(subtotal);
       document.getElementById('ongkir-display').textContent = formatRupiah(ongkirTerpilih);
+      document.getElementById('voucher-display').textContent = voucherDiskon > 0 ? '-' + formatRupiah(voucherDiskon) : '-';
       document.getElementById('total-display').textContent = formatRupiah(total);
+    }
+
+    async function applyVoucher() {
+      var kode = document.getElementById('voucher-input').value.trim();
+      if (!kode) { alert('Masukkan kode voucher!'); return; }
+      var cart = getCart();
+      var subtotal = cart.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
+
+      try {
+        var res = await fetch(API_BASE_URL + '/api/vouchers/validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ kode: kode, total_belanja: subtotal })
+        });
+        var data = await res.json();
+        if (data.success) {
+          voucherDiskon = data.voucher.diskon;
+          voucherKode = data.voucher.kode;
+          document.getElementById('voucher-input').value = data.voucher.kode;
+          document.getElementById('voucher-input').disabled = true;
+          updateTotal();
+          alert('✅ ' + data.message + ' Diskon: ' + formatRupiah(voucherDiskon));
+        } else {
+          alert('❌ ' + data.message);
+        }
+      } catch (err) {
+        alert('Gagal validasi voucher.');
+      }
     }
 
     // Kurir listener sudah ditangani oleh pilihanKurirBerubah()
@@ -499,7 +538,7 @@
       const kurir = kurirEl.value;
       const pembayaran = bayarEl.value;
       const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      const total = subtotal + ongkirTerpilih;
+      const total = subtotal + ongkirTerpilih - voucherDiskon;
 
       // Ambil user_id dari localStorage jika sudah login
       const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -525,6 +564,8 @@
             metode_bayar: pembayaran,
             subtotal,
             ongkir: ongkirTerpilih,
+            diskon: voucherDiskon,
+            voucher: voucherKode,
             total,
             items: cart.map(i => ({
               id: i.id,
@@ -556,31 +597,33 @@
           localStorage.setItem('ecostore_orders', JSON.stringify(riwayat));
 
           // ==========================================
-          // LOGIKA ECO-POINTS (TAMBAHAN BARU)
+          // LOGIKA ECO-POINTS
           // ==========================================
+          var ecoHistory = JSON.parse(localStorage.getItem('ecoHistory') || '[]');
           let totalEcoPointsGained = 0;
           let totalCarbonSaved = 0;
           
-          cart.forEach(item => {
-             totalEcoPointsGained += (item.ecoPoints || 0) * item.qty;
-             totalCarbonSaved += (item.carbonSaved || 0) * item.qty;
+          cart.forEach(function(item) {
+             var pts = (item.ecoPoints || 0) * item.qty;
+             var carb = (item.carbonSaved || 0) * item.qty;
+             totalEcoPointsGained += pts;
+             totalCarbonSaved += carb;
+             ecoHistory.push({ product: item.name, points: pts, carbon: carb, date: new Date().toISOString() });
           });
 
-          // Ambil data pohon digital saat ini
-          let ecoData = JSON.parse(localStorage.getItem("ecoData"));
+          var ecoData = JSON.parse(localStorage.getItem("ecoData"));
           if (ecoData) {
              ecoData.points += totalEcoPointsGained;
              ecoData.carbon += totalCarbonSaved;
              ecoData.xp += totalEcoPointsGained;
-
-             // Logika Level Up
              while (ecoData.xp >= ecoData.nextLevelXp) {
                  ecoData.level += 1;
                  ecoData.xp -= ecoData.nextLevelXp;
-                 ecoData.nextLevelXp = ecoData.level * 500;
+                 ecoData.nextLevelXp = Math.floor(ecoData.nextLevelXp * 1.5);
              }
              localStorage.setItem("ecoData", JSON.stringify(ecoData));
           }
+          localStorage.setItem('ecoHistory', JSON.stringify(ecoHistory));
           // ==========================================
 
           // Kosongkan keranjang

@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     user_id,
     nama_penerima, telepon, alamat, kota, provinsi, kode_pos, catatan,
     kurir, metode_bayar,
-    subtotal, ongkir, total,
+    subtotal, ongkir, diskon, voucher, total,
     items,
   } = req.body;
 
@@ -35,13 +35,13 @@ router.post('/', async (req, res) => {
     const [result] = await db.query(
       `INSERT INTO orders
         (nomor_pesanan, user_id, nama_penerima, telepon, alamat, kota, provinsi, kode_pos, catatan,
-         kurir, metode_bayar, subtotal, ongkir, total)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         kurir, metode_bayar, subtotal, ongkir, diskon, voucher, total)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         nomor, user_id || null,
         nama_penerima, telepon, alamat, kota, provinsi, kode_pos || null, catatan || null,
         kurir, metode_bayar,
-        subtotal, ongkir, total,
+        subtotal, ongkir, diskon || 0, voucher || null, total,
       ]
     );
 

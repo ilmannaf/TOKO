@@ -1,13 +1,11 @@
-// JS/toko.js - Handle produk statis untuk backward compatibility
-// Fungsi untuk mengambil data keranjang dari Local Storage
 function getCart() {
   return JSON.parse(localStorage.getItem('ecostore_cart') || '[]');
 }
-// Fungsi untuk menyimpan data keranjang ke Local Storage
+
 function saveCart(cart) {
   localStorage.setItem('ecostore_cart', JSON.stringify(cart));
 }
-// Fungsi untuk mengupdate angka merah (badge) di ikon keranjang navbar
+
 function updateCartCount() {
   const cart = getCart();
   const total = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -21,27 +19,49 @@ function updateCartCount() {
     if(badgeMobile) badgeMobile.classList.add('hidden');
   }
 }
-// Fungsi untuk menambah produk ke keranjang
+
+function addEcoHistory(productName, points, carbon) {
+  var ecoData = JSON.parse(localStorage.getItem('ecoData') || '{"points":0,"carbon":0,"xp":0,"level":1,"nextLevelXp":500}');
+  ecoData.points += points;
+  ecoData.carbon += carbon;
+  ecoData.xp += points;
+
+  // Level up logic
+  while (ecoData.xp >= ecoData.nextLevelXp) {
+    ecoData.xp -= ecoData.nextLevelXp;
+    ecoData.level += 1;
+    ecoData.nextLevelXp = Math.floor(ecoData.nextLevelXp * 1.5);
+  }
+
+  localStorage.setItem('ecoData', JSON.stringify(ecoData));
+
+  var history = JSON.parse(localStorage.getItem('ecoHistory') || '[]');
+  history.push({ product: productName, points: points, carbon: carbon, date: new Date().toISOString() });
+  localStorage.setItem('ecoHistory', JSON.stringify(history));
+}
+
 function addToCart(id, name, price, image) {
   const cart = getCart();
   const existing = cart.find(item => item.id === id);
-  // Ambil data produk dari API untuk eco points
-  fetch(`${API_PRODUCTS}/${id}`)
+
+  fetch(API_BASE_URL + '/api/products/' + id)
     .then(res => res.json())
     .then(data => {
       const product = data.product;
+      var ecoPts = product.eco_points || 0;
+      var carbonSv = parseFloat(product.carbon_saved) || 0;
+
       if (existing) {
         existing.qty += 1;
+        // Add eco for each additional qty
+        addEcoHistory(name, ecoPts, carbonSv);
       } else {
-        cart.push({ 
-          id, name, price, image, qty: 1, 
-          ecoPoints: product.eco_points || 0, 
-          carbonSaved: product.carbon_saved || 0 
-        });
+        cart.push({ id, name, price, image, qty: 1, ecoPoints: ecoPts, carbonSaved: carbonSv });
+        addEcoHistory(name, ecoPts, carbonSv);
       }
       saveCart(cart);
       updateCartCount();
-      showToast(name, product.eco_points || 0);
+      showToast(name, ecoPts);
     })
     .catch(err => {
       console.error('API tidak tersedia, menggunakan default eco points');
@@ -55,20 +75,20 @@ function addToCart(id, name, price, image) {
       showToast(name, 100);
     });
 }
-// Fungsi untuk menampilkan toast
+
 function showToast(name, ecoPoints) {
   const toast = document.getElementById('toast');
   if (toast) {
-    toast.innerHTML = `🛒 "${name}" ditambahkan!<br><span class="text-emerald-400 text-xs">+${ecoPoints} Eco-Points</span>`;
+    toast.innerHTML = '🛒 "' + name + '" ditambahkan!<br><span style="color:#34d399;font-size:0.75rem;font-weight:700;">+' + ecoPoints + ' Eco-Points 🌱</span>';
     toast.classList.remove('opacity-0', 'translate-y-4');
     toast.classList.add('opacity-100', 'translate-y-0');
-    setTimeout(() => {
+    setTimeout(function() {
       toast.classList.remove('opacity-100', 'translate-y-0');
       toast.classList.add('opacity-0', 'translate-y-4');
     }, 2500);
   }
 }
-// Inisialisasi saat halaman dimuat
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', function() {
   updateCartCount();
 });

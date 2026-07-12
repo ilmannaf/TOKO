@@ -250,11 +250,26 @@ JWT_EXPIRES_IN=7d
 - ✅ Added `onerror` image fallback for broken product images
 - ✅ Local product images stored in `frontend/assets/products/` (11 seed products + admin uploads)
 - ✅ Renamed image files with spaces to use hyphens for URL safety
+- ✅ **Product pagination** — 8 produk per halaman dengan navigasi ◀ BERIKUTNYA ▶
+- ✅ **Product reviews & ratings** — tabel reviews, API, modal lihat & kasih rating bintang (1-5)
+- ✅ **Voucher/promo system** — tabel vouchers, CRUD admin, validasi & apply di checkout
+- ✅ **Eco-points live update** — poin & CO₂ nambah otomatis tiap tambah keranjang
+- ✅ **Eco history** — riwayat kontribusi per produk di homepage
+- ✅ **Voucher admin** — kelola voucher lewat admin panel (tab 🏷️ Voucher)
+
+## API Endpoints (new)
+
+### Reviews (`/api/reviews`)
+- `GET /:product_id` - Get reviews for a product. Returns: `{ reviews, avg_rating, total }`
+- `POST /` - Add review (requires auth). Body: `{ product_id, rating, komentar? }`
+
+### Vouchers (`/api/vouchers`)
+- `GET /` - Get all vouchers (admin)
+- `POST /` - Create voucher (admin). Body: `{ kode, diskon_persen, min_belanja, ... }`
+- `POST /validate` - Validate voucher code. Body: `{ kode, total_belanja }`. Returns: `{ voucher: { diskon } }`
+- `DELETE /:id` - Delete voucher (admin)
 
 ## TODO / Future Improvements
-- [ ] Pagination for products (currently loads all)
-- [ ] Product reviews & ratings
-- [ ] Voucher/promo system
 - [ ] Email notifications (nodemailer)
 - [ ] Payment gateway integration (Midtrans)
 - [ ] Admin authentication middleware
@@ -272,4 +287,4 @@ JWT_EXPIRES_IN=7d
 - Order tracking uses simulated timeline based on order creation time
 
 ---
-Last updated: 2026-07-12 22:30
+Last updated: 2026-07-12 23:15

@@ -26,6 +26,9 @@
         <a href="#" onclick="showSection('orders')" class="flex items-center px-4 py-3 border-4 border-black bg-white font-black uppercase hover:bg-lime-300" id="nav-orders">
           🛍️ Pesanan
         </a>
+        <a href="#" onclick="showSection('vouchers')" class="flex items-center px-4 py-3 border-4 border-black bg-white font-black uppercase hover:bg-lime-300" id="nav-vouchers">
+          🏷️ Voucher
+        </a>
         <a href="#" onclick="showSection('contacts')" class="flex items-center px-4 py-3 border-4 border-black bg-white font-black uppercase hover:bg-lime-300" id="nav-contacts">
           ✉️ Pesan
         </a>
@@ -160,6 +163,76 @@
         </div>
       </div>
 
+      <!-- Section Voucher -->
+      <div id="section-vouchers" class="hidden">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-black uppercase">🏷️ Kelola Voucher</h2>
+          <button onclick="showVoucherForm()" class="nb-btn nb-btn-yellow uppercase font-black">➕ TAMBAH VOUCHER</button>
+        </div>
+        <div class="nb-card bg-white overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-black text-white">
+              <tr>
+                <th class="text-left px-4 py-3 font-black uppercase">Kode</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Diskon</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Min Belanja</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Kuota</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Berlaku</th>
+                <th class="text-left px-4 py-3 font-black uppercase">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="voucher-table" class="divide-y-4 divide-black font-bold"></tbody>
+          </table>
+        </div>
+
+        <!-- Modal Voucher -->
+        <div id="voucher-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60">
+          <div class="nb-modal p-6 max-w-md w-full mx-4 bg-white">
+            <h3 class="text-2xl font-black uppercase mb-4" id="voucher-modal-title">Tambah Voucher</h3>
+            <form id="voucher-form" class="space-y-3">
+              <div>
+                <label class="text-sm font-black uppercase block tracking-wide">Kode Voucher</label>
+                <input type="text" id="v-kode" class="nb-input w-full uppercase" required>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-black uppercase block tracking-wide">Diskon %</label>
+                  <input type="number" id="v-diskon-persen" class="nb-input w-full" value="0" min="0" max="100">
+                </div>
+                <div>
+                  <label class="text-sm font-black uppercase block tracking-wide">Diskon Rp</label>
+                  <input type="number" id="v-diskon-nominal" class="nb-input w-full" value="0" min="0">
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-black uppercase block tracking-wide">Min Belanja</label>
+                  <input type="number" id="v-min-belanja" class="nb-input w-full" value="0">
+                </div>
+                <div>
+                  <label class="text-sm font-black uppercase block tracking-wide">Maks Diskon</label>
+                  <input type="number" id="v-maks-diskon" class="nb-input w-full" value="0">
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-black uppercase block tracking-wide">Kuota</label>
+                  <input type="number" id="v-kuota" class="nb-input w-full" value="" placeholder="Tak terbatas">
+                </div>
+                <div>
+                  <label class="text-sm font-black uppercase block tracking-wide">Berlaku Sampai</label>
+                  <input type="date" id="v-berlaku" class="nb-input w-full">
+                </div>
+              </div>
+              <div class="flex gap-3 mt-4">
+                <button type="submit" class="nb-btn nb-btn-yellow flex-1 uppercase font-black">SIMPAN</button>
+                <button type="button" onclick="closeVoucherForm()" class="nb-btn nb-btn-black flex-1 uppercase font-black">BATAL</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <!-- Section Pesan -->
       <div id="section-contacts" class="hidden">
         <h2 class="text-3xl font-black uppercase mb-6">✉️ Pesan Masuk</h2>
@@ -200,6 +273,7 @@
       
       if (section === 'products') loadProducts();
       else if (section === 'orders') loadOrders();
+      else if (section === 'vouchers') loadVouchers();
       else if (section === 'contacts') loadContacts();
       else if (section === 'dashboard') loadDashboard();
     }
@@ -485,6 +559,80 @@
           tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400">Belum ada pesan</td></tr>';
         }
       } catch (err) { console.error(err); }
+    }
+
+    // ─── Vouchers ───
+    const API_VOUCHERS = `${BASE_URL}/api/vouchers`;
+
+    async function loadVouchers() {
+      try {
+        const res = await fetch(API_VOUCHERS);
+        const data = await res.json();
+        const tbody = document.getElementById('voucher-table');
+        if (data.success && data.vouchers.length > 0) {
+          tbody.innerHTML = data.vouchers.map(v => `
+            <tr>
+              <td class="px-4 py-3 font-black">${v.kode}</td>
+              <td class="px-4 py-3">${v.diskon_persen > 0 ? v.diskon_persen + '%' : 'Rp ' + Number(v.diskon_nominal).toLocaleString('id-ID')}</td>
+              <td class="px-4 py-3">Rp ${Number(v.min_belanja).toLocaleString('id-ID')}</td>
+              <td class="px-4 py-3">${v.kuota ? v.terpakai + '/' + v.kuota : '∞'}</td>
+              <td class="px-4 py-3 text-xs">${v.berlaku_sampai ? new Date(v.berlaku_sampai).toLocaleDateString('id-ID') : '∞'}</td>
+              <td class="px-4 py-3">
+                <button onclick="deleteVoucher(${v.id})" class="nb-btn nb-btn-pink text-xs px-3 py-1 uppercase font-black">🗑️</button>
+              </td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 font-bold opacity-40">Belum ada voucher</td></tr>';
+        }
+      } catch (err) { console.error(err); }
+    }
+
+    function showVoucherForm() {
+      document.getElementById('voucher-modal-title').textContent = 'Tambah Voucher';
+      document.getElementById('v-kode').value = '';
+      document.getElementById('v-diskon-persen').value = '0';
+      document.getElementById('v-diskon-nominal').value = '0';
+      document.getElementById('v-min-belanja').value = '0';
+      document.getElementById('v-maks-diskon').value = '0';
+      document.getElementById('v-kuota').value = '';
+      document.getElementById('v-berlaku').value = '';
+      document.getElementById('voucher-modal').classList.remove('hidden');
+      document.getElementById('voucher-modal').classList.add('flex');
+    }
+
+    function closeVoucherForm() {
+      document.getElementById('voucher-modal').classList.add('hidden');
+      document.getElementById('voucher-modal').classList.remove('flex');
+    }
+
+    document.getElementById('voucher-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var data = {
+        kode: document.getElementById('v-kode').value,
+        diskon_persen: parseInt(document.getElementById('v-diskon-persen').value) || 0,
+        diskon_nominal: parseInt(document.getElementById('v-diskon-nominal').value) || 0,
+        min_belanja: parseInt(document.getElementById('v-min-belanja').value) || 0,
+        maks_diskon: parseInt(document.getElementById('v-maks-diskon').value) || null,
+        kuota: parseInt(document.getElementById('v-kuota').value) || null,
+        berlaku_sampai: document.getElementById('v-berlaku').value || null,
+      };
+      try {
+        var res = await fetch(API_VOUCHERS, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        var result = await res.json();
+        if (result.success) { closeVoucherForm(); loadVouchers(); }
+        else { alert(result.message); }
+      } catch (err) { alert('Gagal menyimpan voucher'); }
+    });
+
+    async function deleteVoucher(id) {
+      if (!confirm('Hapus voucher ini?')) return;
+      try {
+        var res = await fetch(API_VOUCHERS + '/' + id, { method: 'DELETE' });
+        var data = await res.json();
+        if (data.success) loadVouchers();
+        else alert(data.message);
+      } catch (err) { alert('Gagal menghapus voucher'); }
     }
 
     // ─── Init ───
