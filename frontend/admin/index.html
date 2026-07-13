@@ -282,13 +282,13 @@
     async function loadDashboard() {
       try {
         const [pRes, oRes] = await Promise.all([
-          fetch(API_PRODUCTS),
+          fetch(API_PRODUCTS + '?limit=1'),
           fetch(`${API_ORDERS}`)
         ]);
         const pData = await pRes.json();
         const oData = await oRes.json();
         
-        document.getElementById('stat-products').textContent = pData.products?.length || 0;
+        document.getElementById('stat-products').textContent = pData.total || 0;
       } catch (err) { console.error(err); }
 
       try { loadRecentOrders(); } catch (err) {}
@@ -316,10 +316,10 @@
       } catch (err) {}
 
       try {
-        const res = await fetch(`${API_PRODUCTS}`);
+        const res = await fetch(`${API_PRODUCTS}?limit=1`);
         const data = await res.json();
-        if (data.products) {
-          document.getElementById('stat-products').textContent = data.products.length;
+        if (data.total) {
+          document.getElementById('stat-products').textContent = data.total;
         }
       } catch (err) {}
     }
@@ -327,10 +327,11 @@
     // ─── Products CRUD ───
     async function loadProducts() {
       try {
-        const res = await fetch(API_PRODUCTS);
+        const res = await fetch(API_PRODUCTS + '?limit=50');
         const data = await res.json();
         const tbody = document.getElementById('product-table');
         if (data.success && data.products.length > 0) {
+          document.getElementById('stat-products').textContent = data.total;
           tbody.innerHTML = data.products.map(p => `
             <tr>
               <td class="px-4 py-3 font-medium text-gray-900">${p.nama}</td>
