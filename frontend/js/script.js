@@ -22,6 +22,19 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("ecoData", JSON.stringify(ecoData));
   }
 
+  var giftIcon = document.getElementById("eco-gift-icon");
+  var giftWrap = document.getElementById("eco-gift-wrap");
+  var sparkle = document.getElementById("eco-gift-sparkle");
+
+  // Bounce animation terus
+  if (giftIcon) {
+    giftIcon.className = "nb-gift-bounce";
+  }
+
+  // Cek pending claim dari checkout
+  var pendingClaim = JSON.parse(localStorage.getItem("ecoPendingClaim") || "null");
+  var isClaimable = false;
+
   function renderEcoDashboard() {
     var totalPointsEl = document.getElementById("total-points");
     var carbonSavedEl = document.getElementById("carbon-saved");
@@ -32,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
       carbonSavedEl.textContent = Number(ecoData.carbon).toFixed(1);
     }
 
-    // Hitung milestone selanjutnya
     var nextMilestone = (Math.floor(ecoData.points / 1000) + 1) * 1000;
     var progressPct = ecoData.points > 0 ? ((ecoData.points % 1000) / 1000 * 100) : 0;
     var milestoneEl = document.getElementById("milestone-progress");
@@ -58,13 +70,183 @@ document.addEventListener("DOMContentLoaded", function () {
             + '<span style="font-weight:700;">+' + entry.carbon.toFixed(1) + 'kg CO₂</span>'
             + '<p style="font-size:0.7rem;opacity:0.5;font-weight:600;margin-top:2px;">' + entry.product + ' — ' + new Date(entry.date).toLocaleDateString("id-ID") + '</p>'
             + '</div>'
-            + '<span style="font-size:1.25rem;">🌱</span>'
+            + '<span style="font-size:1.25rem;">🎁</span>'
           + '</div>';
         }
         historyList.innerHTML = h;
       }
     }
+
+    // Cek apakah ada klaim yg bisa diklaim
+    isClaimable = pendingClaim && pendingClaim.milestones && pendingClaim.milestones.length > 0;
+
+    // Tambah badge "KLAIM!" kalo bisa klaim
+    var claimBadge = document.getElementById("eco-claim-badge");
+    if (isClaimable) {
+      if (!claimBadge && giftWrap) {
+        var badge = document.createElement("span");
+        badge.id = "eco-claim-badge";
+        badge.textContent = "KLAIM!";
+        badge.style.cssText = "position:absolute;top:-16px;right:-16px;background:#FF6B9D;color:#fff;font-size:0.65rem;font-weight:900;padding:4px 8px;border:3px solid #000;box-shadow:3px 3px 0 0 rgba(0,0,0,1);text-transform:uppercase;letter-spacing:0.05em;animation:nb-glow-pulse 1s ease-in-out infinite;";
+        giftWrap.style.position = "relative";
+        giftWrap.appendChild(badge);
+      }
+      // Ganti label progress
+      if (milestoneTextEl) {
+        milestoneTextEl.textContent = ecoData.points + " Pts — 🎁 Klik gift untuk klaim voucher!";
+      }
+    } else {
+      if (claimBadge) claimBadge.remove();
+    }
+
+    // Glow effect pas bisa klaim
+    var ecoCard = document.querySelector(".nb-eco-card");
+    if (ecoCard) {
+      if (isClaimable) {
+        ecoCard.classList.add("nb-glow-pulse");
+      } else {
+        ecoCard.classList.remove("nb-glow-pulse");
+      }
+    }
   }
 
   renderEcoDashboard();
+
+  // ==========================================
+  // ANIMASI GIFT + NOTIFIKASI VOUCHER
+  // ==========================================
+
+  function showEcoToast(voucherData) {
+    var toast = document.getElementById("eco-toast");
+    if (!toast) return;
+    var codes = voucherData.codes || [];
+    var count = codes.length;
+
+    toast.innerHTML = '<div style="display:flex;align-items:center;gap:12px;">'
+      + '<span style="font-size:2rem;">🎉</span>'
+      + '<div>'
+        + '<p style="font-weight:900;font-size:1rem;text-transform:uppercase;">Voucher Diskon 30%!</p>'
+        + '<p style="font-size:0.75rem;opacity:0.8;margin-top:4px;">Kode: <span style="font-weight:900;color:#FFE500;">' + codes.join(", ") + '</span></p>'
+        + '<p style="font-size:0.65rem;opacity:0.6;margin-top:2px;">Gunakan di checkout berikutnya</p>'
+      + '</div>'
+      + '<button onclick="hideEcoToast()" style="margin-left:auto;background:none;border:none;color:#fff;font-size:1.5rem;font-weight:900;cursor:pointer;padding:0 4px;">&times;</button>'
+    + '</div>';
+
+    toast.style.display = "block";
+    toast.className = "fixed top-24 right-4 z-[9999] nb-toast px-6 py-4 nb-toast-enter";
+    toast.style.maxWidth = "420px";
+    toast.style.borderColor = "#FFE500";
+    toast.style.boxShadow = "8px 8px 0px 0px rgba(0,0,0,1)";
+
+    if (window.ecoToastTimer) clearTimeout(window.ecoToastTimer);
+    window.ecoToastTimer = setTimeout(function () {
+      hideEcoToast();
+    }, 8000);
+  }
+
+  window.hideEcoToast = function () {
+    var toast = document.getElementById("eco-toast");
+    if (!toast) return;
+    toast.className = "fixed top-24 right-4 z-[9999] nb-toast px-6 py-4 nb-toast-leave";
+    setTimeout(function () {
+      toast.style.display = "none";
+      toast.className = "fixed top-24 right-4 z-[9999] nb-toast px-6 py-4 hidden";
+    }, 350);
+  };
+
+  function triggerGiftOpen(voucherData) {
+    if (!giftIcon || !giftWrap || !sparkle) return;
+
+    // Hapus badge kalo ada
+    var badge = document.getElementById("eco-claim-badge");
+    if (badge) badge.remove();
+
+    // Stop bounce, mulai open
+    giftIcon.className = "nb-gift-open";
+    giftIcon.style.transformOrigin = "center bottom";
+
+    var ecoCard = document.querySelector(".nb-eco-card");
+    if (ecoCard) ecoCard.classList.add("nb-glow-pulse");
+
+    // Setelah animasi open selesai, sembunyiin gift & tampilin sparkle
+    setTimeout(function () {
+      giftIcon.style.display = "none";
+      sparkle.style.display = "inline-block";
+      sparkle.className = "nb-sparkle";
+
+      // Tampilkan toast
+      showEcoToast(voucherData);
+
+      setTimeout(function () {
+        sparkle.style.display = "none";
+        sparkle.className = "";
+        giftIcon.style.display = "inline-block";
+        giftIcon.className = "nb-gift-bounce";
+      }, 2000);
+    }, 1200);
+  }
+
+  async function claimVoucher() {
+    var token = localStorage.getItem("token");
+    if (!token) {
+      showEcoToast({ codes: ["Login dulu!"] });
+      return;
+    }
+    if (!pendingClaim || !pendingClaim.milestones || pendingClaim.milestones.length === 0) return;
+
+    var milestones = pendingClaim.milestones;
+    var claimedCodes = [];
+
+    for (var i = 0; i < milestones.length; i++) {
+      try {
+        var res = await fetch(API_BASE_URL + "/api/auth/eco-claim", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ milestone: milestones[i] })
+        });
+        var data = await res.json();
+        if (data.success) {
+          claimedCodes.push(data.voucher.kode);
+        } else {
+          console.log("Milestone " + milestones[i] + " sudah diklaim sebelumnya");
+        }
+      } catch (e) {
+        console.error("Gagal klaim milestone " + milestones[i], e);
+      }
+    }
+
+    // Hapus flag pending
+    localStorage.removeItem("ecoPendingClaim");
+    pendingClaim = null;
+
+    if (claimedCodes.length > 0) {
+      triggerGiftOpen({ codes: claimedCodes, count: claimedCodes.length });
+      // Update milestone text
+      var milestoneTextEl = document.getElementById("milestone-text");
+      if (milestoneTextEl) {
+        var nextMilestone = (Math.floor(ecoData.points / 1000) + 1) * 1000;
+        milestoneTextEl.textContent = ecoData.points + " / " + nextMilestone + " Pts menuju diskon 30% berikutnya";
+      }
+    } else {
+      // Semua udah pernah diklaim — tetep kasih animasi
+      triggerGiftOpen({ codes: ["Sudah diklaim"] });
+    }
+  }
+
+  // Klik gift → klaim voucher (kalo ada) atau scroll ke eco card
+  if (giftWrap) {
+    giftWrap.addEventListener("click", function () {
+      if (isClaimable) {
+        claimVoucher();
+      } else {
+        var ecoCard = document.querySelector(".nb-eco-card");
+        if (ecoCard) {
+          ecoCard.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+    });
+  }
 });

@@ -57,12 +57,10 @@ function renderEcoPoints(user) {
 }
 
 // Fetch orders
-async function fetchOrders() {
-  const user = await fetchUserProfile();
-  if (!user || !user.id) return [];
-
+async function fetchOrders(userId) {
+  if (!userId) return [];
   try {
-    const response = await fetch(`${API_ORDERS}/user/${user.id}`);
+    const response = await fetch(`${API_ORDERS}/user/${userId}`);
     const data = await response.json();
     return data.success ? data.pesanan : [];
   } catch (error) {
@@ -72,37 +70,38 @@ async function fetchOrders() {
 }
 
 // Render orders
-async function renderOrders() {
-  const orders = await fetchOrders();
+async function renderOrders(user) {
+  const orders = await fetchOrders(user.id);
   const listEl = document.getElementById('orders-list');
 
   if (orders.length === 0) {
-    listEl.innerHTML = `
-      <div class="text-center py-8">
-        <i class="fas fa-shopping-bag text-5xl text-gray-300 mb-4"></i>
-        <p class="text-gray-500 mb-4">Belum ada pesanan</p>
-        <a href="toko.html" class="inline-block bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700">Mulai Belanja</a>
-      </div>
-    `;
+    listEl.innerHTML = '<div style="text-align:center;padding:2rem;">'
+      + '<p style="font-size:3rem;margin-bottom:1rem;">🛍️</p>'
+      + '<p style="font-weight:700;margin-bottom:1rem;text-transform:uppercase;">Belum ada pesanan</p>'
+      + '<a href="toko.html" class="nb-btn nb-btn-yellow" style="display:inline-block;">MULAI BELANJA</a>'
+      + '</div>';
     return;
   }
 
-  listEl.innerHTML = orders.map(order => `
-    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
-      <div class="flex justify-between items-start mb-3">
-        <div>
-          <p class="text-sm text-gray-500">${formatDate(order.created_at)}</p>
-          <p class="font-bold text-indigo-600">#${order.nomor_pesanan}</p>
-        </div>
-        <span class="px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadge(order.status)}">${order.status}</span>
-      </div>
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-600">${order.jumlah_item || 0} produk</span>
-        <span class="font-semibold text-gray-800">${formatRupiah(order.total)}</span>
-      </div>
-      <a href="Tracking.html?nomor=${order.nomor_pesanan}" class="mt-3 inline-block text-indigo-600 text-sm font-medium hover:underline">Lacak Pesanan →</a>
-    </div>
-  `).join('');
+  var h = '';
+  for (var i = 0; i < orders.length; i++) {
+    var o = orders[i];
+    h += '<div style="border:4px solid #000;padding:1rem;margin-bottom:1rem;box-shadow:4px 4px 0 0 rgba(0,0,0,1);background:#fff;">'
+      + '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.5rem;">'
+        + '<div>'
+          + '<p style="font-size:0.75rem;font-weight:700;opacity:0.6;text-transform:uppercase;">' + formatDate(o.created_at) + '</p>'
+          + '<p style="font-weight:900;font-size:1.1rem;">#' + o.nomor_pesanan + '</p>'
+        + '</div>'
+        + '<span class="nb-badge nb-badge-info" style="font-size:0.65rem;">' + (o.status || 'diproses') + '</span>'
+      + '</div>'
+      + '<div style="display:flex;justify-content:space-between;font-size:0.875rem;font-weight:700;">'
+        + '<span>' + (o.jumlah_item || 0) + ' produk</span>'
+        + '<span>' + formatRupiah(o.total) + '</span>'
+      + '</div>'
+      + '<a href="Tracking.html?nomor=' + o.nomor_pesanan + '" style="display:inline-block;margin-top:0.75rem;font-weight:900;text-transform:uppercase;font-size:0.75rem;text-decoration:underline;text-underline-offset:4px;">LACAK PESANAN →</a>'
+    + '</div>';
+  }
+  listEl.innerHTML = h;
 }
 
 function formatDate(dateStr) {
@@ -131,18 +130,17 @@ function getStatusBadge(status) {
 // Tab switching
 function showTab(tab) {
   document.querySelectorAll('[id^="content-"]').forEach(el => el.classList.add('hidden'));
-  document.getElementById(`content-${tab}`).classList.remove('hidden');
+  document.getElementById('content-' + tab).classList.remove('hidden');
   
   document.querySelectorAll('[id^="tab-"]').forEach(el => {
-    el.classList.remove('bg-indigo-50', 'text-indigo-600');
-    el.classList.add('text-gray-600', 'hover:bg-gray-50');
+    el.className = 'nb-btn nb-btn-white w-full text-sm mb-2 uppercase';
   });
   
-  const tabEl = document.getElementById(`tab-${tab}`);
-  tabEl.classList.add('bg-indigo-50', 'text-indigo-600');
-  tabEl.classList.remove('text-gray-600', 'hover:bg-gray-50');
+  var tabEl = document.getElementById('tab-' + tab);
+  if (tabEl) {
+    tabEl.className = 'nb-btn nb-btn-yellow w-full text-sm mb-2 uppercase';
+  }
   
-  // Load wishlist when tab clicked
   if (tab === 'wishlist') {
     renderProfileWishlist();
   }
@@ -158,29 +156,30 @@ async function renderProfileWishlist() {
     const data = await response.json();
 
     if (!data.success || data.wishlist.length === 0) {
-      container.innerHTML = `
-        <div class="col-span-2 text-center py-12">
-          <i class="far fa-heart text-5xl text-gray-300 mb-3"></i>
-          <p class="text-gray-500">Wishlist kosong</p>
-          <a href="toko.html" class="inline-block mt-4 text-indigo-600 hover:underline">Jelajahi Produk</a>
-        </div>
-      `;
+      container.innerHTML = '<div style="text-align:center;padding:2rem;">'
+        + '<p style="font-size:3rem;margin-bottom:1rem;">🤍</p>'
+        + '<p style="font-weight:700;text-transform:uppercase;">Wishlist kosong</p>'
+        + '<a href="toko.html" class="nb-btn nb-btn-yellow" style="display:inline-block;margin-top:1rem;">JELAJAHI PRODUK</a>'
+        + '</div>';
       return;
     }
 
-    container.innerHTML = data.wishlist.map(product => `
-      <div class="border rounded-lg p-3 flex gap-3 hover:shadow-sm transition-shadow">
-        <img src="${product.image}" class="w-20 h-20 object-cover rounded-lg" alt="${product.nama}">
-        <div class="flex-1">
-          <h4 class="font-semibold text-gray-900 text-sm">${product.nama}</h4>
-          <p class="text-indigo-600 font-bold text-sm">${formatRupiah(product.harga)}</p>
-          <div class="mt-2 flex gap-2">
-            <a href="toko.html" class="text-xs text-indigo-600 hover:underline">Lihat Produk</a>
-            <button onclick="removeFromWishlistProfile(${product.id})" class="text-xs text-red-600 hover:underline">Hapus</button>
-          </div>
-        </div>
-      </div>
-    `).join('');
+    var h = '';
+    for (var i = 0; i < data.wishlist.length; i++) {
+      var p = data.wishlist[i];
+      h += '<div style="display:flex;gap:0.75rem;border:4px solid #000;padding:0.75rem;box-shadow:4px 4px 0 0 rgba(0,0,0,1);background:#fff;">'
+        + '<img src="' + (p.image || 'https://via.placeholder.com/80') + '" style="width:80px;height:80px;object-fit:cover;border:3px solid #000;" alt="' + (p.nama || '') + '" onerror="this.src=\'https://via.placeholder.com/80\'">'
+        + '<div style="flex:1;">'
+          + '<h4 style="font-weight:900;font-size:0.875rem;text-transform:uppercase;">' + (p.nama || '') + '</h4>'
+          + '<p style="font-weight:900;font-size:0.875rem;margin-top:4px;">' + formatRupiah(p.harga) + '</p>'
+          + '<div style="margin-top:0.5rem;display:flex;gap:0.5rem;font-size:0.75rem;font-weight:900;text-transform:uppercase;">'
+            + '<a href="toko.html" style="text-decoration:underline;text-underline-offset:3px;">LIHAT</a>'
+            + '<button onclick="removeFromWishlistProfile(' + p.id + ')" style="background:none;border:none;color:red;font-weight:900;text-transform:uppercase;cursor:pointer;padding:0;font-family:inherit;font-size:0.75rem;text-decoration:underline;text-underline-offset:3px;">HAPUS</button>'
+          + '</div>'
+        + '</div>'
+      + '</div>';
+    }
+    container.innerHTML = h;
   } catch (error) {
     container.innerHTML = '<p class="text-red-500 text-center">Gagal memuat wishlist</p>';
   }
@@ -206,7 +205,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (user) {
     renderProfile(user);
     renderEcoPoints(user);
-    await renderOrders();
+    try {
+      await renderOrders(user);
+    } catch (e) {
+      console.error('Render orders error:', e);
+    }
+    showTab('orders');
+  } else {
+    document.getElementById('user-name').textContent = 'GAGAL MEMUAT';
+    document.getElementById('user-email').textContent = 'Periksa koneksi atau login ulang.';
+    document.getElementById('orders-list').innerHTML = '<p style="text-align:center;font-weight:700;color:red;padding:2rem;">Gagal memuat data. Pastikan backend berjalan.</p>';
   }
 
   // Form submit handler

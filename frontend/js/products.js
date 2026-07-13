@@ -53,7 +53,7 @@ function renderProductsFromData(products) {
           + '<span style="font-weight:700;margin-left:4px;font-size:0.75rem;">(' + (product.review_count || 0) + ')</span>'
         + '</div>'
         + '<div style="margin-top:4px;font-size:0.75rem;font-weight:700;color:#4d7c0f;">'
-          + '<span>🌱 +' + (product.eco_points || 0) + ' Eco-Points</span>'
+          + '<span>🎁 +' + (product.eco_points || 0) + ' Eco-Points</span>'
           + '<span style="margin:0 4px;">•</span>'
           + '<span>' + Number(product.carbon_saved || 0).toFixed(1) + 'kg CO₂</span>'
         + '</div>'

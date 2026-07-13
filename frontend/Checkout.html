@@ -628,32 +628,19 @@
             localStorage.setItem('ecoData', JSON.stringify(ecoData));
             localStorage.setItem('ecoHistory', JSON.stringify(ecoHistory));
 
-            // Cek milestone (setiap 1000 poin)
+            // Cek milestone (setiap 1000 poin) — simpan flag buat klaim manual
             var oldMilestone = Math.floor(oldPoints / 1000);
             var newMilestone = Math.floor(ecoData.points / 1000);
-            var vouchersEarned = newMilestone - oldMilestone;
-            var voucherCodes = [];
+            var pendingMilestones = [];
 
-            if (vouchersEarned > 0 && user) {
+            if (newMilestone > oldMilestone && user) {
               for (var m = oldMilestone + 1; m <= newMilestone; m++) {
-                try {
-                  var vRes = await fetch(API_BASE_URL + '/api/auth/eco-claim', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
-                    },
-                    body: JSON.stringify({ milestone: m })
-                  });
-                  var vData = await vRes.json();
-                  if (vData.success) {
-                    voucherCodes.push(vData.voucher.kode);
-                  }
-                } catch (e) {}
+                pendingMilestones.push(m);
               }
+              localStorage.setItem('ecoPendingClaim', JSON.stringify({ milestones: pendingMilestones }));
             }
 
-            // Sync ke database
+            // Sync ke database (poin aja, voucher diklaim manual)
             if (user) {
               try {
                 await fetch(API_BASE_URL + '/api/auth/eco', {
@@ -665,13 +652,6 @@
                   body: JSON.stringify({ eco_points: ecoData.points, eco_carbon: ecoData.carbon })
                 });
               } catch (e) {}
-            }
-
-            // Tampilkan notifikasi voucher
-            if (voucherCodes.length > 0) {
-              setTimeout(function() {
-                alert('🎉 Selamat! Kamu mendapatkan ' + voucherCodes.length + ' voucher diskon 30%!\n\nKode: ' + voucherCodes.join(', ') + '\n\nGunakan di checkout berikutnya.');
-              }, 1000);
             }
           }
 

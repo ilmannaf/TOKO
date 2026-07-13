@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - EcoStore</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/neobrutalism.css">
+    <link rel="stylesheet" href="../css/neobrutalism.css">
   </head>
 <body class="bg-gray-100 min-h-screen">
   <div class="flex min-h-screen">
@@ -283,45 +283,29 @@
       try {
         const [pRes, oRes] = await Promise.all([
           fetch(API_PRODUCTS + '?limit=1'),
-          fetch(`${API_ORDERS}`)
+          fetch(API_ORDERS)
         ]);
         const pData = await pRes.json();
         const oData = await oRes.json();
         
         document.getElementById('stat-products').textContent = pData.total || 0;
+        if (oData.pesanan) {
+          document.getElementById('stat-orders').textContent = oData.pesanan.length;
+          document.getElementById('stat-pending').textContent = oData.pesanan.filter(function(o) { return o.status === 'dikonfirmasi' || o.status === 'diproses'; }).length;
+          
+          // Recent orders (5 terbaru)
+          var recent = oData.pesanan.slice(0, 5);
+          var html = '';
+          for (var i = 0; i < recent.length; i++) {
+            var o = recent[i];
+            html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:2px solid #000;">'
+              + '<div><span style="font-weight:900;">#' + o.nomor_pesanan + '</span><span style="opacity:0.5;margin:0 8px;">•</span><span style="text-transform:capitalize;">' + (o.nama_penerima || '-') + '</span></div>'
+              + '<span class="nb-badge nb-badge-info">' + (o.status || '-') + '</span>'
+            + '</div>';
+          }
+          document.getElementById('recent-orders').innerHTML = html;
+        }
       } catch (err) { console.error(err); }
-
-      try { loadRecentOrders(); } catch (err) {}
-    }
-
-    async function loadStats() {
-      try {
-        const res = await fetch(`${API_ORDERS}`);
-        const data = await res.json();
-        if (data.pesanan) {
-          document.getElementById('stat-orders').textContent = data.pesanan.length;
-          document.getElementById('stat-pending').textContent = data.pesanan.filter(o => o.status === 'dikonfirmasi' || o.status === 'diproses').length;
-        }
-      } catch (err) {}
-    }
-
-    async function loadRecentOrders() {
-      try {
-        const res = await fetch(`${API_ORDERS}`);
-        const data = await res.json();
-        if (data.pesanan) {
-          document.getElementById('stat-orders').textContent = data.pesanan.length;
-          document.getElementById('stat-pending').textContent = data.pesanan.filter(o => o.status === 'dikonfirmasi' || o.status === 'diproses').length;
-        }
-      } catch (err) {}
-
-      try {
-        const res = await fetch(`${API_PRODUCTS}?limit=1`);
-        const data = await res.json();
-        if (data.total) {
-          document.getElementById('stat-products').textContent = data.total;
-        }
-      } catch (err) {}
     }
 
     // ─── Products CRUD ───
@@ -332,20 +316,23 @@
         const tbody = document.getElementById('product-table');
         if (data.success && data.products.length > 0) {
           document.getElementById('stat-products').textContent = data.total;
-          tbody.innerHTML = data.products.map(p => `
-            <tr>
-              <td class="px-4 py-3 font-medium text-gray-900">${p.nama}</td>
-              <td class="px-4 py-3 text-gray-600">${p.kategori}</td>
-              <td class="px-4 py-3 text-gray-800">Rp ${Number(p.harga).toLocaleString('id-ID')}</td>
-              <td class="px-4 py-3">${p.stok}</td>
-              <td class="px-4 py-3 flex gap-2">
-                <button onclick="editProduct(${p.id})" class="nb-btn nb-btn-lime text-xs px-3 py-1 uppercase font-black">✏️ EDIT</button>
-                <button onclick="deleteProduct(${p.id})" class="nb-btn nb-btn-pink text-xs px-3 py-1 uppercase font-black">🗑️ HAPUS</button>
-              </td>
-            </tr>
-          `).join('');
+          var h = '';
+          for (var i = 0; i < data.products.length; i++) {
+            var p = data.products[i];
+            h += '<tr>'
+              + '<td style="padding:0.75rem 1rem;font-weight:700;">' + p.nama + '</td>'
+              + '<td style="padding:0.75rem 1rem;">' + p.kategori + '</td>'
+              + '<td style="padding:0.75rem 1rem;font-weight:700;">Rp ' + Number(p.harga).toLocaleString('id-ID') + '</td>'
+              + '<td style="padding:0.75rem 1rem;">' + (p.stok || 0) + '</td>'
+              + '<td style="padding:0.75rem 1rem;display:flex;gap:0.5rem;">'
+                + '<button onclick="editProduct(' + p.id + ')" class="nb-btn nb-btn-lime" style="font-size:0.7rem;padding:4px 10px;">✏️ EDIT</button>'
+                + '<button onclick="deleteProduct(' + p.id + ')" class="nb-btn nb-btn-pink" style="font-size:0.7rem;padding:4px 10px;">🗑️ HAPUS</button>'
+              + '</td>'
+            + '</tr>';
+          }
+          tbody.innerHTML = h;
         } else {
-          tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-gray-400">Belum ada produk</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Belum ada produk</td></tr>';
         }
       } catch (err) {
         console.error(err);
@@ -490,25 +477,28 @@
         const data = await res.json();
         const tbody = document.getElementById('order-table');
         if (data.success && data.pesanan.length > 0) {
-          tbody.innerHTML = data.pesanan.map(o => `
-            <tr>
-              <td class="px-4 py-3 font-medium text-indigo-600">#${o.nomor_pesanan}</td>
-              <td class="px-4 py-3 text-gray-900">${o.nama_penerima}</td>
-              <td class="px-4 py-3 font-medium text-gray-800">Rp ${Number(o.total).toLocaleString('id-ID')}</td>
-              <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusClass(o.status)}">${o.status}</span></td>
-              <td class="px-4 py-3">
-                <select onchange="updateOrderStatus('${o.nomor_pesanan}', this.value)" class="text-xs border border-gray-300 rounded px-2 py-1">
-                  <option value="dikonfirmasi" ${o.status === 'dikonfirmasi' ? 'selected' : ''}>Konfirmasi</option>
-                  <option value="diproses" ${o.status === 'diproses' ? 'selected' : ''}>Proses</option>
-                  <option value="dikirim" ${o.status === 'dikirim' ? 'selected' : ''}>Dikirim</option>
-                  <option value="selesai" ${o.status === 'selesai' ? 'selected' : ''}>Selesai</option>
-                  <option value="dibatalkan" ${o.status === 'dibatalkan' ? 'selected' : ''}>Batal</option>
-                </select>
-              </td>
-            </tr>
-          `).join('');
+          var h = '';
+          for (var i = 0; i < data.pesanan.length; i++) {
+            var o = data.pesanan[i];
+            h += '<tr>'
+              + '<td style="padding:0.75rem 1rem;font-weight:700;">#' + o.nomor_pesanan + '</td>'
+              + '<td style="padding:0.75rem 1rem;font-weight:600;">' + (o.nama_penerima || '-') + '</td>'
+              + '<td style="padding:0.75rem 1rem;font-weight:700;">Rp ' + Number(o.total || 0).toLocaleString('id-ID') + '</td>'
+              + '<td style="padding:0.75rem 1rem;"><span class="nb-badge nb-badge-info" style="font-size:0.65rem;">' + (o.status || '-') + '</span></td>'
+              + '<td style="padding:0.75rem 1rem;">'
+                + '<select onchange="updateOrderStatus(\'' + o.nomor_pesanan + '\', this.value)" style="border:3px solid #000;font-weight:700;font-size:0.75rem;padding:4px 8px;background:#fff;font-family:inherit;">'
+                  + '<option value="dikonfirmasi"' + (o.status === 'dikonfirmasi' ? ' selected' : '') + '>Konfirmasi</option>'
+                  + '<option value="diproses"' + (o.status === 'diproses' ? ' selected' : '') + '>Proses</option>'
+                  + '<option value="dikirim"' + (o.status === 'dikirim' ? ' selected' : '') + '>Dikirim</option>'
+                  + '<option value="selesai"' + (o.status === 'selesai' ? ' selected' : '') + '>Selesai</option>'
+                  + '<option value="dibatalkan"' + (o.status === 'dibatalkan' ? ' selected' : '') + '>Batal</option>'
+                + '</select>'
+              + '</td>'
+            + '</tr>';
+          }
+          tbody.innerHTML = h;
         } else {
-          tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-gray-400">Belum ada pesanan</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Belum ada pesanan</td></tr>';
         }
       } catch (err) { console.error(err); }
     }
@@ -528,36 +518,35 @@
 
     function getStatusClass(status) {
       const map = {
-        'dikonfirmasi': 'bg-purple-100 text-purple-700',
-        'diproses': 'bg-yellow-100 text-yellow-700',
-        'dikirim': 'bg-blue-100 text-blue-700',
-        'selesai': 'bg-green-100 text-green-700',
-        'dibatalkan': 'bg-red-100 text-red-700',
+        'dikonfirmasi': 'nb-badge-warning',
+        'diproses': 'nb-badge-info',
+        'dikirim': 'nb-badge-info',
+        'selesai': 'nb-badge-success',
+        'dibatalkan': 'nb-badge-danger',
       };
-      return map[status] || 'bg-gray-100 text-gray-700';
+      return map[status] || 'nb-badge';
     }
 
     // ─── Contacts ───
     async function loadContacts() {
       try {
-        const res = await fetch(`${BASE_URL}/api/contacts`);
+        const res = await fetch(`${BASE_URL}/api/contact`);
         const data = await res.json();
         const tbody = document.getElementById('contact-table');
         if (data.success && data.contacts.length > 0) {
-          tbody.innerHTML = data.contacts.map(c => `
-            <tr>
-              <td class="px-4 py-3 font-medium text-gray-900">${c.nama}</td>
-              <td class="px-4 py-3 text-gray-600">${c.email}</td>
-              <td class="px-4 py-3 text-gray-600 max-w-xs truncate">${c.pesan}</td>
-              <td class="px-4 py-3">
-                <span class="px-2 py-1 rounded-full text-xs font-medium ${c.status === 'belum_dibaca' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}">
-                  ${c.status === 'belum_dibaca' ? 'Baru' : 'Dibaca'}
-                </span>
-              </td>
-            </tr>
-          `).join('');
+          var h = '';
+          for (var i = 0; i < data.contacts.length; i++) {
+            var c = data.contacts[i];
+            h += '<tr>'
+              + '<td style="padding:0.75rem 1rem;font-weight:700;">' + (c.nama || '-') + '</td>'
+              + '<td style="padding:0.75rem 1rem;">' + (c.email || '-') + '</td>'
+              + '<td style="padding:0.75rem 1rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (c.pesan || '-') + '</td>'
+              + '<td style="padding:0.75rem 1rem;"><span class="nb-badge ' + (c.status === 'belum_dibaca' ? 'nb-badge-warning' : 'nb-badge-success') + '">' + (c.status === 'belum_dibaca' ? 'Baru' : 'Dibaca') + '</span></td>'
+            + '</tr>';
+          }
+          tbody.innerHTML = h;
         } else {
-          tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400">Belum ada pesan</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Belum ada pesan</td></tr>';
         }
       } catch (err) { console.error(err); }
     }
@@ -571,20 +560,21 @@
         const data = await res.json();
         const tbody = document.getElementById('voucher-table');
         if (data.success && data.vouchers.length > 0) {
-          tbody.innerHTML = data.vouchers.map(v => `
-            <tr>
-              <td class="px-4 py-3 font-black">${v.kode}</td>
-              <td class="px-4 py-3">${v.diskon_persen > 0 ? v.diskon_persen + '%' : 'Rp ' + Number(v.diskon_nominal).toLocaleString('id-ID')}</td>
-              <td class="px-4 py-3">Rp ${Number(v.min_belanja).toLocaleString('id-ID')}</td>
-              <td class="px-4 py-3">${v.kuota ? v.terpakai + '/' + v.kuota : '∞'}</td>
-              <td class="px-4 py-3 text-xs">${v.berlaku_sampai ? new Date(v.berlaku_sampai).toLocaleDateString('id-ID') : '∞'}</td>
-              <td class="px-4 py-3">
-                <button onclick="deleteVoucher(${v.id})" class="nb-btn nb-btn-pink text-xs px-3 py-1 uppercase font-black">🗑️</button>
-              </td>
-            </tr>
-          `).join('');
+          var h = '';
+          for (var i = 0; i < data.vouchers.length; i++) {
+            var v = data.vouchers[i];
+            h += '<tr>'
+              + '<td style="padding:0.75rem 1rem;font-weight:900;">' + v.kode + '</td>'
+              + '<td style="padding:0.75rem 1rem;">' + (v.diskon_persen > 0 ? v.diskon_persen + '%' : 'Rp ' + Number(v.diskon_nominal || 0).toLocaleString('id-ID')) + '</td>'
+              + '<td style="padding:0.75rem 1rem;">Rp ' + Number(v.min_belanja || 0).toLocaleString('id-ID') + '</td>'
+              + '<td style="padding:0.75rem 1rem;">' + (v.kuota ? v.terpakai + '/' + v.kuota : '∞') + '</td>'
+              + '<td style="padding:0.75rem 1rem;font-size:0.75rem;">' + (v.berlaku_sampai ? new Date(v.berlaku_sampai).toLocaleDateString('id-ID') : '∞') + '</td>'
+              + '<td style="padding:0.75rem 1rem;"><button onclick="deleteVoucher(' + v.id + ')" class="nb-btn nb-btn-pink" style="font-size:0.7rem;padding:4px 10px;">🗑️</button></td>'
+            + '</tr>';
+          }
+          tbody.innerHTML = h;
         } else {
-          tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 font-bold opacity-40">Belum ada voucher</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Belum ada voucher</td></tr>';
         }
       } catch (err) { console.error(err); }
     }

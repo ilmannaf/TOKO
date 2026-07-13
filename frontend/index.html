@@ -43,7 +43,10 @@
       <div class="nb-eco-card p-8 flex flex-col md:flex-row items-center justify-between gap-6">
         
         <div class="flex items-center gap-6 w-full md:w-auto">
-          <div class="text-5xl">🌱</div>
+          <div id="eco-gift-wrap" class="text-5xl relative" style="cursor:pointer;">
+            <span id="eco-gift-icon">🎁</span>
+            <span id="eco-gift-sparkle" style="display:none;position:absolute;top:-20px;right:-20px;font-size:2.5rem;filter:drop-shadow(0 0 10px rgba(255,229,0,0.8));">🎉</span>
+          </div>
           <div class="flex-1">
             <h3 class="text-xl font-black uppercase tracking-tight">Eco-Points Rewards</h3>
             <p class="text-sm font-bold mt-1">Kumpulkan 1000 Pts & dapatkan diskon 30%!</p>
@@ -148,6 +151,8 @@
 
   </div>
 </footer>
+    <!-- Toast notification -->
+    <div id="eco-toast" class="fixed top-24 right-4 z-[9999] nb-toast px-6 py-4 hidden" style="max-width:420px;border-color:#FFE500;box-shadow:8px 8px 0px 0px rgba(0,0,0,1);"></div>
     <script src="js/config.js"></script>
     <script src="js/script.js"></script>
     <script src="js/auth.js"></script>

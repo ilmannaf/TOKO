@@ -4,6 +4,27 @@ const db      = require('../database/database');
 const router  = express.Router();
 
 // ─────────────────────────────────────────
+// AMBIL SEMUA PESANAN (admin)
+// GET /api/orders
+// ─────────────────────────────────────────
+router.get('/', async (req, res) => {
+  try {
+    const [orders] = await db.query(
+      `SELECT o.*, COUNT(oi.id) as jumlah_item
+       FROM orders o
+       LEFT JOIN order_items oi ON o.id = oi.order_id
+       GROUP BY o.id
+       ORDER BY o.created_at DESC`
+    );
+
+    res.json({ success: true, pesanan: orders });
+  } catch (error) {
+    console.error('Error ambil semua pesanan:', error);
+    res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
+  }
+});
+
+// ─────────────────────────────────────────
 // BUAT PESANAN BARU
 // POST /api/orders
 // ─────────────────────────────────────────
