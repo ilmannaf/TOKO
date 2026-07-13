@@ -41,23 +41,19 @@ function renderProfile(user) {
 
 // Render Eco-Points
 function renderEcoPoints(user) {
-  const level = user.pohon_level || 1;
-  const xp = user.pohon_xp || 0;
-  const nextLevelXp = level * 500;
-  const xpPercentage = Math.min((xp / nextLevelXp) * 100, 100);
+  var ecoData = JSON.parse(localStorage.getItem('ecoData') || '{"points":0,"carbon":0}');
+  var points = ecoData.points || 0;
+  var carbon = ecoData.carbon || 0;
+  var vouchersClaimed = user.eco_vouchers_claimed || 0;
 
-  let emoji = '🌱', sebutan = 'Tunas Harapan';
-  if (level >= 2) { emoji = '🌿'; sebutan = 'Bibit Muda'; }
-  if (level >= 3) { emoji = '🪴'; sebutan = 'Tanaman Hijau'; }
-  if (level >= 4) { emoji = '🌲'; sebutan = 'Pohon Rindang'; }
-  if (level >= 5) { emoji = '🌳'; sebutan = 'Pohon Kehidupan'; }
+  var nextMilestone = (Math.floor(points / 1000) + 1) * 1000;
+  var progressPct = points > 0 ? ((points % 1000) / 1000 * 100) : 0;
 
-  document.getElementById('eco-tree-emoji').textContent = emoji;
-  document.getElementById('eco-level-text').textContent = `Level ${level}: ${sebutan}`;
-  document.getElementById('eco-progress-bar').style.width = `${xpPercentage}%`;
-  document.getElementById('eco-xp-text').textContent = `${xp} / ${nextLevelXp} XP`;
-  document.getElementById('eco-total-points').textContent = `${(level * 1000).toLocaleString()} Pts`;
-  document.getElementById('eco-carbon-saved').textContent = `${(level * 15).toFixed(1)} kg`;
+  document.getElementById('eco-total-points').textContent = points.toLocaleString('id-ID') + ' Pts';
+  document.getElementById('eco-carbon-saved').textContent = carbon.toFixed(1) + ' kg';
+  document.getElementById('eco-vouchers-claimed').textContent = vouchersClaimed;
+  document.getElementById('eco-progress-bar').style.width = progressPct + '%';
+  document.getElementById('eco-milestone-text').textContent = points + ' / ' + nextMilestone + ' Pts';
 }
 
 // Fetch orders

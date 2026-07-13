@@ -16,36 +16,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  var userName = "ECO";
   var ecoData = JSON.parse(localStorage.getItem("ecoData"));
   if (!ecoData) {
-    ecoData = { points: 0, carbon: 0, xp: 0, level: 1, nextLevelXp: 500 };
+    ecoData = { points: 0, carbon: 0 };
     localStorage.setItem("ecoData", JSON.stringify(ecoData));
   }
 
   function renderEcoDashboard() {
-    var treeEmojiEl = document.getElementById("tree-emoji");
-    var treeLevelTextEl = document.getElementById("tree-level-text");
-    var xpBarEl = document.getElementById("xp-bar");
-    var xpTextEl = document.getElementById("xp-text");
     var totalPointsEl = document.getElementById("total-points");
     var carbonSavedEl = document.getElementById("carbon-saved");
     var historyList = document.getElementById("eco-history");
 
-    if (treeEmojiEl && totalPointsEl) {
-      var emoji = "🌱", sebutan = "Tunas Harapan";
-      if (ecoData.level === 2) { emoji = "🌿"; sebutan = "Bibit Muda"; }
-      else if (ecoData.level === 3) { emoji = "🪴"; sebutan = "Tanaman Hijau"; }
-      else if (ecoData.level === 4) { emoji = "🌲"; sebutan = "Pohon Rindang"; }
-      else if (ecoData.level >= 5) { emoji = "🌳"; sebutan = "Pohon Kehidupan"; }
-
-      var xpPct = Math.min(100, (ecoData.xp / ecoData.nextLevelXp) * 100);
-      treeEmojiEl.textContent = emoji;
-      treeLevelTextEl.textContent = "Level " + ecoData.level + ": " + sebutan + " milik " + userName;
-      xpBarEl.style.width = xpPct + "%";
-      xpTextEl.textContent = ecoData.xp + " / " + ecoData.nextLevelXp + " XP menuju Level " + (ecoData.level + 1);
+    if (totalPointsEl) {
       totalPointsEl.textContent = Number(ecoData.points).toLocaleString("id-ID") + " Pts";
       carbonSavedEl.textContent = Number(ecoData.carbon).toFixed(1);
+    }
+
+    // Hitung milestone selanjutnya
+    var nextMilestone = (Math.floor(ecoData.points / 1000) + 1) * 1000;
+    var progressPct = ecoData.points > 0 ? ((ecoData.points % 1000) / 1000 * 100) : 0;
+    var milestoneEl = document.getElementById("milestone-progress");
+    var milestoneTextEl = document.getElementById("milestone-text");
+    if (milestoneEl) {
+      milestoneEl.style.width = progressPct + "%";
+    }
+    if (milestoneTextEl) {
+      milestoneTextEl.textContent = ecoData.points + " / " + nextMilestone + " Pts menuju diskon 30% berikutnya";
     }
 
     // Render history dari localStorage
@@ -62,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
             + '<span style="font-weight:700;">+' + entry.carbon.toFixed(1) + 'kg CO₂</span>'
             + '<p style="font-size:0.7rem;opacity:0.5;font-weight:600;margin-top:2px;">' + entry.product + ' — ' + new Date(entry.date).toLocaleDateString("id-ID") + '</p>'
             + '</div>'
-            + '<span style="font-size:1.25rem;">' + (entry.carbon > 1 ? '🌿' : '🌱') + '</span>'
+            + '<span style="font-size:1.25rem;">🌱</span>'
           + '</div>';
         }
         historyList.innerHTML = h;

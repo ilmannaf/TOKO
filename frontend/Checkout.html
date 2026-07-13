@@ -597,33 +597,85 @@
           localStorage.setItem('ecostore_orders', JSON.stringify(riwayat));
 
           // ==========================================
-          // LOGIKA ECO-POINTS
+          // LOGIKA ECO-POINTS (baru — per 1000 pts = voucher 30%)
           // ==========================================
-          var ecoHistory = JSON.parse(localStorage.getItem('ecoHistory') || '[]');
-          let totalEcoPointsGained = 0;
-          let totalCarbonSaved = 0;
-          
-          cart.forEach(function(item) {
-             var pts = (item.ecoPoints || 0) * item.qty;
-             var carb = (item.carbonSaved || 0) * item.qty;
-             totalEcoPointsGained += pts;
-             totalCarbonSaved += carb;
-             ecoHistory.push({ product: item.name, points: pts, carbon: carb, date: new Date().toISOString() });
-          });
+          async function processEcoPoints() {
+            var ecoHistory = JSON.parse(localStorage.getItem('ecoHistory') || '[]');
+            let totalEcoPointsGained = 0;
+            let totalCarbonSaved = 0;
 
-          var ecoData = JSON.parse(localStorage.getItem("ecoData"));
-          if (ecoData) {
-             ecoData.points += totalEcoPointsGained;
-             ecoData.carbon += totalCarbonSaved;
-             ecoData.xp += totalEcoPointsGained;
-             while (ecoData.xp >= ecoData.nextLevelXp) {
-                 ecoData.level += 1;
-                 ecoData.xp -= ecoData.nextLevelXp;
-                 ecoData.nextLevelXp = Math.floor(ecoData.nextLevelXp * 1.5);
-             }
-             localStorage.setItem("ecoData", JSON.stringify(ecoData));
+            // Ambil eco_points & carbon_saved dari API untuk tiap item
+            for (var i = 0; i < cart.length; i++) {
+              var item = cart[i];
+              try {
+                var res = await fetch(API_BASE_URL + '/api/products/' + item.id);
+                var data = await res.json();
+                var p = data.product;
+                var pts = (p.eco_points || 0) * item.qty;
+                var carb = parseFloat(p.carbon_saved || 0) * item.qty;
+                totalEcoPointsGained += pts;
+                totalCarbonSaved += carb;
+                ecoHistory.push({ product: item.name, points: pts, carbon: carb, date: new Date().toISOString() });
+              } catch (e) {
+                // skip if API fails
+              }
+            }
+
+            var ecoData = JSON.parse(localStorage.getItem('ecoData') || '{"points":0,"carbon":0}');
+            var oldPoints = ecoData.points || 0;
+            ecoData.points += totalEcoPointsGained;
+            ecoData.carbon += totalCarbonSaved;
+            localStorage.setItem('ecoData', JSON.stringify(ecoData));
+            localStorage.setItem('ecoHistory', JSON.stringify(ecoHistory));
+
+            // Cek milestone (setiap 1000 poin)
+            var oldMilestone = Math.floor(oldPoints / 1000);
+            var newMilestone = Math.floor(ecoData.points / 1000);
+            var vouchersEarned = newMilestone - oldMilestone;
+            var voucherCodes = [];
+
+            if (vouchersEarned > 0 && user) {
+              for (var m = oldMilestone + 1; m <= newMilestone; m++) {
+                try {
+                  var vRes = await fetch(API_BASE_URL + '/api/auth/eco-claim', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
+                    },
+                    body: JSON.stringify({ milestone: m })
+                  });
+                  var vData = await vRes.json();
+                  if (vData.success) {
+                    voucherCodes.push(vData.voucher.kode);
+                  }
+                } catch (e) {}
+              }
+            }
+
+            // Sync ke database
+            if (user) {
+              try {
+                await fetch(API_BASE_URL + '/api/auth/eco', {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
+                  },
+                  body: JSON.stringify({ eco_points: ecoData.points, eco_carbon: ecoData.carbon })
+                });
+              } catch (e) {}
+            }
+
+            // Tampilkan notifikasi voucher
+            if (voucherCodes.length > 0) {
+              setTimeout(function() {
+                alert('🎉 Selamat! Kamu mendapatkan ' + voucherCodes.length + ' voucher diskon 30%!\n\nKode: ' + voucherCodes.join(', ') + '\n\nGunakan di checkout berikutnya.');
+              }, 1000);
+            }
           }
-          localStorage.setItem('ecoHistory', JSON.stringify(ecoHistory));
+
+          processEcoPoints();
           // ==========================================
 
           // Kosongkan keranjang

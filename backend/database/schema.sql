@@ -16,8 +16,9 @@ CREATE TABLE IF NOT EXISTS users (
   kota VARCHAR(50),
   provinsi VARCHAR(50),
   kode_pos VARCHAR(10),
-  pohon_level INT DEFAULT 1,
-  pohon_xp INT DEFAULT 0,
+  eco_points INT DEFAULT 0,
+  eco_carbon DECIMAL(10,2) DEFAULT 0.0,
+  eco_vouchers_claimed INT DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
