@@ -24,11 +24,18 @@ AI coding agents should prioritize backend endpoint behavior and frontend endpoi
 - `.nb-btn` - Button base style
 - `.nb-btn-yellow`, `.nb-btn-lime`, `.nb-btn-pink`, `.nb-btn-black`, `.nb-btn-white` - Button variants
 - `.nb-input` - Input fields with brutal styling
-- `.nb-badge` - Badge styles
+- `.nb-badge`, `.nb-badge-success`, `.nb-badge-warning`, `.nb-badge-danger`, `.nb-badge-info` - Badge styles
 - `.nb-navbar` - Navbar with border & shadow
 - `.nb-footer` - Footer styling
 - `.nb-alert` - Alert boxes
 - `.nb-link` - Link styling with hover effects
+- `.nb-gift-bounce` - Animated bouncing gift icon
+- `.nb-gift-open` - Gift opening animation (scale + rotate + fade)
+- `.nb-sparkle` - Sparkle/celebrate after gift opens
+- `.nb-toast-enter`, `.nb-toast-leave` - Toast notification slide in/out
+- `.nb-glow-pulse` - Glow effect for milestone reached
+- `.nb-animate-bounce` - Generic bounce animation
+- `.nb-slide-in` - Slide in animation
 
 ## Project Structure
 ```
@@ -90,7 +97,7 @@ TOKO/
 - ❤️ **Wishlist** - Save favorite products (requires login)
 - 📦 **Checkout & Tracking** - Order creation with shipping zones & tracking
 - 👤 **User Profile** - View profile, edit info, order history
-- 🌱 **Eco-Points Rewards** - Kumpulkan poin tiap belanja, setiap 1000 poin dapet voucher diskon 30%
+- 🌱 **Eco-Points Rewards** - Kumpulkan poin tiap belanja, setiap 1000 poin bisa klaim voucher diskon 30% manual dari homepage
 - 🔐 **Authentication** - JWT-based register/login
 
 ### Admin Features
@@ -166,6 +173,7 @@ Server runs at `http://localhost:3000`
 
 ### Orders (`/api/orders`)
 - `POST /` - Create order. Body: order metadata + `items[]`
+- `GET /` - Get all orders (admin)
 - `GET /:nomor` - Get order by order number
 - `GET /user/:user_id` - Get orders by user
 - `PATCH /:nomor/status` - Update order status (admin). Body: `{ status }`
@@ -262,10 +270,19 @@ JWT_EXPIRES_IN=7d
 - ✅ **Eco-points live update** — poin & CO₂ nambah otomatis tiap checkout
 - ✅ **Eco history** — riwayat kontribusi per produk di homepage
 - ✅ **Voucher admin** — kelola voucher lewat admin panel (tab 🏷️ Voucher)
-- ✅ **Milestone-based eco rewards** — setiap 1000 poin dapet voucher diskon 30% otomatis
+- ✅ **Milestone-based eco rewards** — setiap 1000 poin dapet voucher diskon 30%
 - ✅ **Fix double-counting** — poin cuma dihitung sekali (pas checkout), ga pas add-to-cart
 - ✅ **Sync eco points ke database** — progress ga ilang walau hapus localStorage
 - ✅ **Hapus tree/level system** — ganti pohon digital dengan milestone progress bar
+
+## Recent Changes (2026-07-13)
+- ✅ **Gift icon animasi** — 🎁 bouncing terus, animasi terbuka + sparkle pas klaim voucher
+- ✅ **Manual voucher claim** — klik gift di homepage untuk klaim (gak otomatis pas checkout)
+- ✅ **Toast notification** — notifikasi voucher muncul di pojok kanan atas
+- ✅ **Fix profile loading** — error handling + neobrutalism styling di profile page
+- ✅ **Fix admin orders** — tambah route `GET /api/orders`, fix URL contacts, fix CSS path
+- ✅ **Fix Tailwind CDN** — semua JS template string pake inline style (produk, pesanan, voucher, kontak)
+- ✅ **Run migration** — `migration_eco_rewards.sql` nambah kolom `eco_points`/`eco_carbon`/`eco_vouchers_claimed`
 
 ## API Endpoints (new)
 
@@ -281,7 +298,7 @@ JWT_EXPIRES_IN=7d
 
 ### Eco Rewards (`/api/auth`)
 - `PUT /eco` - Sync eco points to database (requires auth). Body: `{ eco_points, eco_carbon }`
-- `POST /eco-claim` - Claim voucher saat mencapai milestone (requires auth). Body: `{ milestone }`. Returns: voucher kode diskon 30%
+- `POST /eco-claim` - Claim voucher manual dari homepage (requires auth). Body: `{ milestone }`. Returns: voucher kode diskon 30%
 
 ## TODO / Future Improvements
 - [ ] Email notifications (nodemailer)
@@ -301,4 +318,4 @@ JWT_EXPIRES_IN=7d
 - Order tracking uses simulated timeline based on order creation time
 
 ---
-Last updated: 2026-07-13 00:15
+Last updated: 2026-07-13 01:30
