@@ -37,6 +37,8 @@ TOKO/
 │   ├── database/
 │   │   ├── database.js          # MySQL connection pool
 │   │   ├── schema.sql            # Main DB schema + seed data (12 products)
+│   │   ├── migration_eco_rewards.sql  # Eco rewards: pohon_level/xp → eco_points/eco_carbon
+│   │   ├── vouchers.sql          # Vouchers table
 │   │   └── wishlist.sql          # Wishlist table
 │   ├── routes/
 │   │   ├── auth.js               # Auth API (register, login, profile, update)
@@ -44,7 +46,8 @@ TOKO/
 │   │   ├── products.js           # Products API (CRUD + search/filter)
 │   │   ├── contact.js            # Contact form API
 │   │   ├── upload.js             # Image upload API (multer)
-│   │   └── wishlist.js           # Wishlist API (add, remove, get)
+│   │   ├── wishlist.js           # Wishlist API (add, remove, get)
+│   │   └── vouchers.js           # Vouchers API (CRUD + validate)
 │   ├── .env                      # Environment variables (DO NOT COMMIT!)
 │   ├── .env.example              # Template for env
 │   ├── server.js                 # Express server entry point
@@ -87,7 +90,7 @@ TOKO/
 - ❤️ **Wishlist** - Save favorite products (requires login)
 - 📦 **Checkout & Tracking** - Order creation with shipping zones & tracking
 - 👤 **User Profile** - View profile, edit info, order history
-- 🌱 **Eco-Points Gamification** - Digital tree that grows with purchases
+- 🌱 **Eco-Points Rewards** - Kumpulkan poin tiap belanja, setiap 1000 poin dapet voucher diskon 30%
 - 🔐 **Authentication** - JWT-based register/login
 
 ### Admin Features
@@ -134,14 +137,15 @@ Server runs at `http://localhost:3000`
 
 ## Database Schema
 
-### Tables (6)
-1. **users** - User accounts (nama, email, password, address fields, pohon_level, pohon_xp)
+### Tables (8)
+1. **users** - User accounts (nama, email, password, address fields, eco_points, eco_carbon, eco_vouchers_claimed)
 2. **products** - Product catalog (nama, kategori, harga, stok, eco_points, carbon_saved, image)
 3. **categories** - Product categories
 4. **orders** - Customer orders (nomor_pesanan, user_id, shipping info, totals, status)
 5. **order_items** - Order line items
 6. **contacts** - Contact form messages
 7. **wishlist** - User wishlist (user_id, product_id)
+8. **vouchers** - Discount vouchers (kode, diskon_persen, min_belanja, kuota, dll)
 
 ## API Endpoints
 
@@ -150,6 +154,8 @@ Server runs at `http://localhost:3000`
 - `POST /login` - Login user. Body: `{ email, password }`. Returns: `{ token, user }`
 - `GET /me` - Get current user profile. Requires: `Authorization: Bearer <token>`
 - `PUT /update` - Update user profile. Body: `{ nama, telepon, alamat, kota, provinsi }`
+- `PUT /eco` - Sync eco points (requires auth). Body: `{ eco_points, eco_carbon }`
+- `POST /eco-claim` - Claim milestone voucher (requires auth). Body: `{ milestone }`. Returns: `{ voucher: { kode } }`
 
 ### Products (`/api/products`)
 - `GET /` - Get all products. Query: `?kategori=Baju&search=kaos`
@@ -253,9 +259,13 @@ JWT_EXPIRES_IN=7d
 - ✅ **Product pagination** — 8 produk per halaman dengan navigasi ◀ BERIKUTNYA ▶
 - ✅ **Product reviews & ratings** — tabel reviews, API, modal lihat & kasih rating bintang (1-5)
 - ✅ **Voucher/promo system** — tabel vouchers, CRUD admin, validasi & apply di checkout
-- ✅ **Eco-points live update** — poin & CO₂ nambah otomatis tiap tambah keranjang
+- ✅ **Eco-points live update** — poin & CO₂ nambah otomatis tiap checkout
 - ✅ **Eco history** — riwayat kontribusi per produk di homepage
 - ✅ **Voucher admin** — kelola voucher lewat admin panel (tab 🏷️ Voucher)
+- ✅ **Milestone-based eco rewards** — setiap 1000 poin dapet voucher diskon 30% otomatis
+- ✅ **Fix double-counting** — poin cuma dihitung sekali (pas checkout), ga pas add-to-cart
+- ✅ **Sync eco points ke database** — progress ga ilang walau hapus localStorage
+- ✅ **Hapus tree/level system** — ganti pohon digital dengan milestone progress bar
 
 ## API Endpoints (new)
 
@@ -268,6 +278,10 @@ JWT_EXPIRES_IN=7d
 - `POST /` - Create voucher (admin). Body: `{ kode, diskon_persen, min_belanja, ... }`
 - `POST /validate` - Validate voucher code. Body: `{ kode, total_belanja }`. Returns: `{ voucher: { diskon } }`
 - `DELETE /:id` - Delete voucher (admin)
+
+### Eco Rewards (`/api/auth`)
+- `PUT /eco` - Sync eco points to database (requires auth). Body: `{ eco_points, eco_carbon }`
+- `POST /eco-claim` - Claim voucher saat mencapai milestone (requires auth). Body: `{ milestone }`. Returns: voucher kode diskon 30%
 
 ## TODO / Future Improvements
 - [ ] Email notifications (nodemailer)
@@ -287,4 +301,4 @@ JWT_EXPIRES_IN=7d
 - Order tracking uses simulated timeline based on order creation time
 
 ---
-Last updated: 2026-07-12 23:15
+Last updated: 2026-07-13 00:15
