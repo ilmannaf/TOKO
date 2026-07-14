@@ -43,14 +43,12 @@ function renderProfile(user) {
 function renderEcoPoints(user) {
   var ecoData = JSON.parse(localStorage.getItem('ecoData') || '{"points":0,"carbon":0}');
   var points = ecoData.points || 0;
-  var carbon = ecoData.carbon || 0;
   var vouchersClaimed = user.eco_vouchers_claimed || 0;
 
   var nextMilestone = (Math.floor(points / 1000) + 1) * 1000;
   var progressPct = points > 0 ? ((points % 1000) / 1000 * 100) : 0;
 
   document.getElementById('eco-total-points').textContent = points.toLocaleString('id-ID') + ' Pts';
-  document.getElementById('eco-carbon-saved').textContent = carbon.toFixed(1) + ' kg';
   document.getElementById('eco-vouchers-claimed').textContent = vouchersClaimed;
   document.getElementById('eco-progress-bar').style.width = progressPct + '%';
   document.getElementById('eco-milestone-text').textContent = points + ' / ' + nextMilestone + ' Pts';

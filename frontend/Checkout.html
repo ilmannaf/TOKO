@@ -589,9 +589,8 @@
           async function processEcoPoints() {
             var ecoHistory = JSON.parse(localStorage.getItem('ecoHistory') || '[]');
             let totalEcoPointsGained = 0;
-            let totalCarbonSaved = 0;
 
-            // Ambil eco_points & carbon_saved dari API untuk tiap item
+            // Ambil eco_points dari API untuk tiap item
             for (var i = 0; i < cart.length; i++) {
               var item = cart[i];
               try {
@@ -599,10 +598,8 @@
                 var data = await res.json();
                 var p = data.product;
                 var pts = (p.eco_points || 0) * item.qty;
-                var carb = parseFloat(p.carbon_saved || 0) * item.qty;
                 totalEcoPointsGained += pts;
-                totalCarbonSaved += carb;
-                ecoHistory.push({ product: item.name, points: pts, carbon: carb, date: new Date().toISOString() });
+                ecoHistory.push({ product: item.name, points: pts, carbon: 0, date: new Date().toISOString() });
               } catch (e) {
                 // skip if API fails
               }
@@ -611,7 +608,6 @@
             var ecoData = JSON.parse(localStorage.getItem('ecoData') || '{"points":0,"carbon":0}');
             var oldPoints = ecoData.points || 0;
             ecoData.points += totalEcoPointsGained;
-            ecoData.carbon += totalCarbonSaved;
             localStorage.setItem('ecoData', JSON.stringify(ecoData));
             localStorage.setItem('ecoHistory', JSON.stringify(ecoHistory));
 
@@ -636,7 +632,7 @@
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
                   },
-                  body: JSON.stringify({ eco_points: ecoData.points, eco_carbon: ecoData.carbon })
+                  body: JSON.stringify({ eco_points: ecoData.points, eco_carbon: 0 })
                 });
               } catch (e) {}
             }

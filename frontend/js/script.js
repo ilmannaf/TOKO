@@ -37,12 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderEcoDashboard() {
     var totalPointsEl = document.getElementById("total-points");
-    var carbonSavedEl = document.getElementById("carbon-saved");
     var historyList = document.getElementById("eco-history");
 
     if (totalPointsEl) {
       totalPointsEl.textContent = Number(ecoData.points).toLocaleString("id-ID") + " Pts";
-      carbonSavedEl.textContent = Number(ecoData.carbon).toFixed(1);
     }
 
     var nextMilestone = (Math.floor(ecoData.points / 1000) + 1) * 1000;
@@ -66,8 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
         for (var i = Math.max(0, history.length - 10); i < history.length; i++) {
           var entry = history[i];
           h += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.875rem;">'
-            + '<div><span style="font-weight:900;">+' + entry.points + '</span> Pts <span style="opacity:0.5;">•</span> '
-            + '<span style="font-weight:700;">+' + entry.carbon.toFixed(1) + 'kg CO₂</span>'
+            + '<div><span style="font-weight:900;">+' + entry.points + '</span> Pts'
             + '<p style="font-size:0.7rem;opacity:0.5;font-weight:600;margin-top:2px;">' + entry.product + ' — ' + new Date(entry.date).toLocaleDateString("id-ID") + '</p>'
             + '</div>'
             + '<span style="font-size:1.25rem;">🎁</span>'
