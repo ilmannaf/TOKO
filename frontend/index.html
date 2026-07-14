@@ -5,29 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EcoStore - Belanja Online Terpercaya</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/neobrutalism.css">
+    <link rel="stylesheet" href="css/modern.css">
   </head>
   <body class="bg-gray-100">
 
-  <nav class="nb-navbar sticky top-0 z-50">
+  <nav class="modern-navbar sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4">
     
     <div class="flex justify-between items-center h-20">
       
       <div class="text-2xl font-black tracking-tight">
-        ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span>
+        ECO<span class="text-primary px-2">STORE</span>
       </div>
 
       <ul class="hidden md:flex space-x-6 items-center">
-        <li><a href="index.html" class="nb-link text-lg">HOME</a></li>
-        <li><a href="toko.html" class="nb-link text-lg">PRODUK</a></li>
-        <li><a href="contact.html" class="nb-link text-lg">KONTAK</a></li>
-        <li><a href="Tracking.html" class="nb-link text-lg">LACAK</a></li>
+        <li><a href="index.html" class="modern-nav-link text-lg">HOME</a></li>
+        <li><a href="toko.html" class="modern-nav-link text-lg">PRODUK</a></li>
+        <li><a href="contact.html" class="modern-nav-link text-lg">KONTAK</a></li>
+        <li><a href="Tracking.html" class="modern-nav-link text-lg">LACAK</a></li>
       </ul>
 
       <div class="hidden md:block">
-        <a href="login.html" class="nb-btn nb-btn-yellow">
-            LOGIN
+        <a href="login.html" class="modern-btn modern-btn-primary">
+            Login
         </a>
       </div>
 
@@ -40,31 +40,31 @@
   </div>
 </nav>
     <section class="max-w-7xl mx-auto px-4 mt-8 mb-4">
-      <div class="nb-eco-card p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="modern-eco-card p-8 flex flex-col md:flex-row items-center justify-between gap-6">
         
         <div class="flex items-center gap-6 w-full md:w-auto">
           <div id="eco-gift-wrap" class="text-5xl relative" style="cursor:pointer;">
             <span id="eco-gift-icon">🎁</span>
-            <span id="eco-gift-sparkle" style="display:none;position:absolute;top:-20px;right:-20px;font-size:2.5rem;filter:drop-shadow(0 0 10px rgba(255,229,0,0.8));">🎉</span>
+            <span id="eco-gift-sparkle" style="display:none;position:absolute;top:-20px;right:-20px;font-size:2.5rem;filter:drop-shadow(0 0 10px rgba(37,99,235,0.3));">🎉</span>
           </div>
           <div class="flex-1">
-            <h3 class="text-xl font-black uppercase tracking-tight">Eco-Points Rewards</h3>
-            <p class="text-sm font-bold mt-1">Kumpulkan 1000 Pts & dapatkan diskon 30%!</p>
-            <div class="w-full md:w-56 bg-black h-4 mt-3 border-4 border-black overflow-hidden">
-              <div class="bg-yellow-300 h-full" id="milestone-progress" style="width: 0%"></div>
+            <h3 class="text-xl font-bold tracking-tight">Eco-Points Rewards</h3>
+            <p class="text-sm mt-1">Kumpulkan 1000 Pts & dapatkan diskon 30%!</p>
+            <div class="modern-progress h-4 mt-3 w-full md:w-56">
+              <div class="modern-progress-bar" id="milestone-progress" style="width: 0%"></div>
             </div>
-            <span class="text-xs font-bold mt-2 block uppercase" id="milestone-text">0 / 1000 Pts menuju diskon 30% berikutnya</span>
+            <span class="text-xs mt-2 block" id="milestone-text">0 / 1000 Pts menuju diskon 30% berikutnya</span>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-4 w-full md:w-auto">
-          <div class="nb-card px-4 py-3 bg-yellow-300">
-            <span class="text-xs font-bold block uppercase">Eco-Points</span>
-            <span class="text-2xl font-black" id="total-points">0</span>
+          <div class="modern-stat modern-stat-primary">
+            <p class="modern-stat-label">Eco-Points</p>
+            <p class="modern-stat-value" id="total-points">0</p>
           </div>
-          <div class="nb-card px-4 py-3 bg-cyan-300">
-            <span class="text-xs font-bold block uppercase">CO₂ Saved</span>
-            <span class="text-2xl font-black"><span id="carbon-saved">0</span> Kg</span>
+          <div class="modern-stat modern-stat-cyan">
+            <p class="modern-stat-label">CO<sub>2</sub> Saved</p>
+            <p class="modern-stat-value"><span id="carbon-saved">0</span> Kg</p>
           </div>
         </div>
 
@@ -73,18 +73,18 @@
 
     <!-- Eco History -->
     <section class="max-w-7xl mx-auto px-4 mt-6 mb-4">
-      <div class="nb-card p-6 bg-white">
-        <h3 class="text-lg font-black uppercase mb-4">📜 Riwayat Eco</h3>
+      <div class="modern-card p-6">
+        <h3 class="text-lg font-bold mb-4">Riwayat Eco</h3>
         <div id="eco-history"></div>
       </div>
     </section>
 
     <section class="bg-gray-100 py-20">
       <div class="mx-auto w-screen max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="nb-hero p-12 text-center">
+        <div class="modern-hero p-12 text-center">
           <h1 class="text-5xl md:text-7xl font-black uppercase leading-tight mb-6">
             GAYA HIDUP<br/>
-            <span class="bg-pink-400 px-4 border-4 border-black inline-block mt-2 rotate-[-1deg]">BERKELANJUTAN</span>
+            <span class="inline-block mt-2">BERKELANJUTAN</span>
           </h1>
 
           <p class="mt-6 text-lg md:text-xl font-bold max-w-2xl mx-auto uppercase tracking-wide">
@@ -92,24 +92,24 @@
           </p>
 
           <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a href="toko.html" class="nb-btn nb-btn-black text-lg px-8">
+            <a href="toko.html" class="modern-btn modern-btn-dark text-lg px-8">
               MULAI BELANJA →
             </a>
 
-            <a href="contact.html" class="nb-btn nb-btn-white text-lg px-8">
+            <a href="contact.html" class="modern-btn modern-btn-white text-lg px-8">
               INFO LEBIH LANJUT
             </a>
           </div>
         </div>
       </div>
     </section>
-    <footer class="nb-footer">
+    <footer class="modern-footer">
   <div class="max-w-7xl mx-auto px-4 py-12">
     
     <div class="grid md:grid-cols-4 gap-8">
       
       <div>
-        <h2 class="text-2xl font-black mb-4 uppercase">ECO<span class="bg-yellow-300 text-black px-2 border-3 border-white">STORE</span></h2>
+        <h2 class="text-2xl font-black mb-4 uppercase">ECO<span class="text-primary px-2">STORE</span></h2>
         <p class="mt-3 font-medium">
           Fashion ramah lingkungan dengan harga terjangkau & kualitas terpercaya. 🌿
         </p>
@@ -118,41 +118,41 @@
       <div>
         <h3 class="font-black mb-3 uppercase text-lg">Menu</h3>
         <ul class="space-y-2 font-bold">
-          <li><a href="index.html" class="hover:text-yellow-300">HOME</a></li>
-          <li><a href="toko.html" class="hover:text-yellow-300">PRODUK</a></li>
-          <li><a href="keranjang.html" class="hover:text-yellow-300">KERANJANG</a></li>
-          <li><a href="contact.html" class="hover:text-yellow-300">KONTAK</a></li>
+          <li><a href="index.html" class="hover:text-white">HOME</a></li>
+          <li><a href="toko.html" class="hover:text-white">PRODUK</a></li>
+          <li><a href="keranjang.html" class="hover:text-white">KERANJANG</a></li>
+          <li><a href="contact.html" class="hover:text-white">KONTAK</a></li>
         </ul>
       </div>
 
        <div>
         <h3 class="font-black mb-3 uppercase text-lg">Bantuan</h3>
         <ul class="space-y-2 font-bold">
-          <li><a href="faq.html" class="hover:text-yellow-300">FAQ</a></li>
-          <li><a href="syarat.html" class="hover:text-yellow-300">SYARAT</a></li>
-          <li><a href="privasi.html" class="hover:text-yellow-300">PRIVASI</a></li>
+          <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
+          <li><a href="syarat.html" class="hover:text-white">SYARAT</a></li>
+          <li><a href="privasi.html" class="hover:text-white">PRIVASI</a></li>
         </ul>
       </div>
 
       <div>
         <h3 class="font-black mb-3 uppercase text-lg">Follow Us</h3>
         <div class="flex gap-4 font-bold">
-          <a href="#" class="hover:text-yellow-300">INSTAGRAM</a>
-          <a href="#" class="hover:text-yellow-300">TIKTOK</a>
-          <a href="#" class="hover:text-yellow-300">YOUTUBE</a>
+          <a href="#" class="hover:text-white">INSTAGRAM</a>
+          <a href="#" class="hover:text-white">TIKTOK</a>
+          <a href="#" class="hover:text-white">YOUTUBE</a>
         </div>
       </div>
 
     </div>
 
-    <div class="mt-10 nb-divider pt-6 text-center font-bold uppercase tracking-wide">
+    <div class="mt-10 modern-divider pt-6 text-center font-bold uppercase tracking-wide">
       © 2026 ECOSTORE — ALL RIGHTS RESERVED
     </div>
 
   </div>
 </footer>
     <!-- Toast notification -->
-    <div id="eco-toast" class="fixed top-24 right-4 z-[9999] nb-toast px-6 py-4 hidden" style="max-width:420px;border-color:#FFE500;box-shadow:8px 8px 0px 0px rgba(0,0,0,1);"></div>
+    <div id="eco-toast" class="fixed top-24 right-4 z-[9999] modern-toast px-6 py-4 hidden" style="max-width:420px;"></div>
     <script src="js/config.js"></script>
     <script src="js/script.js"></script>
     <script src="js/auth.js"></script>

@@ -37,28 +37,28 @@ function renderProductsFromData(products) {
   container.innerHTML = products.map(function(product) {
     var imgSrc = product.image || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600';
     var safeName = product.nama.replace(/'/g, "\\'");
-    return '<div class="nb-product-card" style="position:relative;">'
-      + '<button onclick="toggleWishlist(' + product.id + ')" style="position:absolute;top:8px;right:8px;z-index:10;border:4px solid #000;background:#fff;padding:4px 8px;font-size:16px;line-height:1;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-weight:900;" title="Simpan ke Wishlist">'
+    return '<div class="modern-product-card" style="position:relative;">'
+      + '<button onclick="toggleWishlist(' + product.id + ')" class="modern-btn modern-btn-white modern-btn-sm" style="position:absolute;top:8px;right:8px;z-index:10;" title="Simpan ke Wishlist">'
         + '<span id="wishlist-icon-' + product.id + '">🤍</span>'
       + '</button>'
-      + '<div style="height:220px;overflow:hidden;border-bottom:4px solid #000;">'
+      + '<div style="height:200px;overflow:hidden;background:var(--border-light);">'
         + '<img src="' + imgSrc + '" alt="' + product.nama + '" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src=\'https://placehold.co/400x400?text=Error\'" />'
       + '</div>'
       + '<div style="padding:1rem;">'
-        + '<h3 style="font-size:1.125rem;font-weight:900;text-transform:uppercase;margin:0;">' + product.nama + '</h3>'
-        + '<p style="font-weight:700;margin-top:4px;">Rp ' + Number(product.harga).toLocaleString('id-ID') + '</p>'
-        + '<p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;margin-top:4px;opacity:0.6;">' + product.kategori + '</p>'
+        + '<h3 style="font-size:1.125rem;font-weight:700;margin:0;">' + product.nama + '</h3>'
+        + '<p style="font-weight:600;color:var(--primary);margin-top:4px;">Rp ' + Number(product.harga).toLocaleString('id-ID') + '</p>'
+        + '<p style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">' + product.kategori + '</p>'
         + '<div style="margin-top:6px;font-size:0.8rem;">'
           + '<span>' + starsHtml(product.avg_rating) + '</span>'
           + '<span style="font-weight:700;margin-left:4px;font-size:0.75rem;">(' + (product.review_count || 0) + ')</span>'
         + '</div>'
-        + '<div style="margin-top:4px;font-size:0.75rem;font-weight:700;color:#4d7c0f;">'
+        + '<div style="font-size:0.75rem;color:#065F46;margin-top:4px;">'
           + '<span>🎁 +' + (product.eco_points || 0) + ' Eco-Points</span>'
           + '<span style="margin:0 4px;">•</span>'
           + '<span>' + Number(product.carbon_saved || 0).toFixed(1) + 'kg CO₂</span>'
         + '</div>'
-        + '<button onclick="openReviewModal(' + product.id + ", '" + safeName + '\')" style="width:100%;margin-top:8px;border:4px solid #000;background:#FFE500;color:#000;padding:6px 16px;font-weight:900;text-transform:uppercase;font-size:0.75rem;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-family:inherit;">⭐ REVIEW</button>'
-        + '<button onclick="addToCart(' + product.id + ", '" + safeName + "', " + product.harga + ", '" + imgSrc + '\')" style="width:100%;margin-top:12px;border:4px solid #000;background:#000;color:#fff;padding:8px 16px;font-weight:900;text-transform:uppercase;font-size:0.875rem;cursor:pointer;box-shadow:6px 6px 0 0 rgba(0,0,0,1);font-family:inherit;">'
+        + '<button onclick="openReviewModal(' + product.id + ", '" + safeName + '\')" class="modern-btn modern-btn-primary modern-btn-sm" style="width:100%;margin-top:8px;">⭐ REVIEW</button>'
+        + '<button onclick="addToCart(' + product.id + ", '" + safeName + "', " + product.harga + ", '" + imgSrc + '\')" class="modern-btn modern-btn-dark" style="width:100%;margin-top:12px;">'
           + '🛒 TAMBAH'
         + '</button>'
       + '</div>'
@@ -72,17 +72,17 @@ function renderPagination() {
   if (pageState.totalPages <= 1) { container.innerHTML = ''; return; }
   var html = '<div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:2rem;">';
   if (pageState.page > 1) {
-    html += '<button onclick="goToPage(' + (pageState.page - 1) + ')" class="nb-btn nb-btn-white" style="padding:8px 16px;font-weight:900;cursor:pointer;">◀ SEBELUMNYA</button>';
+    html += '<button onclick="goToPage(' + (pageState.page - 1) + ')" class="modern-btn modern-btn-white modern-btn-sm" style="padding:8px 16px;font-weight:900;cursor:pointer;">◀ SEBELUMNYA</button>';
   }
   for (var i = 1; i <= pageState.totalPages; i++) {
     if (i === pageState.page) {
-      html += '<span class="nb-btn nb-btn-black" style="padding:8px 16px;font-weight:900;min-width:44px;text-align:center;">' + i + '</span>';
+      html += '<span class="modern-btn modern-btn-dark modern-btn-sm" style="padding:8px 16px;font-weight:900;min-width:44px;text-align:center;">' + i + '</span>';
     } else {
-      html += '<button onclick="goToPage(' + i + ')" class="nb-btn nb-btn-white" style="padding:8px 16px;font-weight:900;cursor:pointer;min-width:44px;text-align:center;">' + i + '</button>';
+      html += '<button onclick="goToPage(' + i + ')" class="modern-btn modern-btn-white modern-btn-sm" style="padding:8px 16px;font-weight:900;cursor:pointer;min-width:44px;text-align:center;">' + i + '</button>';
     }
   }
   if (pageState.page < pageState.totalPages) {
-    html += '<button onclick="goToPage(' + (pageState.page + 1) + ')" class="nb-btn nb-btn-white" style="padding:8px 16px;font-weight:900;cursor:pointer;">BERIKUTNYA ▶</button>';
+    html += '<button onclick="goToPage(' + (pageState.page + 1) + ')" class="modern-btn modern-btn-white modern-btn-sm" style="padding:8px 16px;font-weight:900;cursor:pointer;">BERIKUTNYA ▶</button>';
   }
   html += '</div>';
   container.innerHTML = html;
@@ -111,11 +111,11 @@ function formatRupiah(num) {
 
 function filterByCategory(kategori) {
   document.querySelectorAll('.category-btn').forEach(function(btn) {
-    btn.classList.remove('nb-btn-black');
-    btn.classList.add('nb-btn-white');
+    btn.classList.remove('modern-btn-dark');
+    btn.classList.add('modern-btn-white', 'modern-btn-sm');
     if (btn.dataset.category === kategori) {
-      btn.classList.remove('nb-btn-white');
-      btn.classList.add('nb-btn-black');
+      btn.classList.remove('modern-btn-white', 'modern-btn-sm');
+      btn.classList.add('modern-btn-dark');
     }
   });
   if (kategori === 'all') {
@@ -174,7 +174,7 @@ async function openReviewModal(productId, productName) {
       } else {
         for (var i = 0; i < data.reviews.length; i++) {
           var r = data.reviews[i];
-          html += '<div style="border:4px solid #000;padding:12px;margin-bottom:8px;">'
+          html += '<div style="border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;">'
             + '<div style="display:flex;justify-content:space-between;align-items:center;">'
               + '<span style="font-weight:900;">' + r.user_name + '</span>'
               + '<span>' + starsHtml(r.rating) + '</span>'
@@ -234,8 +234,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     await renderProducts();
     var allBtn = document.querySelector('[data-category="all"]');
     if (allBtn) {
-      allBtn.classList.remove('nb-btn-white');
-      allBtn.classList.add('nb-btn-black');
+      allBtn.classList.remove('modern-btn-white', 'modern-btn-sm');
+      allBtn.classList.add('modern-btn-dark');
     }
   }
 });

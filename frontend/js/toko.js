@@ -38,11 +38,11 @@ function showToast(name) {
   const toast = document.getElementById('toast');
   if (toast) {
     toast.innerHTML = '🛒 "' + name + '" ditambahkan!';
-    toast.classList.remove('opacity-0', 'translate-y-4');
-    toast.classList.add('opacity-100', 'translate-y-0');
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
     setTimeout(function() {
-      toast.classList.remove('opacity-100', 'translate-y-0');
-      toast.classList.add('opacity-0', 'translate-y-4');
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(1rem)';
     }, 2500);
   }
 }

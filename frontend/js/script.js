@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Bounce animation terus
   if (giftIcon) {
-    giftIcon.className = "nb-gift-bounce";
+        giftIcon.className = "modern-bounce";
   }
 
   // Cek pending claim dari checkout
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var h = '';
         for (var i = Math.max(0, history.length - 10); i < history.length; i++) {
           var entry = history[i];
-          h += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:2px solid #000;font-size:0.875rem;">'
+          h += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.875rem;">'
             + '<div><span style="font-weight:900;">+' + entry.points + '</span> Pts <span style="opacity:0.5;">•</span> '
             + '<span style="font-weight:700;">+' + entry.carbon.toFixed(1) + 'kg CO₂</span>'
             + '<p style="font-size:0.7rem;opacity:0.5;font-weight:600;margin-top:2px;">' + entry.product + ' — ' + new Date(entry.date).toLocaleDateString("id-ID") + '</p>'
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var badge = document.createElement("span");
         badge.id = "eco-claim-badge";
         badge.textContent = "KLAIM!";
-        badge.style.cssText = "position:absolute;top:-16px;right:-16px;background:#FF6B9D;color:#fff;font-size:0.65rem;font-weight:900;padding:4px 8px;border:3px solid #000;box-shadow:3px 3px 0 0 rgba(0,0,0,1);text-transform:uppercase;letter-spacing:0.05em;animation:nb-glow-pulse 1s ease-in-out infinite;";
+        badge.style.cssText = "position:absolute;top:-16px;right:-16px;background:#FF6B9D;color:#fff;font-size:0.65rem;font-weight:900;padding:4px 8px;text-transform:uppercase;animation:modern-glow 1s ease-in-out infinite;";
         giftWrap.style.position = "relative";
         giftWrap.appendChild(badge);
       }
@@ -100,12 +100,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Glow effect pas bisa klaim
-    var ecoCard = document.querySelector(".nb-eco-card");
+    var ecoCard = document.querySelector(".modern-eco-card");
     if (ecoCard) {
       if (isClaimable) {
-        ecoCard.classList.add("nb-glow-pulse");
+        ecoCard.classList.add("modern-glow");
       } else {
-        ecoCard.classList.remove("nb-glow-pulse");
+        ecoCard.classList.remove("modern-glow");
       }
     }
   }
@@ -133,10 +133,8 @@ document.addEventListener("DOMContentLoaded", function () {
     + '</div>';
 
     toast.style.display = "block";
-    toast.className = "fixed top-24 right-4 z-[9999] nb-toast px-6 py-4 nb-toast-enter";
+    toast.className = "fixed top-24 right-4 z-[9999] modern-toast px-6 py-4 modern-toast-enter";
     toast.style.maxWidth = "420px";
-    toast.style.borderColor = "#FFE500";
-    toast.style.boxShadow = "8px 8px 0px 0px rgba(0,0,0,1)";
 
     if (window.ecoToastTimer) clearTimeout(window.ecoToastTimer);
     window.ecoToastTimer = setTimeout(function () {
@@ -147,10 +145,10 @@ document.addEventListener("DOMContentLoaded", function () {
   window.hideEcoToast = function () {
     var toast = document.getElementById("eco-toast");
     if (!toast) return;
-    toast.className = "fixed top-24 right-4 z-[9999] nb-toast px-6 py-4 nb-toast-leave";
+    toast.className = "fixed top-24 right-4 z-[9999] modern-toast px-6 py-4 modern-toast-leave";
     setTimeout(function () {
       toast.style.display = "none";
-      toast.className = "fixed top-24 right-4 z-[9999] nb-toast px-6 py-4 hidden";
+      toast.className = "fixed top-24 right-4 z-[9999] modern-toast px-6 py-4 hidden";
     }, 350);
   };
 
@@ -162,17 +160,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (badge) badge.remove();
 
     // Stop bounce, mulai open
-    giftIcon.className = "nb-gift-open";
+    giftIcon.className = "modern-gift-open";
     giftIcon.style.transformOrigin = "center bottom";
 
-    var ecoCard = document.querySelector(".nb-eco-card");
-    if (ecoCard) ecoCard.classList.add("nb-glow-pulse");
+    var ecoCard = document.querySelector(".modern-eco-card");
+    if (ecoCard) ecoCard.classList.add("modern-glow");
 
     // Setelah animasi open selesai, sembunyiin gift & tampilin sparkle
     setTimeout(function () {
       giftIcon.style.display = "none";
       sparkle.style.display = "inline-block";
-      sparkle.className = "nb-sparkle";
+      sparkle.className = "modern-sparkle";
 
       // Tampilkan toast
       showEcoToast(voucherData);
@@ -181,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sparkle.style.display = "none";
         sparkle.className = "";
         giftIcon.style.display = "inline-block";
-        giftIcon.className = "nb-gift-bounce";
+    giftIcon.className = "modern-bounce";
       }, 2000);
     }, 1200);
   }
@@ -242,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (isClaimable) {
         claimVoucher();
       } else {
-        var ecoCard = document.querySelector(".nb-eco-card");
+        var ecoCard = document.querySelector(".modern-eco-card");
         if (ecoCard) {
           ecoCard.scrollIntoView({ behavior: "smooth", block: "center" });
         }

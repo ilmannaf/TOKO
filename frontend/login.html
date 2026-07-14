@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — EcoStore</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/neobrutalism.css">
+    <link rel="stylesheet" href="css/modern.css">
   </head>
 
   <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     
     <!-- Navbar -->
-    <nav class="nb-navbar sticky top-0 z-50">
+    <nav class="modern-navbar sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-20">
           <div class="text-2xl font-black tracking-tight">
-            <a href="index.html">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
+            <a href="index.html">ECO<span class="text-primary px-2">STORE</span></a>
           </div>
           <ul class="hidden md:flex space-x-6 items-center">
-            <li><a href="index.html" class="nb-link text-lg">HOME</a></li>
-            <li><a href="toko.html" class="nb-link text-lg">PRODUK</a></li>
-            <li><a href="contact.html" class="nb-link text-lg">KONTAK</a></li>
-            <li><a href="Tracking.html" class="nb-link text-lg">LACAK</a></li>
+            <li><a href="index.html" class="modern-nav-link text-lg">HOME</a></li>
+            <li><a href="toko.html" class="modern-nav-link text-lg">PRODUK</a></li>
+            <li><a href="contact.html" class="modern-nav-link text-lg">KONTAK</a></li>
+            <li><a href="Tracking.html" class="modern-nav-link text-lg">LACAK</a></li>
           </ul>
           <div id="nav-auth"></div>
         </div>
@@ -30,27 +30,27 @@
 
   <!-- Form Login -->
   <div class="flex items-center justify-center py-16 px-4">
-    <div class="nb-card p-8 w-full max-w-md bg-white">
+    <div class="modern-card p-8 w-full max-w-md">
 
       <a href="index.html" class="text-3xl font-black tracking-tight block text-center mb-6">
-        ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span>
+        ECO<span class="text-primary px-2">STORE</span>
       </a>
 
-      <h2 class="text-3xl font-black text-center uppercase mb-6">Login Akun</h2>
+      <h2 class="text-3xl font-black text-center mb-6">Login Akun</h2>
 
       <!-- Pesan error -->
-      <div id="error-msg" class="hidden mb-4 nb-alert nb-alert-error"></div>
+      <div id="error-msg" class="hidden mb-4 modern-alert modern-alert-error"></div>
 
       <!-- Email -->
-      <label class="text-sm font-bold uppercase mb-2 block tracking-wide">Email</label>
-      <input type="email" id="email" placeholder="CONTOH@EMAIL.COM"
-        class="nb-input w-full mb-4">
+      <label class="text-sm font-bold mb-2 block tracking-wide">Email</label>
+      <input type="email" id="email" placeholder="Contoh@email.com"
+        class="modern-input w-full mb-4">
 
       <!-- Password -->
-      <label class="text-sm font-bold uppercase mb-2 block tracking-wide">Password</label>
+      <label class="text-sm font-bold mb-2 block tracking-wide">Password</label>
       <div class="relative mb-6">
-        <input type="password" id="password" placeholder="MASUKKAN PASSWORD"
-          class="nb-input w-full pr-10 uppercase">
+        <input type="password" id="password" placeholder="Masukkan password"
+          class="modern-input w-full pr-10">
         <!-- Toggle show/hide password -->
         <button type="button" onclick="togglePassword('password', this)"
           class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl">
@@ -60,14 +60,14 @@
 
       <!-- Button Login -->
       <button id="btn-login" onclick="handleLogin()"
-        class="nb-btn nb-btn-yellow w-full mb-4">
-        MASUK
+        class="modern-btn modern-btn-primary w-full mb-4">
+        Masuk
       </button>
 
       <!-- Link ke Register -->
-      <p class="text-sm text-center font-bold uppercase">
+      <p class="text-sm text-center font-bold">
         Belum punya akun?
-        <a href="register.html" class="nb-link">Daftar</a>
+        <a href="register.html" class="modern-link">Daftar</a>
       </p>
 
     </div>

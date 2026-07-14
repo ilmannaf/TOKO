@@ -5,42 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Keranjang Belanja — EcoStore</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/neobrutalism.css">
-    <style>
-      .item-enter { animation: fadeSlideIn 0.3s ease forwards; }
-      @keyframes fadeSlideIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-    </style>
+    <link rel="stylesheet" href="css/modern.css">
   </head>
   <body class="bg-gray-100 min-h-screen">
 
     <!-- Navbar -->
-    <nav class="nb-navbar sticky top-0 z-50">
+    <nav class="modern-navbar sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-20">
 
           <div class="text-2xl font-black tracking-tight">
-            <a href="index.html">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
+            <a href="index.html">ECO<span class="text-primary px-2">STORE</span></a>
           </div>
 
           <ul class="hidden md:flex space-x-6 items-center">
-            <li><a href="index.html" class="nb-link text-lg">HOME</a></li>
-            <li><a href="toko.html" class="nb-link text-lg">PRODUK</a></li>
-            <li><a href="contact.html" class="nb-link text-lg">KONTAK</a></li>
-            <li><a href="Tracking.html" class="nb-link text-lg">LACAK</a></li>
+            <li><a href="index.html" class="modern-nav-link text-lg">HOME</a></li>
+            <li><a href="toko.html" class="modern-nav-link text-lg">PRODUK</a></li>
+            <li><a href="contact.html" class="modern-nav-link text-lg">KONTAK</a></li>
+            <li><a href="Tracking.html" class="modern-nav-link text-lg">LACAK</a></li>
             <li>
               <a href="keranjang.html" class="relative text-xl font-black">
                 🛒
-                <span id="cart-count" class="absolute -top-2 -right-2 nb-badge nb-badge-pink text-xs h-6 w-6 flex items-center justify-center hidden">0</span>
+                <span id="cart-count" class="modern-cart-badge hidden">0</span>
               </a>
             </li>
           </ul>
 
           <a href="keranjang.html" class="relative text-xl font-black md:hidden">
             🛒
-            <span id="cart-count-mobile" class="absolute -top-2 -right-2 nb-badge nb-badge-pink text-xs h-6 w-6 flex items-center justify-center hidden">0</span>
+            <span id="cart-count-mobile" class="modern-cart-badge hidden">0</span>
           </a>
 
         </div>
@@ -57,7 +50,7 @@
         <div class="text-8xl mb-6">🛒</div>
         <h2 class="text-2xl font-black uppercase mb-2">Keranjang Kosong!</h2>
         <p class="text-base font-bold mb-8 uppercase tracking-wide">Yuk mulai belanja! 🔥</p>
-        <a href="toko.html" class="nb-btn nb-btn-yellow text-lg px-8">
+        <a href="toko.html" class="modern-btn modern-btn-primary text-lg px-8">
           BELANJA SEKARANG →
         </a>
       </div>
@@ -70,7 +63,7 @@
 
         <!-- Ringkasan Pesanan -->
         <div class="mt-8 lg:mt-0">
-          <div class="nb-card p-6 bg-white sticky top-28">
+          <div class="modern-card p-6 sticky top-28">
             <h2 class="text-xl font-black uppercase mb-6">Ringkasan</h2>
 
             <div class="space-y-3 text-sm font-bold">
@@ -80,19 +73,19 @@
               </div>
               <div class="flex justify-between">
                 <span>ONGKOS KIRIM</span>
-                <span class="nb-badge nb-badge-success">GRATIS</span>
+                <span class="modern-badge modern-badge-success">GRATIS</span>
               </div>
-              <div class="nb-divider pt-3 flex justify-between text-base font-black">
+              <div class="modern-divider pt-3 flex justify-between text-base font-black">
                 <span>TOTAL</span>
                 <span id="summary-total" class="text-xl">Rp 0</span>
               </div>
             </div>
 
-            <button onclick="checkout()" class="nb-btn nb-btn-black w-full mt-6 text-lg">
+            <button onclick="checkout()" class="modern-btn modern-btn-dark w-full mt-6 text-lg">
               CHECKOUT →
             </button>
 
-            <button onclick="clearCart()" class="nb-btn nb-btn-white w-full mt-3 text-sm">
+            <button onclick="clearCart()" class="modern-btn modern-btn-white w-full mt-3 text-sm">
               KOSONGKAN KERANJANG
             </button>
           </div>
@@ -102,40 +95,40 @@
     </main>
 
     <!-- Footer -->
-    <footer class="nb-footer">
+    <footer class="modern-footer">
       <div class="max-w-7xl mx-auto px-4 py-12">
         <div class="grid md:grid-cols-4 gap-8">
           <div>
-            <h2 class="text-2xl font-black uppercase">ECO<span class="bg-yellow-300 text-black px-2 border-3 border-white">STORE</span></h2>
+            <h2 class="text-2xl font-black uppercase">ECO<span class="text-primary px-2">STORE</span></h2>
             <p class="mt-3 font-bold">Fashion ramah lingkungan & kualitas terpercaya.</p>
           </div>
           <div>
             <h3 class="font-black uppercase text-lg">Menu</h3>
             <ul class="space-y-2 font-bold">
-              <li><a href="index.html" class="hover:text-yellow-300">HOME</a></li>
-              <li><a href="toko.html" class="hover:text-yellow-300">PRODUK</a></li>
-              <li><a href="#" class="hover:text-yellow-300">KATEGORI</a></li>
-              <li><a href="contact.html" class="hover:text-yellow-300">KONTAK</a></li>
+              <li><a href="index.html" class="hover:text-white">HOME</a></li>
+              <li><a href="toko.html" class="hover:text-white">PRODUK</a></li>
+              <li><a href="#" class="hover:text-white">KATEGORI</a></li>
+              <li><a href="contact.html" class="hover:text-white">KONTAK</a></li>
             </ul>
           </div>
           <div>
             <h3 class="font-black uppercase text-lg">Bantuan</h3>
             <ul class="space-y-2 font-bold">
-              <li><a href="faq.html" class="hover:text-yellow-300">FAQ</a></li>
-              <li><a href="syarat.html" class="hover:text-yellow-300">SYARAT</a></li>
-              <li><a href="privasi.html" class="hover:text-yellow-300">PRIVASI</a></li>
+              <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
+              <li><a href="syarat.html" class="hover:text-white">SYARAT</a></li>
+              <li><a href="privasi.html" class="hover:text-white">PRIVASI</a></li>
             </ul>
           </div>
           <div>
             <h3 class="font-black uppercase text-lg">Follow Us</h3>
             <div class="flex gap-4 font-bold">
-              <a href="#" class="hover:text-yellow-300">IG</a>
-              <a href="#" class="hover:text-yellow-300">TIKTOK</a>
-              <a href="#" class="hover:text-yellow-300">YT</a>
+              <a href="#" class="hover:text-white">IG</a>
+              <a href="#" class="hover:text-white">TIKTOK</a>
+              <a href="#" class="hover:text-white">YT</a>
             </div>
           </div>
         </div>
-        <div class="mt-10 nb-divider pt-6 text-center font-bold uppercase">
+        <div class="mt-10 modern-divider pt-6 text-center font-bold uppercase">
           © 2026 ECOSTORE — ALL RIGHTS RESERVED
         </div>
       </div>
@@ -143,11 +136,11 @@
 
     <!-- Modal Checkout -->
     <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60">
-      <div class="nb-modal p-8 max-w-sm w-full mx-4 text-center bg-white">
+      <div class="modern-modal p-8 max-w-sm w-full mx-4 text-center">
         <div class="text-6xl mb-4">✅</div>
         <h3 class="text-2xl font-black uppercase mb-2">Pesanan Berhasil!</h3>
         <p class="font-bold mb-6 uppercase tracking-wide">Terima kasih telah berbelanja! 🌿</p>
-        <button onclick="closeModal()" class="nb-btn nb-btn-yellow w-full">
+        <button onclick="closeModal()" class="modern-btn modern-btn-primary w-full">
           KEMBALI KE TOKO
         </button>
       </div>

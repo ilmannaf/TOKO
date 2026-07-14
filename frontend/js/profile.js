@@ -78,7 +78,7 @@ async function renderOrders(user) {
     listEl.innerHTML = '<div style="text-align:center;padding:2rem;">'
       + '<p style="font-size:3rem;margin-bottom:1rem;">🛍️</p>'
       + '<p style="font-weight:700;margin-bottom:1rem;text-transform:uppercase;">Belum ada pesanan</p>'
-      + '<a href="toko.html" class="nb-btn nb-btn-yellow" style="display:inline-block;">MULAI BELANJA</a>'
+      + '<a href="toko.html" class="modern-btn modern-btn-primary" style="display:inline-block;">MULAI BELANJA</a>'
       + '</div>';
     return;
   }
@@ -86,13 +86,13 @@ async function renderOrders(user) {
   var h = '';
   for (var i = 0; i < orders.length; i++) {
     var o = orders[i];
-    h += '<div style="border:4px solid #000;padding:1rem;margin-bottom:1rem;box-shadow:4px 4px 0 0 rgba(0,0,0,1);background:#fff;">'
+    h += '<div style="border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1rem;background:var(--card);">'
       + '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.5rem;">'
         + '<div>'
           + '<p style="font-size:0.75rem;font-weight:700;opacity:0.6;text-transform:uppercase;">' + formatDate(o.created_at) + '</p>'
           + '<p style="font-weight:900;font-size:1.1rem;">#' + o.nomor_pesanan + '</p>'
         + '</div>'
-        + '<span class="nb-badge nb-badge-info" style="font-size:0.65rem;">' + (o.status || 'diproses') + '</span>'
+        + '<span class="modern-badge modern-badge-info" style="font-size:0.65rem;">' + (o.status || 'diproses') + '</span>'
       + '</div>'
       + '<div style="display:flex;justify-content:space-between;font-size:0.875rem;font-weight:700;">'
         + '<span>' + (o.jumlah_item || 0) + ' produk</span>'
@@ -133,12 +133,14 @@ function showTab(tab) {
   document.getElementById('content-' + tab).classList.remove('hidden');
   
   document.querySelectorAll('[id^="tab-"]').forEach(el => {
-    el.className = 'nb-btn nb-btn-white w-full text-sm mb-2 uppercase';
+    el.className = 'modern-btn modern-btn-white';
+    el.style.cssText = 'width:100%;margin-bottom:0.5rem;';
   });
   
   var tabEl = document.getElementById('tab-' + tab);
   if (tabEl) {
-    tabEl.className = 'nb-btn nb-btn-yellow w-full text-sm mb-2 uppercase';
+    tabEl.className = 'modern-btn modern-btn-primary';
+    tabEl.style.cssText = 'width:100%;margin-bottom:0.5rem;';
   }
   
   if (tab === 'wishlist') {
@@ -159,7 +161,7 @@ async function renderProfileWishlist() {
       container.innerHTML = '<div style="text-align:center;padding:2rem;">'
         + '<p style="font-size:3rem;margin-bottom:1rem;">🤍</p>'
         + '<p style="font-weight:700;text-transform:uppercase;">Wishlist kosong</p>'
-        + '<a href="toko.html" class="nb-btn nb-btn-yellow" style="display:inline-block;margin-top:1rem;">JELAJAHI PRODUK</a>'
+        + '<a href="toko.html" class="modern-btn modern-btn-primary" style="display:inline-block;margin-top:1rem;">JELAJAHI PRODUK</a>'
         + '</div>';
       return;
     }
@@ -167,8 +169,8 @@ async function renderProfileWishlist() {
     var h = '';
     for (var i = 0; i < data.wishlist.length; i++) {
       var p = data.wishlist[i];
-      h += '<div style="display:flex;gap:0.75rem;border:4px solid #000;padding:0.75rem;box-shadow:4px 4px 0 0 rgba(0,0,0,1);background:#fff;">'
-        + '<img src="' + (p.image || 'https://via.placeholder.com/80') + '" style="width:80px;height:80px;object-fit:cover;border:3px solid #000;" alt="' + (p.nama || '') + '" onerror="this.src=\'https://via.placeholder.com/80\'">'
+      h += '<div style="display:flex;gap:0.75rem;border:1px solid var(--border);border-radius:12px;padding:0.75rem;background:var(--card);">'
+        + '<img src="' + (p.image || 'https://via.placeholder.com/80') + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" alt="' + (p.nama || '') + '" onerror="this.src=\'https://via.placeholder.com/80\'">'
         + '<div style="flex:1;">'
           + '<h4 style="font-weight:900;font-size:0.875rem;text-transform:uppercase;">' + (p.nama || '') + '</h4>'
           + '<p style="font-weight:900;font-size:0.875rem;margin-top:4px;">' + formatRupiah(p.harga) + '</p>'

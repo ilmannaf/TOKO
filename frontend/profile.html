@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Saya - EcoStore</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/neobrutalism.css">
+    <link rel="stylesheet" href="css/modern.css">
   </head>
   <body class="bg-gray-100 min-h-screen">
     
-    <header class="nb-navbar sticky top-0 z-50">
+    <header class="modern-navbar sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center h-20">
-        <a href="index.html" class="text-2xl font-black tracking-tight">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
+        <a href="index.html" class="text-2xl font-black tracking-tight">ECO<span class="text-primary px-2">STORE</span></a>
         <div class="flex gap-6 items-center">
-          <a href="toko.html" class="nb-link uppercase font-black">Produk</a>
+          <a href="toko.html" class="modern-nav-link font-black">Produk</a>
           <a href="keranjang.html" class="relative text-2xl font-black">
             🛒
-            <span id="cart-count" class="absolute -top-2 -right-2 nb-badge nb-badge-pink text-xs h-6 w-6 flex items-center justify-center hidden">0</span>
+            <span id="cart-count" class="modern-cart-badge hidden">0</span>
           </a>
-          <button onclick="logout()" class="nb-btn nb-btn-pink uppercase font-black">
-            LOGOUT
+          <button onclick="logout()" class="modern-btn modern-btn-danger font-black">
+            Logout
           </button>
         </div>
       </div>
@@ -30,24 +30,24 @@
         
         <!-- Sidebar Profil -->
         <div class="md:col-span-1">
-          <div class="nb-card p-6 bg-white text-center">
+          <div class="modern-card p-6 text-center">
             <div class="mb-6">
               <div class="text-5xl" id="user-avatar">👤</div>
-              <h2 id="user-name" class="text-2xl font-black mt-4 uppercase">Loading...</h2>
-              <p id="user-email" class="text-sm font-bold mt-1 uppercase">Loading...</p>
+              <h2 id="user-name" class="text-2xl font-black mt-4">Loading...</h2>
+              <p id="user-email" class="text-sm font-bold mt-1">Loading...</p>
             </div>
             
-            <div class="nb-divider pt-4">
-              <button onclick="showTab('orders')" id="tab-orders" class="nb-btn nb-btn-yellow w-full text-sm mb-2 uppercase">
+            <div class="modern-divider pt-4">
+              <button onclick="showTab('orders')" id="tab-orders" class="modern-btn modern-btn-primary w-full text-sm mb-2">
                 🛍️ PESANAN SAYA
               </button>
-              <button onclick="showTab('wishlist')" id="tab-wishlist" class="nb-btn nb-btn-white w-full text-sm mb-2 uppercase">
+              <button onclick="showTab('wishlist')" id="tab-wishlist" class="modern-btn modern-btn-white w-full text-sm mb-2">
                 ❤️ WISHLIST
               </button>
-              <button onclick="showTab('profile')" id="tab-profile" class="nb-btn nb-btn-white w-full text-sm mb-2 uppercase">
+              <button onclick="showTab('profile')" id="tab-profile" class="modern-btn modern-btn-white w-full text-sm mb-2">
                 📝 EDIT PROFIL
               </button>
-              <button onclick="showTab('ecopoints')" id="tab-ecopoints" class="nb-btn nb-btn-white w-full text-sm uppercase">
+              <button onclick="showTab('ecopoints')" id="tab-ecopoints" class="modern-btn modern-btn-white w-full text-sm">
                 🎁 ECO-POINTS
               </button>
             </div>
@@ -58,81 +58,81 @@
         <div class="md:col-span-2">
           
           <!-- Tab Pesanan -->
-          <div id="content-orders" class="nb-card p-6 bg-white hidden">
-            <h3 class="text-3xl font-black uppercase mb-6">Riwayat Pesanan</h3>
+          <div id="content-orders" class="modern-card p-6 hidden">
+            <h3 class="text-3xl font-black mb-6">Riwayat Pesanan</h3>
             <div id="orders-list" class="space-y-4">
               <p class="text-center font-bold py-8">Memuat pesanan...</p>
             </div>
           </div>
 
           <!-- Tab Edit Profil -->
-          <div id="content-profile" class="nb-card p-6 bg-white hidden">
-            <h3 class="text-3xl font-black uppercase mb-6">Edit Profil</h3>
+          <div id="content-profile" class="modern-card p-6 hidden">
+            <h3 class="text-3xl font-black mb-6">Edit Profil</h3>
             <form id="profile-form" class="space-y-4">
               <div>
-                <label class="text-sm font-black uppercase mb-2 block tracking-wide">Nama Lengkap</label>
-                <input type="text" id="edit-nama" class="nb-input w-full uppercase" required>
+                <label class="text-sm font-black mb-2 block tracking-wide">Nama Lengkap</label>
+                <input type="text" id="edit-nama" class="modern-input w-full" required>
               </div>
               <div>
-                <label class="text-sm font-black uppercase mb-2 block tracking-wide">Email</label>
-                <input type="email" id="edit-email" class="nb-input w-full bg-gray-50 uppercase" disabled>
+                <label class="text-sm font-black mb-2 block tracking-wide">Email</label>
+                <input type="email" id="edit-email" class="modern-input w-full bg-gray-50" disabled>
               </div>
               <div>
-                <label class="text-sm font-black uppercase mb-2 block tracking-wide">Nomor Telepon</label>
-                <input type="tel" id="edit-telepon" class="nb-input w-full uppercase">
+                <label class="text-sm font-black mb-2 block tracking-wide">Nomor Telepon</label>
+                <input type="tel" id="edit-telepon" class="modern-input w-full">
               </div>
               <div>
-                <label class="text-sm font-black uppercase mb-2 block tracking-wide">Alamat</label>
-                <textarea id="edit-alamat" rows="3" class="nb-input w-full uppercase"></textarea>
+                <label class="text-sm font-black mb-2 block tracking-wide">Alamat</label>
+                <textarea id="edit-alamat" rows="3" class="modern-input w-full"></textarea>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="text-sm font-black uppercase mb-2 block tracking-wide">Kota</label>
-                  <input type="text" id="edit-kota" class="nb-input w-full uppercase">
+                  <label class="text-sm font-black mb-2 block tracking-wide">Kota</label>
+                  <input type="text" id="edit-kota" class="modern-input w-full">
                 </div>
                 <div>
-                  <label class="text-sm font-black uppercase mb-2 block tracking-wide">Provinsi</label>
-                  <input type="text" id="edit-provinsi" class="nb-input w-full uppercase">
+                  <label class="text-sm font-black mb-2 block tracking-wide">Provinsi</label>
+                  <input type="text" id="edit-provinsi" class="modern-input w-full">
                 </div>
               </div>
-              <button type="submit" class="nb-btn nb-btn-yellow w-full uppercase font-black">
+              <button type="submit" class="modern-btn modern-btn-primary w-full font-black">
                 SIMPAN PERUBAHAN
               </button>
             </form>
           </div>
 
           <!-- Tab Eco-Points -->
-          <div id="content-ecopoints" class="nb-card p-6 bg-white hidden">
-            <h3 class="text-3xl font-black uppercase mb-6">Eco-Points Saya</h3>
+          <div id="content-ecopoints" class="modern-card p-6 hidden">
+            <h3 class="text-3xl font-black mb-6">Eco-Points Saya</h3>
             <div class="text-center py-8">
               <div class="text-5xl mb-4">🎁</div>
-              <p class="text-lg font-bold uppercase mb-4">Kumpulkan 1000 Pts & dapatkan diskon 30%!</p>
+              <p class="text-lg font-bold mb-4">Kumpulkan 1000 Pts & dapatkan diskon 30%!</p>
               <div class="max-w-md mx-auto mb-4">
-                <div class="w-full bg-black h-4 border-4 border-black overflow-hidden">
-                  <div id="eco-progress-bar" class="bg-lime-300 h-full" style="width: 0%"></div>
+                <div class="modern-progress h-4">
+                  <div id="eco-progress-bar" class="modern-progress-bar" style="width: 0%"></div>
                 </div>
                 <p class="text-xs font-bold mt-2" id="eco-milestone-text">0 / 1000 Pts</p>
               </div>
               <div class="grid grid-cols-3 gap-4 mt-8">
-                <div class="nb-card p-4 bg-lime-300">
-                  <p class="text-xs font-bold uppercase">Total Points</p>
-                  <p class="text-2xl font-black text-lime-900" id="eco-total-points">0</p>
+                <div class="modern-stat modern-stat-primary">
+                  <p class="modern-stat-label">Total Points</p>
+                  <p class="modern-stat-value" id="eco-total-points">0</p>
                 </div>
-                <div class="nb-card p-4 bg-cyan-300">
-                  <p class="text-xs font-bold uppercase">CO₂ Saved</p>
-                  <p class="text-2xl font-black text-cyan-900" id="eco-carbon-saved">0 kg</p>
+                <div class="modern-stat modern-stat-cyan">
+                  <p class="modern-stat-label">CO<sub>2</sub> Saved</p>
+                  <p class="modern-stat-value" id="eco-carbon-saved">0 kg</p>
                 </div>
-                <div class="nb-card p-4 bg-pink-300">
-                  <p class="text-xs font-bold uppercase">Voucher Diklaim</p>
-                  <p class="text-2xl font-black text-pink-900" id="eco-vouchers-claimed">0</p>
+                <div class="modern-stat modern-stat-danger">
+                  <p class="modern-stat-label">Voucher Diklaim</p>
+                  <p class="modern-stat-value" id="eco-vouchers-claimed">0</p>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Tab Wishlist -->
-          <div id="content-wishlist" class="nb-card p-6 bg-white hidden">
-            <h3 class="text-3xl font-black uppercase mb-6">Wishlist Saya</h3>
+          <div id="content-wishlist" class="modern-card p-6 hidden">
+            <h3 class="text-3xl font-black mb-6">Wishlist Saya</h3>
             <div id="profile-wishlist-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <p class="text-center font-bold py-8">Memuat wishlist...</p>
             </div>
@@ -142,7 +142,7 @@
       </div>
     </main>
 
-    <footer class="nb-footer">
+    <footer class="modern-footer">
       <div class="max-w-7xl mx-auto px-4 py-8 text-center font-bold uppercase">
         © 2026 ECOSTORE — ALL RIGHTS RESERVED
       </div>

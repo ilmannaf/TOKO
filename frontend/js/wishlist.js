@@ -75,7 +75,7 @@ async function renderWishlistPage() {
         + '<div style="font-size:4rem;margin-bottom:1rem;">🤍</div>'
         + '<h3 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:8px;">Wishlist Kosong</h3>'
         + '<p style="font-weight:700;text-transform:uppercase;font-size:0.875rem;opacity:0.6;">Mulai simpan produk favoritmu!</p>'
-        + '<a href="toko.html" class="nb-btn nb-btn-yellow" style="display:inline-block;margin-top:1.5rem;text-transform:uppercase;font-weight:900;text-decoration:none;">Jelajahi Produk</a>'
+        + '<a href="toko.html" class="modern-btn modern-btn-primary" style="display:inline-block;margin-top:1.5rem;text-decoration:none;">Jelajahi Produk</a>'
         + '</div>';
       return;
     }
@@ -84,17 +84,17 @@ async function renderWishlistPage() {
       var product = data.wishlist[i];
       var imgSrc = product.image || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=600';
       var safeName = product.nama.replace(/'/g, "\\'");
-      html += '<div class="nb-product-card">'
-        + '<div style="height:180px;overflow:hidden;border-bottom:4px solid #000;position:relative;">'
+      html += '<div class="modern-product-card">'
+        + '<div style="height:180px;overflow:hidden;background:var(--border-light);position:relative;">'
           + '<img src="' + imgSrc + '" alt="' + product.nama + '" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src=\'https://placehold.co/400x400?text=Error\'" />'
-          + '<button onclick="removeFromWishlist(' + product.id + ')" style="position:absolute;top:8px;right:8px;border:4px solid #000;background:#FF6B9D;color:#fff;padding:4px 8px;font-size:14px;line-height:1;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-weight:900;z-index:10;">❤️</button>'
+          + '<button onclick="removeFromWishlist(' + product.id + ')" class="modern-btn modern-btn-danger modern-btn-sm" style="position:absolute;top:8px;right:8px;z-index:10;">❤️</button>'
         + '</div>'
         + '<div style="padding:1rem;">'
-          + '<h3 style="font-weight:900;text-transform:uppercase;margin:0;">' + product.nama + '</h3>'
-          + '<p style="font-weight:700;margin-top:4px;">Rp ' + Number(product.harga).toLocaleString('id-ID') + '</p>'
+          + '<h3 style="font-weight:700;margin:0;">' + product.nama + '</h3>'
+          + '<p style="font-weight:600;color:var(--primary);margin-top:4px;">Rp ' + Number(product.harga).toLocaleString('id-ID') + '</p>'
           + '<div style="margin-top:12px;display:flex;gap:8px;">'
-            + '<button onclick="addToCart(' + product.id + ", '" + safeName + "', " + product.harga + ", '" + imgSrc + '\')" style="flex:1;border:4px solid #000;background:#000;color:#fff;padding:8px;font-weight:900;text-transform:uppercase;font-size:0.875rem;cursor:pointer;box-shadow:6px 6px 0 0 rgba(0,0,0,1);font-family:inherit;">🛒 BELI</button>'
-            + '<button onclick="removeFromWishlist(' + product.id + ')" style="border:4px solid #000;background:#fff;padding:8px 12px;font-weight:900;cursor:pointer;box-shadow:6px 6px 0 0 rgba(0,0,0,1);font-family:inherit;font-size:1rem;">🗑️</button>'
+            + '<button onclick="addToCart(' + product.id + ", '" + safeName + "', " + product.harga + ", '" + imgSrc + '\')" class="modern-btn modern-btn-dark" style="flex:1;">🛒 BELI</button>'
+            + '<button onclick="removeFromWishlist(' + product.id + ')" class="modern-btn modern-btn-white" style="padding:8px 12px;">🗑️</button>'
           + '</div>'
         + '</div>'
       + '</div>';

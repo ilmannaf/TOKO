@@ -55,10 +55,10 @@ function updateNavbar() {
     if (desktopAuthContainer) {
       desktopAuthContainer.innerHTML = `
         <div class="flex items-center gap-4">
-          <a href="profile.html" class="text-sm font-medium text-gray-700 hover:text-indigo-600">
-            Halo, <strong class="text-indigo-600">${user.nama}</strong>
+          <a href="profile.html" style="font-size:0.875rem;font-weight:500;color:var(--text-secondary);">
+            Halo, <strong style="font-weight:600;color:var(--primary);">${user.nama}</strong>
           </a>
-          <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm font-semibold transition">
+          <button onclick="logout()" class="modern-btn modern-btn-danger modern-btn-sm">
             Logout
           </button>
         </div>
@@ -68,7 +68,7 @@ function updateNavbar() {
     // 2. Tampilan Navbar Desktop jika Belum Login
     if (desktopAuthContainer) {
       desktopAuthContainer.innerHTML = `
-        <a href="login.html" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 font-semibold transition">
+        <a href="login.html" class="modern-btn modern-btn-primary">
           Login
         </a>
       `;

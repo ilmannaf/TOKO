@@ -5,21 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lacak Pesanan — EcoStore</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/neobrutalism.css">
+  <link rel="stylesheet" href="css/modern.css">
 </head>
 <body class="bg-gray-100 min-h-screen">
 
   <!-- Navbar -->
-  <nav class="nb-navbar sticky top-0 z-50">
+  <nav class="modern-navbar sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4">
       <div class="flex justify-between items-center h-20">
         <div class="text-2xl font-black tracking-tight">
-          <a href="index.html">ECO<span class="bg-yellow-300 px-2 border-4 border-black">STORE</span></a>
+          <a href="index.html">ECO<span class="text-primary px-2">STORE</span></a>
         </div>
         <ul class="hidden md:flex space-x-6 items-center">
-          <li><a href="index.html" class="nb-link text-lg">HOME</a></li>
-          <li><a href="toko.html" class="nb-link text-lg">PRODUK</a></li>
-          <li><a href="keranjang.html" class="nb-link text-lg">KERANJANG</a></li>
+          <li><a href="index.html" class="modern-link">HOME</a></li>
+          <li><a href="toko.html" class="modern-link">PRODUK</a></li>
+          <li><a href="keranjang.html" class="modern-link">KERANJANG</a></li>
         </ul>
         <div id="nav-auth"></div>
       </div>
@@ -32,30 +32,31 @@
     <p class="font-bold uppercase text-sm mb-8">Masukkan nomor pesanan untuk melihat status</p>
 
     <!-- Form Cari -->
-    <div class="nb-card p-6 mb-6 bg-white">
+    <div class="modern-card p-6 mb-6">
       <div class="flex gap-3">
         <input type="text" id="input-nomor" placeholder="CONTOH: ECO-123456"
-          class="nb-input flex-1 uppercase"
+          class="modern-input flex-1"
+          style="text-transform:uppercase;"
           oninput="this.value = this.value.toUpperCase()">
         <button onclick="lacakPesanan()"
-          class="nb-btn nb-btn-yellow">
+          class="modern-btn modern-btn-primary">
           LACAK
         </button>
       </div>
-      <div id="error-cari" class="hidden mt-3 nb-alert nb-alert-error"></div>
+      <div id="error-cari" class="hidden mt-3 modern-alert modern-alert-error"></div>
     </div>
 
     <!-- Hasil Tracking -->
     <div id="hasil-tracking" class="hidden space-y-5">
 
       <!-- Info Pesanan -->
-      <div class="bg-white rounded-2xl shadow-sm p-6">
+      <div class="modern-card p-6">
         <div class="flex items-start justify-between flex-wrap gap-3">
           <div>
             <p class="text-xs text-gray-400 mb-1">Nomor Pesanan</p>
-            <p id="track-nomor" class="text-xl font-bold text-indigo-600">#ECO-000000</p>
+            <p id="track-nomor" style="font-size:1.25rem;font-weight:700;color:var(--primary);">#ECO-000000</p>
           </div>
-          <div id="track-status-badge" class="px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700">
+          <div id="track-status-badge" class="modern-badge modern-badge-warning">
             Dikonfirmasi
           </div>
         </div>
@@ -75,20 +76,20 @@
           </div>
           <div>
             <p class="text-xs text-gray-400 mb-1">Total</p>
-            <p id="track-total" class="text-sm font-bold text-indigo-600">-</p>
+            <p id="track-total" style="font-size:0.875rem;font-weight:700;color:var(--primary);">-</p>
           </div>
         </div>
       </div>
 
       <!-- Timeline Status -->
-      <div class="bg-white rounded-2xl shadow-sm p-6">
+      <div class="modern-card p-6">
         <h2 class="text-lg font-bold text-gray-900 mb-6">Status Pengiriman</h2>
 
         <div id="timeline" class="relative"></div>
       </div>
 
       <!-- Info Penerima -->
-      <div class="bg-white rounded-2xl shadow-sm p-6">
+      <div class="modern-card p-6">
         <h2 class="text-base font-bold text-gray-900 mb-4">📍 Alamat Penerima</h2>
         <div class="text-sm text-gray-700 space-y-1">
           <p id="track-nama" class="font-semibold"></p>
@@ -99,7 +100,7 @@
       </div>
 
       <!-- Produk yang dipesan -->
-      <div class="bg-white rounded-2xl shadow-sm p-6">
+      <div class="modern-card p-6">
         <h2 class="text-base font-bold text-gray-900 mb-4">📦 Produk Dipesan</h2>
         <div id="track-items" class="space-y-3"></div>
       </div>
@@ -119,7 +120,7 @@
         </button>
       </div>
       <div id="riwayat-list" class="space-y-3"></div>
-      <div id="riwayat-kosong" class="hidden bg-white rounded-2xl shadow-sm p-8 text-center text-gray-400">
+      <div id="riwayat-kosong" class="hidden modern-card p-8 text-center" style="color:var(--text-light);">
         <p class="text-4xl mb-3">📭</p>
         <p>Belum ada riwayat pesanan</p>
       </div>
@@ -128,8 +129,8 @@
   </main>
 
   <!-- Footer -->
-  <footer class="nb-footer mt-16">
-    <div class="max-w-7xl mx-auto px-4 py-8 text-center font-bold uppercase">
+  <footer class="modern-footer mt-16">
+    <div class="max-w-7xl mx-auto px-4 py-8 text-center" style="color:var(--text-light);">
       © 2026 ECOSTORE — ALL RIGHTS RESERVED
     </div>
   </footer>
@@ -201,18 +202,18 @@
       el.innerHTML = steps.map((step, i) => `
         <div class="flex gap-4 ${i < steps.length - 1 ? 'mb-0' : ''}">
           <div class="flex flex-col items-center">
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg flex-shrink-0
-              ${step.done ? 'bg-indigo-600 shadow-md shadow-indigo-200' : 'bg-gray-100'}">
-              ${step.done ? step.icon : '<span class="w-3 h-3 rounded-full bg-gray-300 block"></span>'}
+            <div style="width:40px;height:40px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:1.125rem;flex-shrink:0;
+              ${step.done ? 'background:var(--primary);' : 'background:#f3f4f6;'}">
+              ${step.done ? step.icon : '<span style="width:12px;height:12px;border-radius:999px;background:#d1d5db;display:block;"></span>'}
             </div>
             ${i < steps.length - 1 ? `
-              <div class="w-0.5 flex-1 my-1 ${step.done && steps[i+1].done ? 'bg-indigo-400' : 'bg-gray-200'}"></div>
+              <div style="width:2px;flex:1;margin:4px 0;${step.done && steps[i+1].done ? 'background:var(--primary);' : 'background:#e5e7eb;'}"></div>
             ` : ''}
           </div>
-          <div class="pb-6 pt-1.5">
-            <p class="font-semibold text-sm ${step.done ? 'text-gray-900' : 'text-gray-400'}">${step.label}</p>
-            <p class="text-xs ${step.done ? 'text-gray-500' : 'text-gray-300'} mt-0.5">${step.desc}</p>
-            ${step.done ? `<p class="text-xs text-indigo-400 mt-1">${formatTanggal(step.time)}</p>` : ''}
+          <div style="padding-bottom:1.5rem;padding-top:0.375rem;">
+            <p style="font-weight:600;font-size:0.875rem;${step.done ? 'color:#111827;' : 'color:#9ca3af;'}">${step.label}</p>
+            <p style="font-size:0.75rem;${step.done ? 'color:#6b7280;' : 'color:#d1d5db;'}margin-top:0.125rem;">${step.desc}</p>
+            ${step.done ? `<p style="font-size:0.75rem;color:var(--primary);margin-top:0.25rem;">${formatTanggal(step.time)}</p>` : ''}
           </div>
         </div>
       `).join('');
@@ -221,15 +222,15 @@
     function getStatusBadge(steps) {
       const lastDone = [...steps].reverse().find(s => s.done);
       const badges = {
-        'Pesanan Selesai':         { bg: 'bg-green-100',  text: 'text-green-700' },
-        'Tiba di Kota Tujuan':    { bg: 'bg-blue-100',   text: 'text-blue-700'  },
-        'Dalam Perjalanan':       { bg: 'bg-sky-100',    text: 'text-sky-700'   },
-        'Diserahkan ke Kurir':    { bg: 'bg-orange-100', text: 'text-orange-700'},
-        'Sedang Diproses':        { bg: 'bg-yellow-100', text: 'text-yellow-700'},
-        'Pesanan Dikonfirmasi':   { bg: 'bg-purple-100', text: 'text-purple-700'},
+        'Pesanan Selesai':         'modern-badge modern-badge-success',
+        'Tiba di Kota Tujuan':    'modern-badge modern-badge-info',
+        'Dalam Perjalanan':       'modern-badge modern-badge-info',
+        'Diserahkan ke Kurir':    'modern-badge modern-badge-warning',
+        'Sedang Diproses':        'modern-badge modern-badge-warning',
+        'Pesanan Dikonfirmasi':   'modern-badge modern-badge-info',
       };
-      const b = badges[lastDone?.label] || badges['Pesanan Dikonfirmasi'];
-      return { label: lastDone?.label || 'Dikonfirmasi', ...b };
+      const cls = badges[lastDone?.label] || badges['Pesanan Dikonfirmasi'];
+      return { label: lastDone?.label || 'Dikonfirmasi', class: cls };
     }
 
     function tampilkanPesanan(pesanan) {
@@ -247,7 +248,7 @@
 
       const badgeEl = document.getElementById('track-status-badge');
       badgeEl.textContent = badge.label;
-      badgeEl.className   = `px-3 py-1 rounded-full text-sm font-semibold ${badge.bg} ${badge.text}`;
+      badgeEl.className   = badge.class;
 
       document.getElementById('track-nama').textContent    = pesanan.penerima.nama;
       document.getElementById('track-telepon').textContent = pesanan.penerima.telepon;
@@ -383,22 +384,22 @@
         const steps = getStatusSteps(o);
         const badge = getStatusBadge(steps);
         return `
-          <div class="bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div class="modern-card p-4" style="display:flex;align-items:center;gap:1rem;">
             <!-- Info pesanan — klik untuk lacak -->
             <div class="flex-1 cursor-pointer" onclick="document.getElementById('input-nomor').value='${o.nomor}'; lacakPesanan();">
-              <p class="font-bold text-indigo-600 text-sm">#${o.nomor}</p>
+              <p style="font-weight:700;color:var(--primary);font-size:0.875rem;">#${o.nomor}</p>
               <p class="text-xs text-gray-500 mt-0.5">${formatTanggal(o.tanggal)}</p>
               <p class="text-xs text-gray-400">${o.items.length} produk · ${formatRupiah(o.total)}</p>
             </div>
             <!-- Badge status -->
-            <span class="px-3 py-1 rounded-full text-xs font-semibold flex-shrink-0 ${badge.bg} ${badge.text}">
+            <span class="${badge.class}" style="flex-shrink:0;">
               ${badge.label}
             </span>
             <!-- Tombol hapus -->
             <button onclick="hapusPesanan('${o.nomor}')"
-              class="flex-shrink-0 p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              class="flex-shrink-0" style="padding:0.5rem;color:#d1d5db;border:none;background:none;cursor:pointer;border-radius:8px;"
               title="Hapus pesanan ini">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" style="width:1rem;height:1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </button>

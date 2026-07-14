@@ -33,23 +33,23 @@ function renderCart() {
   for (var i = 0; i < cart.length; i++) {
     var item = cart[i];
     var el = document.createElement('div');
-    el.className = 'nb-card';
+    el.className = 'modern-card';
     el.style.cssText = 'padding:1rem;display:flex;align-items:center;gap:1rem;';
-    el.innerHTML = '<div style="width:80px;height:80px;overflow:hidden;border:4px solid #000;flex-shrink:0;">'
+    el.innerHTML = '<div style="width:80px;height:80px;overflow:hidden;border-radius:8px;border:1px solid var(--border);flex-shrink:0;">'
       + '<img src="' + item.image + '" alt="' + item.name + '" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src=\'https://placehold.co/200x200?text=Error\'" />'
       + '</div>'
       + '<div style="flex:1;min-width:0;">'
-        + '<h3 style="font-weight:900;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:0;">' + item.name + '</h3>'
+        + '<h3 style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:0;">' + item.name + '</h3>'
         + '<p style="font-weight:700;font-size:0.875rem;margin-top:4px;">' + formatRupiah(item.price) + '</p>'
         + '<div style="display:flex;align-items:center;gap:8px;margin-top:12px;">'
-          + '<button onclick="changeQty(' + item.id + ', -1)" style="border:4px solid #000;background:#fff;padding:4px 12px;font-weight:900;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-family:inherit;font-size:1rem;line-height:1;">−</button>'
+          + '<button onclick="changeQty(' + item.id + ', -1)" class="modern-btn modern-btn-white modern-btn-sm">−</button>'
           + '<span style="width:32px;text-align:center;font-weight:900;">' + item.qty + '</span>'
-          + '<button onclick="changeQty(' + item.id + ', 1)" style="border:4px solid #000;background:#fff;padding:4px 12px;font-weight:900;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-family:inherit;font-size:1rem;line-height:1;">+</button>'
+          + '<button onclick="changeQty(' + item.id + ', 1)" class="modern-btn modern-btn-white modern-btn-sm">+</button>'
         + '</div>'
       + '</div>'
       + '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0;">'
         + '<p style="font-weight:900;margin:0;">' + formatRupiah(item.price * item.qty) + '</p>'
-        + '<button onclick="removeItem(' + item.id + ')" style="border:4px solid #000;background:#FF6B9D;color:#fff;padding:4px 12px;font-weight:900;cursor:pointer;box-shadow:4px 4px 0 0 rgba(0,0,0,1);font-family:inherit;font-size:0.875rem;line-height:1;">✕</button>'
+        + '<button onclick="removeItem(' + item.id + ')" class="modern-btn modern-btn-danger modern-btn-sm">✕</button>'
       + '</div>';
     cartItemsEl.appendChild(el);
   }
