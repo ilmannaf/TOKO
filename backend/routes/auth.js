@@ -1,8 +1,31 @@
 const express  = require('express');
 const bcrypt   = require('bcryptjs');
 const jwt      = require('jsonwebtoken');
+const multer   = require('multer');
+const path     = require('path');
 const db       = require('../database/database');
 const router   = express.Router();
+
+// Setup upload avatar
+const avatarStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../../frontend/assets/avatars/'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = 'avatar-' + Date.now() + path.extname(file.originalname);
+    cb(null, uniqueName);
+  }
+});
+const uploadAvatar = multer({
+  storage: avatarStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowed = /jpeg|jpg|png|gif/;
+    const ext = allowed.test(path.extname(file.originalname).toLowerCase());
+    const mime = allowed.test(file.mimetype);
+    cb(ext && mime ? null : new Error('Hanya gambar (JPG, PNG, GIF)'), ext && mime);
+  }
+});
 
 // ── REGISTER ──────────────────────────────
 router.post('/register', async (req, res) => {
@@ -91,7 +114,7 @@ router.get('/me', async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey123');
-    const [users] = await db.query('SELECT id, nama, email, telepon, alamat, kota, provinsi, eco_points, eco_carbon, eco_vouchers_claimed, created_at FROM users WHERE id = ?', [decoded.id]);
+    const [users] = await db.query('SELECT id, nama, email, telepon, alamat, kota, provinsi, foto, eco_points, eco_carbon, eco_vouchers_claimed, created_at FROM users WHERE id = ?', [decoded.id]);
 
     if (users.length === 0)
       return res.status(404).json({ success: false, message: 'User tidak ditemukan.' });
@@ -118,17 +141,38 @@ router.put('/update', async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey123');
-    const { nama, telepon, alamat, kota, provinsi } = req.body;
+    const { nama, telepon, alamat, kota, provinsi, foto } = req.body;
 
     await db.query(
-      'UPDATE users SET nama = ?, telepon = ?, alamat = ?, kota = ?, provinsi = ? WHERE id = ?',
-      [nama, telepon || null, alamat || null, kota || null, provinsi || null, decoded.id]
+      'UPDATE users SET nama = ?, telepon = ?, alamat = ?, kota = ?, provinsi = ?, foto = COALESCE(?, foto) WHERE id = ?',
+      [nama, telepon || null, alamat || null, kota || null, provinsi || null, foto || null, decoded.id]
     );
 
     res.json({ success: true, message: 'Profil berhasil diupdate.' });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
+  }
+});
+
+// ─── UPLOAD AVATAR ────────────────────
+router.post('/upload-avatar', uploadAvatar.single('avatar'), async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ success: false, message: 'Token tidak ditemukan.' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey123');
+    if (!req.file) return res.status(400).json({ success: false, message: 'Pilih file gambar.' });
+
+    const fotoPath = '/assets/avatars/' + req.file.filename;
+    await db.query('UPDATE users SET foto = ? WHERE id = ?', [fotoPath, decoded.id]);
+
+    res.json({ success: true, message: 'Foto profil berhasil diupload!', foto: fotoPath });
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError') return res.status(401).json({ success: false, message: 'Token tidak valid.' });
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Gagal upload.' });
   }
 });
 
@@ -191,6 +235,55 @@ router.post('/eco-claim', async (req, res) => {
     console.error(err);
     res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
   }
+});
+
+// ─── ADMIN LOGIN ─────────────────────────
+router.post('/admin-login', async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ success: false, message: 'Username dan password wajib diisi.' });
+  }
+
+  // Coba login via database (admin user)
+  try {
+    const [users] = await db.query('SELECT * FROM users WHERE (email = ? OR nama = ?) AND is_admin = TRUE', [username, username]);
+    if (users.length > 0) {
+      const user = users[0];
+      const match = await bcrypt.compare(password, user.password);
+      if (match) {
+        const token = jwt.sign(
+          { id: user.id, role: 'admin', email: user.email },
+          process.env.JWT_SECRET || 'secretkey123',
+          { expiresIn: '24h' }
+        );
+        return res.json({
+          success: true,
+          message: 'Login admin berhasil!',
+          token,
+          admin: { id: user.id, username: user.nama, email: user.email, role: 'admin' }
+        });
+      }
+    }
+  } catch (e) {
+    // Kolom is_admin mungkin belum ada, lanjut ke hardcoded fallback
+  }
+
+  // Fallback: hardcoded credentials
+  if (username === 'admintoko' && password === '123456') {
+    const token = jwt.sign(
+      { role: 'admin', username: 'admintoko' },
+      process.env.JWT_SECRET || 'secretkey123',
+      { expiresIn: '24h' }
+    );
+    return res.json({
+      success: true,
+      message: 'Login admin berhasil!',
+      token,
+      admin: { username: 'admintoko', role: 'admin' }
+    });
+  }
+
+  return res.status(401).json({ success: false, message: 'Username atau password salah.' });
 });
 
 module.exports = router;

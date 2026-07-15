@@ -284,6 +284,22 @@ JWT_EXPIRES_IN=7d
 - ✅ **Fix Tailwind CDN** — semua JS template string pake inline style (produk, pesanan, voucher, kontak)
 - ✅ **Run migration** — `migration_eco_rewards.sql` nambah kolom `eco_points`/`eco_carbon`/`eco_vouchers_claimed`
 
+## Recent Changes (2026-07-15)
+- ✅ **Payment modal setelah checkout** — tampil instruksi pembayaran sesuai metode (transfer/COD/ewallet)
+- ✅ **Login page admin tab** — tambah tab 🔐 Admin di halaman login, redirect ke admin panel
+- ✅ **User voucher list di checkout** — tampil daftar voucher ECO30 user, hover tooltip, klik apply
+- ✅ **Backend GET /api/vouchers/user** — endpoint ambil voucher milik user (auth required)
+- ✅ **Stok otomatis berkurang** — tiap checkout, stok produk dikurangi sesuai qty
+- ✅ **User batalkan pesanan** — tombol ✕ Batalkan di Tracking & Profile (kalo status konfirmasi/proses)
+- ✅ **Backend POST /api/orders/:nomor/cancel** — batalkan pesanan + restore stok (auth required)
+- ✅ **Admin login via database** — admin bisa login via email (admin@ecostore.com / admin123), fallback hardcoded
+- ✅ **Migration admin.sql** — nambah kolom `is_admin` + seed admin user
+- ✅ **Loading state** — spinner di produk, admin tables, profile orders
+- ✅ **Admin delete confirmation modal** — modal neobrutalism ganti confirm() js
+- ✅ **Admin search/filter** — search produk & pesanan di admin panel
+- ✅ **Upload foto profil user** — upload avatar lewat profile page
+- ✅ **Rate limiting & sanitasi** — express-rate-limit, strip HTML tags, batas ukuran body
+
 ## API Endpoints (new)
 
 ### Reviews (`/api/reviews`)
@@ -292,22 +308,28 @@ JWT_EXPIRES_IN=7d
 
 ### Vouchers (`/api/vouchers`)
 - `GET /` - Get all vouchers (admin)
+- `GET /user` - Get user's eco reward vouchers (auth required)
 - `POST /` - Create voucher (admin). Body: `{ kode, diskon_persen, min_belanja, ... }`
 - `POST /validate` - Validate voucher code. Body: `{ kode, total_belanja }`. Returns: `{ voucher: { diskon } }`
 - `DELETE /:id` - Delete voucher (admin)
 
+### Orders (`/api/orders`)
+- `POST / ` - Create order
+- `GET /` - Get all orders (admin)
+- `GET /:nomor` - Get order by nomor
+- `GET /user/:user_id` - Get orders by user
+- `PATCH /:nomor/status` - Update status (admin)
+- `POST /:nomor/cancel` - Cancel order by user (auth, restore stock)
+
 ### Eco Rewards (`/api/auth`)
 - `PUT /eco` - Sync eco points to database (requires auth). Body: `{ eco_points, eco_carbon }`
 - `POST /eco-claim` - Claim voucher manual dari homepage (requires auth). Body: `{ milestone }`. Returns: voucher kode diskon 30%
+- `POST /admin-login` - Admin login (hardcoded + database fallback). Body: `{ username, password }`
 
 ## TODO / Future Improvements
 - [ ] Email notifications (nodemailer)
 - [ ] Payment gateway integration (Midtrans)
-- [ ] Admin authentication middleware
-- [ ] Rate limiting & input sanitization
 - [ ] Unit tests
-- [ ] Sepatu Sneakers product image (missing local file)
-- [ ] Admin delete confirmation with neobrutalism modal
 
 ## Notes
 - No top-level `package.json`; backend package management is under `backend/`

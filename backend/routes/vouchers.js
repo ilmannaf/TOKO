@@ -1,9 +1,11 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const db = require('../database/database');
+const adminAuth = require('../middleware/adminAuth');
 const router = express.Router();
 
 // GET all vouchers (admin)
-router.get('/', async (req, res) => {
+router.get('/', adminAuth, async (req, res) => {
   try {
     const [vouchers] = await db.query('SELECT * FROM vouchers ORDER BY created_at DESC');
     res.json({ success: true, vouchers });
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST create voucher (admin)
-router.post('/', async (req, res) => {
+router.post('/', adminAuth, async (req, res) => {
   const { kode, diskon_persen, diskon_nominal, min_belanja, maks_diskon, kuota, berlaku_mulai, berlaku_sampai } = req.body;
   if (!kode) return res.status(400).json({ success: false, message: 'Kode voucher wajib diisi.' });
   try {
@@ -78,7 +80,7 @@ router.post('/validate', async (req, res) => {
 });
 
 // DELETE voucher (admin)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', adminAuth, async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query('DELETE FROM vouchers WHERE id = ?', [id]);
@@ -86,6 +88,31 @@ router.delete('/:id', async (req, res) => {
     res.json({ success: true, message: 'Voucher berhasil dihapus.' });
   } catch (error) {
     console.error('Error hapus voucher:', error);
+    res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
+  }
+});
+
+// GET vouchers milik user (ECO30-{userId}-*)
+router.get('/user', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ success: false, message: 'Token tidak ditemukan.' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey123');
+    const userId = decoded.id;
+
+    const [vouchers] = await db.query(
+      `SELECT * FROM vouchers WHERE kode LIKE ? AND aktif = TRUE AND (kuota IS NULL OR terpakai < kuota) AND (berlaku_sampai IS NULL OR berlaku_sampai >= CURDATE()) ORDER BY created_at DESC`,
+      [`ECO30-${userId}-%`]
+    );
+
+    res.json({ success: true, vouchers });
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ success: false, message: 'Token tidak valid.' });
+    }
+    console.error('Error ambil voucher user:', err);
     res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
   }
 });

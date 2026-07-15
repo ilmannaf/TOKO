@@ -1,13 +1,15 @@
 // routes/orders.js
 const express = require('express');
+const jwt     = require('jsonwebtoken');
 const db      = require('../database/database');
+const adminAuth = require('../middleware/adminAuth');
 const router  = express.Router();
 
 // ─────────────────────────────────────────
 // AMBIL SEMUA PESANAN (admin)
 // GET /api/orders
 // ─────────────────────────────────────────
-router.get('/', async (req, res) => {
+router.get('/', adminAuth, async (req, res) => {
   try {
     const [orders] = await db.query(
       `SELECT o.*, COUNT(oi.id) as jumlah_item
@@ -68,13 +70,14 @@ router.post('/', async (req, res) => {
 
     const orderId = result.insertId;
 
-    // Simpan setiap produk ke tabel order_items
+    // Simpan setiap produk ke tabel order_items & kurangi stok
     for (const item of items) {
       await db.query(
         `INSERT INTO order_items (order_id, product_id, nama_produk, harga, qty, image)
          VALUES (?, ?, ?, ?, ?, ?)`,
         [orderId, item.id, item.name, item.price, item.qty, item.image || null]
       );
+      await db.query('UPDATE products SET stok = stok - ? WHERE id = ? AND stok >= ?', [item.qty, item.id, item.qty]);
     }
 
     res.status(201).json({
@@ -167,7 +170,7 @@ router.get('/user/:user_id', async (req, res) => {
 // UPDATE STATUS PESANAN (untuk admin)
 // PATCH /api/orders/:nomor/status
 // ─────────────────────────────────────────
-router.patch('/:nomor/status', async (req, res) => {
+router.patch('/:nomor/status', adminAuth, async (req, res) => {
   const { nomor }  = req.params;
   const { status } = req.body;
 
@@ -190,6 +193,50 @@ router.patch('/:nomor/status', async (req, res) => {
 
   } catch (error) {
     console.error('Error update status:', error);
+    res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
+  }
+});
+
+// ─────────────────────────────────────────
+// BATAL PESANAN OLEH USER
+// POST /api/orders/:nomor/cancel
+// ─────────────────────────────────────────
+router.post('/:nomor/cancel', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ success: false, message: 'Token tidak ditemukan.' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey123');
+    const { nomor } = req.params;
+
+    const [orders] = await db.query('SELECT * FROM orders WHERE nomor_pesanan = ?', [nomor.toUpperCase()]);
+    if (orders.length === 0) return res.status(404).json({ success: false, message: 'Pesanan tidak ditemukan.' });
+
+    const order = orders[0];
+
+    if (order.user_id !== decoded.id) {
+      return res.status(403).json({ success: false, message: 'Bukan pesanan kamu.' });
+    }
+
+    if (!['dikonfirmasi', 'diproses'].includes(order.status)) {
+      return res.status(400).json({ success: false, message: 'Pesanan sudah dikirim, tidak bisa dibatalkan.' });
+    }
+
+    await db.query('UPDATE orders SET status = ? WHERE nomor_pesanan = ?', ['dibatalkan', nomor.toUpperCase()]);
+
+    // Kembalikan stok
+    const [items] = await db.query('SELECT product_id, qty FROM order_items WHERE order_id = ?', [order.id]);
+    for (const item of items) {
+      await db.query('UPDATE products SET stok = stok + ? WHERE id = ?', [item.qty, item.product_id]);
+    }
+
+    res.json({ success: true, message: 'Pesanan berhasil dibatalkan.' });
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return res.status(401).json({ success: false, message: 'Token tidak valid.' });
+    }
+    console.error(err);
     res.status(500).json({ success: false, message: 'Terjadi kesalahan server.' });
   }
 });

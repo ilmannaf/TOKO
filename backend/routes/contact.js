@@ -1,9 +1,10 @@
 const express = require('express');
 const db = require('../database/database');
+const adminAuth = require('../middleware/adminAuth');
 const router = express.Router();
 
 // GET semua pesan (admin)
-router.get('/', async (req, res) => {
+router.get('/', adminAuth, async (req, res) => {
   try {
     const [contacts] = await db.query('SELECT * FROM contacts ORDER BY created_at DESC');
     res.json({ success: true, contacts });

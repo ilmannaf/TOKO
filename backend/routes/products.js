@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('../database/database');
+const adminAuth = require('../middleware/adminAuth');
 const router = express.Router();
 
 // ─── GET semua produk (with pagination) ───
@@ -53,7 +54,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // ─── POST tambah produk (admin) ──────────
-router.post('/', async (req, res) => {
+router.post('/', adminAuth, async (req, res) => {
   const { nama, kategori, harga, stok, deskripsi, eco_points, carbon_saved, image } = req.body;
   if (!nama || !kategori || !harga)
     return res.status(400).json({ success: false, message: 'Nama, kategori, dan harga wajib diisi.' });
@@ -75,7 +76,7 @@ router.post('/', async (req, res) => {
 });
 
 // ─── PUT update produk (admin) ───────────
-router.put('/:id', async (req, res) => {
+router.put('/:id', adminAuth, async (req, res) => {
   const { id } = req.params;
   const { nama, kategori, harga, stok, deskripsi, eco_points, carbon_saved, image } = req.body;
   const parsedHarga = parseFloat(harga);
@@ -98,7 +99,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // ─── DELETE produk (admin) ──────────────
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', adminAuth, async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query('DELETE FROM products WHERE id = ?', [id]);

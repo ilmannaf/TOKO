@@ -36,39 +36,65 @@
         ECO<span class="text-primary px-2">STORE</span>
       </a>
 
-      <h2 class="text-3xl font-black text-center mb-6">Login Akun</h2>
+      <!-- Tab Pilihan Login -->
+      <div class="flex border-4 border-black mb-6">
+        <button id="tab-user" onclick="showTab('user')"
+          class="flex-1 py-3 font-black uppercase text-sm bg-yellow-300 border-r-2 border-black">
+          👤 Pengguna
+        </button>
+        <button id="tab-admin" onclick="showTab('admin')"
+          class="flex-1 py-3 font-black uppercase text-sm bg-white">
+          🔐 Admin
+        </button>
+      </div>
 
       <!-- Pesan error -->
       <div id="error-msg" class="hidden mb-4 modern-alert modern-alert-error"></div>
 
-      <!-- Email -->
-      <label class="text-sm font-bold mb-2 block tracking-wide">Email</label>
-      <input type="email" id="email" placeholder="Contoh@email.com"
-        class="modern-input w-full mb-4">
+      <!-- Form User Login -->
+      <div id="form-user">
+        <label class="text-sm font-bold mb-2 block tracking-wide">Email</label>
+        <input type="email" id="email" placeholder="Contoh@email.com"
+          class="modern-input w-full mb-4">
 
-      <!-- Password -->
-      <label class="text-sm font-bold mb-2 block tracking-wide">Password</label>
-      <div class="relative mb-6">
-        <input type="password" id="password" placeholder="Masukkan password"
-          class="modern-input w-full pr-10">
-        <!-- Toggle show/hide password -->
-        <button type="button" onclick="togglePassword('password', this)"
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl">
-          👁
+        <label class="text-sm font-bold mb-2 block tracking-wide">Password</label>
+        <div class="relative mb-6">
+          <input type="password" id="password" placeholder="Masukkan password"
+            class="modern-input w-full pr-10">
+          <button type="button" onclick="togglePassword('password', this)"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl">👁</button>
+        </div>
+
+        <button id="btn-login" onclick="handleLogin()"
+          class="modern-btn modern-btn-primary w-full mb-4">
+          Masuk
         </button>
+
+        <p class="text-sm text-center font-bold">
+          Belum punya akun?
+          <a href="register.html" class="modern-link">Daftar</a>
+        </p>
       </div>
 
-      <!-- Button Login -->
-      <button id="btn-login" onclick="handleLogin()"
-        class="modern-btn modern-btn-primary w-full mb-4">
-        Masuk
-      </button>
+      <!-- Form Admin Login -->
+      <div id="form-admin" class="hidden">
+        <label class="text-sm font-bold mb-2 block tracking-wide">Username</label>
+        <input type="text" id="admin-username" placeholder="Username admin"
+          class="modern-input w-full mb-4">
 
-      <!-- Link ke Register -->
-      <p class="text-sm text-center font-bold">
-        Belum punya akun?
-        <a href="register.html" class="modern-link">Daftar</a>
-      </p>
+        <label class="text-sm font-bold mb-2 block tracking-wide">Password</label>
+        <div class="relative mb-6">
+          <input type="password" id="admin-password" placeholder="Password admin"
+            class="modern-input w-full pr-10">
+          <button type="button" onclick="togglePassword('admin-password', this)"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl">👁</button>
+        </div>
+
+        <button id="btn-admin-login" onclick="handleAdminLogin()"
+          class="modern-btn modern-btn-primary w-full mb-4">
+          Masuk sebagai Admin
+        </button>
+      </div>
 
     </div>
   </div>

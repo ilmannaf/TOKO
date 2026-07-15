@@ -36,6 +36,9 @@
         <a href="../index.html" class="flex items-center px-4 py-3 border-4 border-black bg-white font-black uppercase hover:bg-cyan-300">
           🏪 Lihat Toko
         </a>
+        <button onclick="adminLogout()" class="flex items-center w-full px-4 py-3 border-4 border-black bg-pink-300 font-black uppercase hover:bg-pink-400 mt-2" style="cursor:pointer;">
+          🚪 LOGOUT
+        </button>
       </nav>
     </aside>
 
@@ -79,6 +82,15 @@
           </button>
         </div>
         <div class="nb-card bg-white overflow-hidden">
+          <div style="padding:12px;border-bottom:4px solid #000;display:flex;gap:8px;flex-wrap:wrap;">
+            <input type="text" id="search-products" placeholder="🔍 Cari produk..." onkeyup="filterProducts()" style="flex:1;min-width:150px;border:3px solid #000;padding:8px 12px;font-weight:700;font-family:inherit;font-size:0.85rem;">
+            <select id="filter-kategori" onchange="filterProducts()" style="border:3px solid #000;padding:8px;font-weight:700;font-family:inherit;font-size:0.85rem;background:#fff;">
+              <option value="">Semua Kategori</option>
+              <option value="Baju">Baju</option>
+              <option value="Sepatu">Sepatu</option>
+              <option value="Aksesoris">Aksesoris</option>
+            </select>
+          </div>
           <table class="w-full text-sm">
             <thead class="bg-black text-white">
               <tr>
@@ -152,6 +164,9 @@
       <div id="section-orders" class="hidden">
         <h2 class="text-3xl font-black uppercase mb-6">🛍️ Daftar Pesanan</h2>
         <div class="nb-card bg-white overflow-hidden">
+          <div style="padding:12px;border-bottom:4px solid #000;">
+            <input type="text" id="search-orders" placeholder="🔍 Cari nomor/nama pembeli..." onkeyup="filterOrders()" style="width:100%;border:3px solid #000;padding:8px 12px;font-weight:700;font-family:inherit;font-size:0.85rem;">
+          </div>
           <table class="w-full text-sm">
             <thead class="bg-black text-white">
               <tr>
@@ -185,7 +200,9 @@
                 <th class="text-left px-4 py-3 font-black uppercase">Aksi</th>
               </tr>
             </thead>
-            <tbody id="voucher-table" class="divide-y-4 divide-black font-bold"></tbody>
+            <tbody id="voucher-table" class="divide-y-4 divide-black font-bold">
+              <tr><td colspan="6" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Memuat voucher...</td></tr>
+            </tbody>
           </table>
         </div>
 
@@ -250,7 +267,9 @@
                 <th class="text-left px-4 py-3 font-black uppercase">Status</th>
               </tr>
             </thead>
-            <tbody id="contact-table" class="divide-y-4 divide-black font-bold"></tbody>
+            <tbody id="contact-table" class="divide-y-4 divide-black font-bold">
+              <tr><td colspan="4" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Memuat pesan...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -258,10 +277,60 @@
     </main>
   </div>
 
+  <!-- Modal Konfirmasi Hapus -->
+  <div id="confirm-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/60" style="display:none;">
+    <div class="nb-modal p-6 max-w-sm w-full mx-4 bg-white text-center" style="border:4px solid #000;box-shadow:8px 8px 0 rgba(0,0,0,1);">
+      <div style="font-size:3rem;margin-bottom:1rem;">⚠️</div>
+      <h3 class="text-2xl font-black uppercase mb-3" id="confirm-title">Konfirmasi</h3>
+      <p class="font-bold text-sm mb-6" id="confirm-message">Yakin ingin menghapus?</p>
+      <div style="display:flex;gap:12px;">
+        <button id="confirm-yes" class="nb-btn nb-btn-pink" style="flex:1;">🗑️ HAPUS</button>
+        <button id="confirm-no" class="nb-btn nb-btn-black" style="flex:1;">BATAL</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // ─── Admin Auth Check ───
+    const adminToken = localStorage.getItem('admin_token');
+    if (!adminToken) {
+      window.location.href = 'login.html';
+    }
+    function getAdminHeaders() {
+      return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken };
+    }
+    function adminLogout() {
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+      window.location.href = 'login.html';
+    }
+
     const BASE_URL = 'http://localhost:3000';
     const API_PRODUCTS = `${BASE_URL}/api/products`;
     const API_ORDERS = `${BASE_URL}/api/orders`;
+
+    // ─── Confirm Modal ───
+    var confirmCallback = null;
+
+    function showConfirmModal(message, onConfirm) {
+      document.getElementById('confirm-message').textContent = message;
+      document.getElementById('confirm-modal').style.display = 'flex';
+      document.getElementById('confirm-modal').classList.remove('hidden');
+      confirmCallback = onConfirm;
+    }
+
+    document.getElementById('confirm-yes').addEventListener('click', function() {
+      document.getElementById('confirm-modal').style.display = 'none';
+      document.getElementById('confirm-modal').classList.add('hidden');
+      if (confirmCallback) confirmCallback();
+      confirmCallback = null;
+    });
+
+    document.getElementById('confirm-no').addEventListener('click', function() {
+      document.getElementById('confirm-modal').style.display = 'none';
+      document.getElementById('confirm-modal').classList.add('hidden');
+      confirmCallback = null;
+    });
 
     // ─── Navigation ───
     function showSection(section) {
@@ -282,12 +351,21 @@
       else if (section === 'dashboard') loadDashboard();
     }
 
+    async function adminFetch(url, options) {
+      const res = await fetch(url, options);
+      if (res.status === 401) {
+        adminLogout();
+        throw new Error('Sesi admin habis. Silakan login ulang.');
+      }
+      return res;
+    }
+
     // ─── Dashboard ───
     async function loadDashboard() {
       try {
         const [pRes, oRes] = await Promise.all([
           fetch(API_PRODUCTS + '?limit=1'),
-          fetch(API_ORDERS)
+          adminFetch(API_ORDERS, { headers: { 'Authorization': 'Bearer ' + adminToken } })
         ]);
         const pData = await pRes.json();
         const oData = await oRes.json();
@@ -313,33 +391,49 @@
     }
 
     // ─── Products CRUD ───
+    var allProducts = [];
+
     async function loadProducts() {
       try {
         const res = await fetch(API_PRODUCTS + '?limit=50');
         const data = await res.json();
-        const tbody = document.getElementById('product-table');
-        if (data.success && data.products.length > 0) {
+        if (data.success) {
+          allProducts = data.products || [];
           document.getElementById('stat-products').textContent = data.total;
-          var h = '';
-          for (var i = 0; i < data.products.length; i++) {
-            var p = data.products[i];
-            h += '<tr>'
-              + '<td style="padding:0.75rem 1rem;font-weight:700;">' + p.nama + '</td>'
-              + '<td style="padding:0.75rem 1rem;">' + p.kategori + '</td>'
-              + '<td style="padding:0.75rem 1rem;font-weight:700;">Rp ' + Number(p.harga).toLocaleString('id-ID') + '</td>'
-              + '<td style="padding:0.75rem 1rem;">' + (p.stok || 0) + '</td>'
-              + '<td style="padding:0.75rem 1rem;display:flex;gap:0.5rem;">'
-                + '<button onclick="editProduct(' + p.id + ')" class="nb-btn nb-btn-lime" style="font-size:0.7rem;padding:4px 10px;">✏️ EDIT</button>'
-                + '<button onclick="deleteProduct(' + p.id + ')" class="nb-btn nb-btn-pink" style="font-size:0.7rem;padding:4px 10px;">🗑️ HAPUS</button>'
-              + '</td>'
-            + '</tr>';
-          }
-          tbody.innerHTML = h;
-        } else {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Belum ada produk</td></tr>';
+          filterProducts();
         }
       } catch (err) {
         console.error(err);
+      }
+    }
+
+    function filterProducts() {
+      var search = (document.getElementById('search-products').value || '').toLowerCase();
+      var kategori = document.getElementById('filter-kategori').value;
+      var filtered = allProducts.filter(function(p) {
+        var matchSearch = !search || p.nama.toLowerCase().includes(search);
+        var matchKategori = !kategori || p.kategori === kategori;
+        return matchSearch && matchKategori;
+      });
+      var tbody = document.getElementById('product-table');
+      if (filtered.length > 0) {
+        var h = '';
+        for (var i = 0; i < filtered.length; i++) {
+          var p = filtered[i];
+          h += '<tr>'
+            + '<td style="padding:0.75rem 1rem;font-weight:700;">' + p.nama + '</td>'
+            + '<td style="padding:0.75rem 1rem;">' + p.kategori + '</td>'
+            + '<td style="padding:0.75rem 1rem;font-weight:700;">Rp ' + Number(p.harga).toLocaleString('id-ID') + '</td>'
+            + '<td style="padding:0.75rem 1rem;">' + (p.stok || 0) + '</td>'
+            + '<td style="padding:0.75rem 1rem;display:flex;gap:0.5rem;">'
+              + '<button onclick="editProduct(' + p.id + ')" class="nb-btn nb-btn-lime" style="font-size:0.7rem;padding:4px 10px;">✏️ EDIT</button>'
+              + '<button onclick="deleteProduct(' + p.id + ')" class="nb-btn nb-btn-pink" style="font-size:0.7rem;padding:4px 10px;">🗑️ HAPUS</button>'
+            + '</td>'
+          + '</tr>';
+        }
+        tbody.innerHTML = h;
+      } else {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Produk tidak ditemukan</td></tr>';
       }
     }
 
@@ -377,8 +471,9 @@
         formData.append('image', fileInput.files[0]);
         
         try {
-          const uploadRes = await fetch(`${BASE_URL}/api/upload/upload`, {
+          const uploadRes = await adminFetch(`${BASE_URL}/api/upload/upload`, {
             method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + adminToken },
             body: formData
           });
           const uploadData = await uploadRes.json();
@@ -412,7 +507,7 @@
       try {
         const url = id ? `${API_PRODUCTS}/${id}` : API_PRODUCTS;
         const method = id ? 'PUT' : 'POST';
-        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        const res = await adminFetch(url, { method, headers: getAdminHeaders(), body: JSON.stringify(data) });
         const result = await res.json();
         if (result.success) {
           closeProductForm();
@@ -454,13 +549,14 @@
     }
 
     async function deleteProduct(id) {
-      if (!confirm('Yakin ingin menghapus produk ini?')) return;
-      try {
-        const res = await fetch(`${API_PRODUCTS}/${id}`, { method: 'DELETE' });
-        const data = await res.json();
-        if (data.success) loadProducts();
-        else alert(data.message);
-      } catch (err) { alert('Gagal menghapus produk'); }
+      showConfirmModal('Hapus produk ini? Semua data terkait akan hilang.', async function() {
+        try {
+          const res = await adminFetch(`${API_PRODUCTS}/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
+          const data = await res.json();
+          if (data.success) loadProducts();
+          else alert(data.message);
+        } catch (err) { alert('Gagal menghapus produk'); }
+      });
     }
 
     // ─── Upload Image Preview ───
@@ -478,43 +574,56 @@
     });
 
     // ─── Orders ───
+    var allOrders = [];
+
     async function loadOrders() {
       try {
-        const res = await fetch(API_ORDERS);
+        const res = await adminFetch(API_ORDERS, { headers: { 'Authorization': 'Bearer ' + adminToken } });
         const data = await res.json();
-        const tbody = document.getElementById('order-table');
-        if (data.success && data.pesanan.length > 0) {
-          var h = '';
-          for (var i = 0; i < data.pesanan.length; i++) {
-            var o = data.pesanan[i];
-            h += '<tr>'
-              + '<td style="padding:0.75rem 1rem;font-weight:700;">#' + o.nomor_pesanan + '</td>'
-              + '<td style="padding:0.75rem 1rem;font-weight:600;">' + (o.nama_penerima || '-') + '</td>'
-              + '<td style="padding:0.75rem 1rem;font-weight:700;">Rp ' + Number(o.total || 0).toLocaleString('id-ID') + '</td>'
-              + '<td style="padding:0.75rem 1rem;"><span class="nb-badge nb-badge-info" style="font-size:0.65rem;">' + (o.status || '-') + '</span></td>'
-              + '<td style="padding:0.75rem 1rem;">'
-                + '<select onchange="updateOrderStatus(\'' + o.nomor_pesanan + '\', this.value)" style="border:3px solid #000;font-weight:700;font-size:0.75rem;padding:4px 8px;background:#fff;font-family:inherit;">'
-                  + '<option value="dikonfirmasi"' + (o.status === 'dikonfirmasi' ? ' selected' : '') + '>Konfirmasi</option>'
-                  + '<option value="diproses"' + (o.status === 'diproses' ? ' selected' : '') + '>Proses</option>'
-                  + '<option value="dikirim"' + (o.status === 'dikirim' ? ' selected' : '') + '>Dikirim</option>'
-                  + '<option value="selesai"' + (o.status === 'selesai' ? ' selected' : '') + '>Selesai</option>'
-                  + '<option value="dibatalkan"' + (o.status === 'dibatalkan' ? ' selected' : '') + '>Batal</option>'
-                + '</select>'
-              + '</td>'
-            + '</tr>';
-          }
-          tbody.innerHTML = h;
-        } else {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Belum ada pesanan</td></tr>';
+        if (data.success) {
+          allOrders = data.pesanan || [];
+          filterOrders();
         }
       } catch (err) { console.error(err); }
     }
 
+    function filterOrders() {
+      var search = (document.getElementById('search-orders').value || '').toLowerCase();
+      var filtered = allOrders.filter(function(o) {
+        return !search || (o.nomor_pesanan && o.nomor_pesanan.toLowerCase().includes(search)) || (o.nama_penerima && o.nama_penerima.toLowerCase().includes(search));
+      });
+      var tbody = document.getElementById('order-table');
+      if (filtered.length > 0) {
+        var h = '';
+        for (var i = 0; i < filtered.length; i++) {
+          var o = filtered[i];
+          h += '<tr>'
+            + '<td style="padding:0.75rem 1rem;font-weight:700;">#' + o.nomor_pesanan + '</td>'
+            + '<td style="padding:0.75rem 1rem;font-weight:600;">' + (o.nama_penerima || '-') + '</td>'
+            + '<td style="padding:0.75rem 1rem;font-weight:700;">Rp ' + Number(o.total || 0).toLocaleString('id-ID') + '</td>'
+            + '<td style="padding:0.75rem 1rem;"><span class="nb-badge nb-badge-info" style="font-size:0.65rem;">' + (o.status || '-') + '</span></td>'
+            + '<td style="padding:0.75rem 1rem;">'
+              + '<select onchange="updateOrderStatus(\'' + o.nomor_pesanan + '\', this.value)" style="border:3px solid #000;font-weight:700;font-size:0.75rem;padding:4px 8px;background:#fff;font-family:inherit;">'
+                + '<option value="dikonfirmasi"' + (o.status === 'dikonfirmasi' ? ' selected' : '') + '>Konfirmasi</option>'
+                + '<option value="diproses"' + (o.status === 'diproses' ? ' selected' : '') + '>Proses</option>'
+                + '<option value="dikirim"' + (o.status === 'dikirim' ? ' selected' : '') + '>Dikirim</option>'
+                + '<option value="selesai"' + (o.status === 'selesai' ? ' selected' : '') + '>Selesai</option>'
+                + '<option value="dibatalkan"' + (o.status === 'dibatalkan' ? ' selected' : '') + '>Batal</option>'
+              + '</select>'
+            + '</td>'
+          + '</tr>';
+        }
+        tbody.innerHTML = h;
+      } else {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;font-weight:700;opacity:0.4;">Pesanan tidak ditemukan</td></tr>';
+      }
+    }
+
     async function updateOrderStatus(nomor, status) {
       try {
-        const res = await fetch(`${API_ORDERS}/${nomor}/status`, {
+        const res = await adminFetch(`${API_ORDERS}/${nomor}/status`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAdminHeaders(),
           body: JSON.stringify({ status })
         });
         const data = await res.json();
@@ -537,7 +646,7 @@
     // ─── Contacts ───
     async function loadContacts() {
       try {
-        const res = await fetch(`${BASE_URL}/api/contact`);
+        const res = await adminFetch(`${BASE_URL}/api/contact`, { headers: { 'Authorization': 'Bearer ' + adminToken } });
         const data = await res.json();
         const tbody = document.getElementById('contact-table');
         if (data.success && data.contacts.length > 0) {
@@ -563,7 +672,7 @@
 
     async function loadVouchers() {
       try {
-        const res = await fetch(API_VOUCHERS);
+        const res = await adminFetch(API_VOUCHERS, { headers: { 'Authorization': 'Bearer ' + adminToken } });
         const data = await res.json();
         const tbody = document.getElementById('voucher-table');
         if (data.success && data.vouchers.length > 0) {
@@ -616,7 +725,7 @@
         berlaku_sampai: document.getElementById('v-berlaku').value || null,
       };
       try {
-        var res = await fetch(API_VOUCHERS, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        var res = await adminFetch(API_VOUCHERS, { method: 'POST', headers: getAdminHeaders(), body: JSON.stringify(data) });
         var result = await res.json();
         if (result.success) { closeVoucherForm(); loadVouchers(); }
         else { alert(result.message); }
@@ -624,13 +733,14 @@
     });
 
     async function deleteVoucher(id) {
-      if (!confirm('Hapus voucher ini?')) return;
-      try {
-        var res = await fetch(API_VOUCHERS + '/' + id, { method: 'DELETE' });
-        var data = await res.json();
-        if (data.success) loadVouchers();
-        else alert(data.message);
-      } catch (err) { alert('Gagal menghapus voucher'); }
+      showConfirmModal('Hapus voucher ini?', async function() {
+        try {
+          var res = await adminFetch(API_VOUCHERS + '/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken } });
+          var data = await res.json();
+          if (data.success) loadVouchers();
+          else alert(data.message);
+        } catch (err) { alert('Gagal menghapus voucher'); }
+      });
     }
 
     // ─── Init ───

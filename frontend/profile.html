@@ -32,7 +32,14 @@
         <div class="md:col-span-1">
           <div class="modern-card p-6 text-center">
             <div class="mb-6">
-              <div class="text-5xl" id="user-avatar">👤</div>
+              <div id="user-avatar-wrap" style="position:relative;display:inline-block;">
+                <div id="user-avatar" class="text-5xl" style="width:96px;height:96px;border:4px solid #000;display:flex;align-items:center;justify-content:center;margin:0 auto;overflow:hidden;background:#f5f5f5;">
+                  <img id="avatar-img" src="" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none';document.getElementById('avatar-fallback').style.display='flex';">
+                  <span id="avatar-fallback" style="font-size:3rem;">👤</span>
+                </div>
+                <label for="avatar-upload" style="position:absolute;bottom:-4px;right:-4px;width:32px;height:32px;background:#FFE500;border:3px solid #000;display:flex;align-items:center;justify-content:center;font-size:0.85rem;cursor:pointer;font-weight:900;">✏️</label>
+                <input type="file" id="avatar-upload" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
+              </div>
               <h2 id="user-name" class="text-2xl font-black mt-4">Loading...</h2>
               <p id="user-email" class="text-sm font-bold mt-1">Loading...</p>
             </div>
@@ -61,8 +68,14 @@
           <div id="content-orders" class="modern-card p-6 hidden">
             <h3 class="text-3xl font-black mb-6">Riwayat Pesanan</h3>
             <div id="orders-list" class="space-y-4">
-              <p class="text-center font-bold py-8">Memuat pesanan...</p>
+              <div id="orders-loading" style="text-align:center;padding:2rem;">
+                <div class="loading-spinner-sm" style="width:32px;height:32px;margin:0 auto;border:4px solid #ddd;border-top-color:#000;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+                <p style="font-weight:700;margin-top:0.75rem;text-transform:uppercase;font-size:0.85rem;">Memuat pesanan...</p>
+              </div>
             </div>
+            <style>
+              @keyframes spin { to { transform:rotate(360deg); } }
+            </style>
           </div>
 
           <!-- Tab Edit Profil -->

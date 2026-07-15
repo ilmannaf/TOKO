@@ -76,6 +76,26 @@ function updateNavbar() {
   }
 }
 
+// ─── Admin Auth Helpers ───────────────────
+function getAdminToken() {
+  return localStorage.getItem('admin_token');
+}
+
+function getAdminUser() {
+  const u = localStorage.getItem('admin_user');
+  return u ? JSON.parse(u) : null;
+}
+
+function isAdminLoggedIn() {
+  return !!getAdminToken();
+}
+
+function adminLogout() {
+  localStorage.removeItem('admin_token');
+  localStorage.removeItem('admin_user');
+  window.location.href = 'admin/login.html';
+}
+
 // Panggil updateNavbar saat dokumen selesai dimuat
 document.addEventListener('DOMContentLoaded', () => {
   updateNavbar();

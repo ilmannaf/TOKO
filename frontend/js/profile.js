@@ -37,6 +37,40 @@ function renderProfile(user) {
   document.getElementById('edit-alamat').value = user.alamat || '';
   document.getElementById('edit-kota').value = user.kota || '';
   document.getElementById('edit-provinsi').value = user.provinsi || '';
+  // Avatar
+  if (user.foto) {
+    var img = document.getElementById('avatar-img');
+    img.src = user.foto;
+    img.style.display = 'block';
+    document.getElementById('avatar-fallback').style.display = 'none';
+  }
+}
+
+async function uploadAvatar(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var formData = new FormData();
+  formData.append('avatar', file);
+  try {
+    var res = await fetch(API_BASE_URL + '/api/auth/upload-avatar', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + getToken() },
+      body: formData
+    });
+    var data = await res.json();
+    if (data.success) {
+      var img = document.getElementById('avatar-img');
+      img.src = data.foto + '?t=' + Date.now();
+      img.style.display = 'block';
+      document.getElementById('avatar-fallback').style.display = 'none';
+      alert('Foto profil berhasil diupload!');
+    } else {
+      alert(data.message || 'Gagal upload.');
+    }
+  } catch (e) {
+    alert('Gagal terhubung ke server.');
+  }
+  input.value = '';
 }
 
 // Render Eco-Points
@@ -71,6 +105,9 @@ async function fetchOrders(userId) {
 async function renderOrders(user) {
   const orders = await fetchOrders(user.id);
   const listEl = document.getElementById('orders-list');
+  // Hapus loading
+  var loading = document.getElementById('orders-loading');
+  if (loading) loading.remove();
 
   if (orders.length === 0) {
     listEl.innerHTML = '<div style="text-align:center;padding:2rem;">'
@@ -84,13 +121,17 @@ async function renderOrders(user) {
   var h = '';
   for (var i = 0; i < orders.length; i++) {
     var o = orders[i];
+    var statusOk = o.status === 'dikonfirmasi' || o.status === 'diproses';
     h += '<div style="border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1rem;background:var(--card);">'
       + '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.5rem;">'
         + '<div>'
           + '<p style="font-size:0.75rem;font-weight:700;opacity:0.6;text-transform:uppercase;">' + formatDate(o.created_at) + '</p>'
           + '<p style="font-weight:900;font-size:1.1rem;">#' + o.nomor_pesanan + '</p>'
         + '</div>'
-        + '<span class="modern-badge modern-badge-info" style="font-size:0.65rem;">' + (o.status || 'diproses') + '</span>'
+        + '<div style="display:flex;align-items:center;gap:8px;">'
+          + '<span class="modern-badge modern-badge-info" style="font-size:0.65rem;">' + (o.status || 'diproses') + '</span>'
+          + (statusOk ? '<button onclick="batalkanPesananProfile(\'' + o.nomor_pesanan + '\')" style="padding:4px 8px;background:#FF6B9D;color:#fff;font-weight:700;font-size:0.65rem;border:2px solid #000;cursor:pointer;">✕</button>' : '')
+        + '</div>'
       + '</div>'
       + '<div style="display:flex;justify-content:space-between;font-size:0.875rem;font-weight:700;">'
         + '<span>' + (o.jumlah_item || 0) + ' produk</span>'
@@ -100,6 +141,28 @@ async function renderOrders(user) {
     + '</div>';
   }
   listEl.innerHTML = h;
+}
+
+async function batalkanPesananProfile(nomor) {
+  var token = getToken();
+  if (!token) { alert('Login dulu.'); return; }
+  if (!confirm('Yakin batalkan pesanan #' + nomor + '?')) return;
+  try {
+    var res = await fetch(API_BASE_URL + '/api/orders/' + nomor + '/cancel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+    });
+    var data = await res.json();
+    if (data.success) {
+      alert('Pesanan dibatalkan.');
+      var user = await fetchUserProfile();
+      if (user) await renderOrders(user);
+    } else {
+      alert(data.message || 'Gagal.');
+    }
+  } catch (e) {
+    alert('Gagal terhubung ke server.');
+  }
 }
 
 function formatDate(dateStr) {

@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const adminAuth = require('../middleware/adminAuth');
 const router = express.Router();
 
 // Setup multer untuk upload gambar
@@ -29,8 +30,8 @@ const upload = multer({
   }
 });
 
-// POST upload gambar
-router.post('/upload', upload.single('image'), (req, res) => {
+// POST upload gambar (admin only)
+router.post('/upload', adminAuth, upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'Tidak ada file yang diupload' });
   }

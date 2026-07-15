@@ -30,6 +30,9 @@ async function renderProducts() {
 
 function renderProductsFromData(products) {
   var container = document.getElementById('product-list');
+  // Hapus loading spinner
+  var loadingEl = document.getElementById('loading-products');
+  if (loadingEl) loadingEl.remove();
   if (!products || products.length === 0) {
     container.innerHTML = '<p style="text-align:center;padding:2rem;font-weight:700;text-transform:uppercase;color:#666;">Belum ada produk tersedia.</p>';
     return;
